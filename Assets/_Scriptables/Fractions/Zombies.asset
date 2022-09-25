@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa2b06e8bacd7124d9cade123f01de03, type: 3}
+  m_Name: Zombies
+  m_EditorClassIdentifier: 
+  _name: 
+  _townHallSprite: {fileID: 21300000, guid: a4bf3cc3f7b8996459d54e1ead4819f9, type: 3}
+  _townHallHealth: 1750
+  _barrackSprite: {fileID: 21300000, guid: 61cb1663120740543988d62e3ac402ca, type: 3}
+  _barrackHealth: 900
+  _spawnData:
+    NextSpawnTime: 5
+    SpawnTimeDelta: 1
+    SpawnType: 0
+  _fractionWarriours: []
