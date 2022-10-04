@@ -1,65 +1,54 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using InfinityGame.SpawnStrategies;
 using System;
+using System.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 
 namespace InfinityGame.Buildings
 {
-    using SpawnType = ISpawnStrategy.SpawnType;
-    using SpawnData = ISpawnStrategy.SpawnCycleData;
-    public class Barrack : Building
+    public class Barrack : Building, IBarrack
     {
-        /// <summary>
-        /// Types of spawn strategies and their creation
-        /// </summary>
-        private static Dictionary<SpawnType, Func<SpawnData, ISpawnStrategy>> _strategiesRealization = new Dictionary<SpawnType, Func<SpawnData, ISpawnStrategy>>()
-        {
-            [SpawnType.Group] = new Func<SpawnData, ISpawnStrategy>((SpawnData spawnData) =>
-            {
-                return new GroupSpawnStrategy(spawnData);
-            }),
-
-            [SpawnType.Single] = new Func<SpawnData, ISpawnStrategy>((SpawnData spawnData) =>
-            {
-                return new SingleSpawnStrategy(spawnData);
-            }),
-        };
-
-        private ISpawnStrategy _spawnStrategy;
-        private Coroutine _savedSpawnCoroutine;
+        public HitableEntity GlobalTarget { get; set; }    
+        public ISpawnStrategy SpawnStrategy { get; set; }
+        public CancellationTokenSource CancellationSpawnTokenSource { get; set; }
+        public Vector3 Position => transform.position;
 
 
-        public ISpawnStrategy SetSpawnStrategy
-        {
-            set
-            {
-                _spawnStrategy = value;
-            }
-        }
-
-
-        public static Barrack Instantiate(Barrack prefab, Fraction fraction)
+        public static Barrack Instantiate(Barrack prefab, Fraction fraction, Action onStartSpawn)
         {
             var barrack = Instantiate(prefab);
             var spawnData = fraction.SpawnData;
             barrack._health = fraction.BarrackHealth;
-            barrack.SetSpawnStrategy = _strategiesRealization[spawnData.SpawnType].Invoke(spawnData);
             barrack._spriteRenderer.sprite = fraction.BarrackSprite;
-            //barrack._savedSpawnCoroutine = barrack.StartCoroutine(barrack._spawnStrategy.SpawnCoroutine(fraction.FractionWarriours));
+            barrack._fractionTag = fraction.Tag;
+
+            barrack.SpawnStrategy = StaticData.StrategiesRealization[spawnData.SpawnType].Invoke(spawnData);
+            barrack.CancellationSpawnTokenSource = new CancellationTokenSource();
+            barrack.OnDie += barrack.CancellationSpawnTokenSource.Cancel; // Cancel spawning if barrack dies
+            onStartSpawn += barrack.SpawnWave; // Start sapwning wave in callback action
 
             return barrack;
         }
 
-
-        protected override void Awake()
+        public async void SpawnWave()
         {
-            base.Awake();
+            while (CancellationSpawnTokenSource.Token.IsCancellationRequested)
+            {
+                var taskOfGettingWave = SpawnStrategy.GetWaveWarriors(CancellationSpawnTokenSource.Token);
 
-            OnDie += () => StopCoroutine(_savedSpawnCoroutine);
+                await taskOfGettingWave;
+
+                var warriors = taskOfGettingWave.Result;
+
+                foreach (var warrior in warriors)
+                {
+                    // Set target for each
+                }
+            }
         }
-
-
     }
 }

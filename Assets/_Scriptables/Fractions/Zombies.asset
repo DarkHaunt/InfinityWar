@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa2b06e8bacd7124d9cade123f01de03, type: 3}
   m_Name: Zombies
   m_EditorClassIdentifier: 
-  _name: 
+  _name: Zombies
   _townHallSprite: {fileID: 21300000, guid: a4bf3cc3f7b8996459d54e1ead4819f9, type: 3}
   _townHallHealth: 1750
   _barrackSprite: {fileID: 21300000, guid: 61cb1663120740543988d62e3ac402ca, type: 3}
@@ -21,4 +21,5 @@ MonoBehaviour:
     NextSpawnTime: 5
     SpawnTimeDelta: 1
     SpawnType: 0
+  _tag: Zombies
   _fractionWarriours: []
