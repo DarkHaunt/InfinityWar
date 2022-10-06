@@ -15,8 +15,9 @@ public class Fraction : ScriptableObject
     [SerializeField] private Sprite _barrackSprite;
     [SerializeField] private float _barrackHealth;
 
-    [SerializeField] private ISpawnStrategy.SpawnCycleData _spawnData;
-    //[SerializeField] private LayerMask _fractionMask;
+    [SerializeField] private IWarrioirChoseStrategy.SpawnType _spawnTypea;
+    [SerializeField] private WarrioirSpawner.SpawnData _barracksSpawnData;
+
     [SerializeField] private string _tag;
 
     [SerializeField] private List<Warrior> _fractionWarriours;
@@ -29,8 +30,8 @@ public class Fraction : ScriptableObject
     public float TownHallHealth => _townHallHealth;
     public Sprite BarrackSprite => _barrackSprite;
     public float BarrackHealth => _barrackHealth;
-    public List<Warrior> FractionWarriours => _fractionWarriours;
-    public ISpawnStrategy.SpawnCycleData SpawnData => _spawnData;
-    //public LayerMask FractionMask => _fractionMask;
+    public List<Warrior> FractionWarriors => _fractionWarriours;
+    public IWarrioirChoseStrategy.SpawnType SpawnStrategyType => _spawnTypea;
+    public WarrioirSpawner.SpawnData BarracksSpawnData => _barracksSpawnData;
     public string Tag => _tag;
 }

@@ -54,7 +54,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Interfaces\IHitable.cs" />
-    <Compile Include="Assets\_Scripts\Warrioirs\State Machine\Agression.cs" />
+    <Compile Include="Assets\_Scripts\SpawnStrateies\ChoseRandomSingle.cs" />
     <Compile Include="Assets\_Scripts\Buildings\Building.cs" />
     <Compile Include="Assets\_Scripts\GameManager.cs" />
     <Compile Include="Assets\_Scripts\Warrioirs\Humans\Archer.cs" />
@@ -66,23 +66,22 @@
     <Compile Include="Assets\_TEST\For Cycle\ViewportHandler.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IShoot.cs" />
     <Compile Include="Assets\_Scripts\HitableEntity.cs" />
-    <Compile Include="Assets\_Scripts\SpawnStrateies\GroupSpawnStrategy.cs" />
+    <Compile Include="Assets\_Scripts\Interfaces\IGlobalTargetable.cs" />
+    <Compile Include="Assets\_Scripts\SpawnStrateies\ChoseRandomGroup.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IWarrior.cs" />
     <Compile Include="Assets\_Scripts\StaticData.cs" />
+    <Compile Include="Assets\_Scripts\Interfaces\IWarrioirChoseStrategy.cs" />
     <Compile Include="Assets\_Scriptables\Fraction.cs" />
-    <Compile Include="Assets\_Scripts\SpawnStrateies\SingleSpawnStrategy.cs" />
     <Compile Include="Assets\_Scripts\Warrioirs\State Machine\FollowGlobalTarget.cs" />
     <Compile Include="Assets\_Scripts\Warrioirs\ArguingTrigger.cs" />
-    <Compile Include="Assets\_Scripts\Interfaces\IBarrack.cs" />
+    <Compile Include="Assets\_Scripts\Interfaces\IWarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Projectile.cs" />
-    <Compile Include="Assets\_Scripts\Warrioirs\State Machine\Attack.cs" />
-    <Compile Include="Assets\_Scripts\Interfaces\ISpawnStrategy.cs" />
     <Compile Include="Assets\_Scripts\Warrioirs\Humans\Swordman.cs" />
+    <Compile Include="Assets\_Scripts\Warrioirs\WarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Warrioirs\State Machine\BaseState.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IFractionTagable.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IMelee.cs" />
-    <Compile Include="Assets\_Scripts\Interfaces\IGlobalTargetable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -19,6 +19,8 @@ namespace InfinityGame.Fractions.Humans
 
         protected override void Attack()
         {
+            base.Attack();
+
             var shootDirection = (_currentTarget.transform.position - transform.position).normalized;
 
             Shoot(shootDirection);

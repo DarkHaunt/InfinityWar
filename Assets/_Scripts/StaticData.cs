@@ -10,17 +10,24 @@ using UnityEngine;
 
 internal static class StaticData
 {
-    public static readonly Dictionary<ISpawnStrategy.SpawnType, Func<ISpawnStrategy.SpawnCycleData, ISpawnStrategy>> StrategiesRealization = new Dictionary<ISpawnStrategy.SpawnType, Func<ISpawnStrategy.SpawnCycleData, ISpawnStrategy>>()
+    public static readonly Dictionary<IWarrioirChoseStrategy.SpawnType, Func<IWarrioirChoseStrategy>> GetStrategyByType = new Dictionary<IWarrioirChoseStrategy.SpawnType, Func<IWarrioirChoseStrategy>>()
     {
-        [ISpawnStrategy.SpawnType.Group] = new Func<ISpawnStrategy.SpawnCycleData, ISpawnStrategy>((ISpawnStrategy.SpawnCycleData spawnData) =>
+/*        [IWarrioirChoseStrategy.SpawnType.RandomGroup] = new Func<IWarrioirChoseStrategy>(() =>
         {
-            return new GroupSpawnStrategy(spawnData);
-        }),
+            return new ChoseRandomGroup();
+        }),*/
 
-        [ISpawnStrategy.SpawnType.Single] = new Func<ISpawnStrategy.SpawnCycleData, ISpawnStrategy>((ISpawnStrategy.SpawnCycleData spawnData) =>
+        [IWarrioirChoseStrategy.SpawnType.RandomSingle] = new Func<IWarrioirChoseStrategy>(() =>
         {
-            return new SingleSpawnStrategy(spawnData);
-        }),
+            return new ChoseRandomSingle();
+        })
+    };
+
+
+    public static readonly int[] Sign = new int[2]
+    {
+        1,
+        -1
     };
 
     // System layers for overlaps and other stuff

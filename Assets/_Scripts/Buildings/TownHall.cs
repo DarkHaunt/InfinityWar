@@ -7,15 +7,19 @@ using System.Threading;
 
 namespace InfinityGame.Buildings
 {
-    public class TownHall : Building, IBarrack
+    public class TownHall : Building
     {
-        private HitableEntity _globalTarget;
+       // private List<Warrior> _warrioisToSpawn;
+
+        private WarrioirSpawner _warrioirSpawner;
 
 
-        public HitableEntity GlobalTarget => _globalTarget;
-        public ISpawnStrategy SpawnStrategy { get; set; }
-        public CancellationTokenSource CancellationSpawnTokenSource { get; set; }
-        public Vector3 Position => transform.position;
+/*        public IWarrioirChoseStrategy SpawnStrategy { get; set; }
+        public CancellationTokenSource SpawnCanceller { get; set; }
+        public float NextSpawnTime { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float SpawnTimeDelta { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }*/
+
+       // public List<Warrior> WarrioisToSpawn => _warrioisToSpawn;
 
 
         public static TownHall Instantiate(TownHall prefab, Fraction fraction, Action onStartSpawn)
@@ -25,30 +29,26 @@ namespace InfinityGame.Buildings
             townHall._health = fraction.TownHallHealth;
             townHall._fractionTag = fraction.Tag;
 
-            var spawnData = fraction.SpawnData;
-            townHall.SpawnStrategy = StaticData.StrategiesRealization[spawnData.SpawnType].Invoke(spawnData);
-            townHall.CancellationSpawnTokenSource = new CancellationTokenSource();
-            townHall.OnDie += townHall.CancellationSpawnTokenSource.Cancel; // Cancel spawning if barrack dies
-            onStartSpawn += townHall.SpawnWave; // Start sapwning wave in callback action
+            townHall._warrioirSpawner = new WarrioirSpawner(fraction.BarracksSpawnData, StaticData.GetStrategyByType[fraction.SpawnStrategyType]?.Invoke());
+            townHall.OnDie += townHall._warrioirSpawner.SpawnCanceller.Cancel; // Cancel spawning if barrack dies
+            onStartSpawn += townHall._warrioirSpawner.StartGeneration; // Start sapwning wave in callback action
 
             return townHall;
         }
 
-        public async void SpawnWave()
+/*        public async void GenerateWarrioirsWaves()
         {
-            while (CancellationSpawnTokenSource.Token.IsCancellationRequested)
+            while (!SpawnCanceller.Token.IsCancellationRequested)
             {
-                var taskOfGettingWave = SpawnStrategy.GetWaveWarriors(CancellationSpawnTokenSource.Token);
+                var taskOfGettingWave = SpawnStrategy.ChoseWarrioirsToSawn(WarrioisToSpawn);
 
-                await taskOfGettingWave;
+              *//*  await taskOfGettingWave;
 
-                var warriors = taskOfGettingWave.Result;
+                var warriors = taskOfGettingWave.Result;*/
 
-                foreach (var warrior in warriors)
-                {
-                    // Set target for each
-                }
+               /* foreach (var warrior in warriors)
+                    Instantiate(warrior);*//*
             }
-        }
+        }*/
     }
 }

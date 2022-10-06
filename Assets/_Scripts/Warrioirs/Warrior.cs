@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public abstract class Warrior : HitableEntity
 {
+    public static event Action<Warrior> OnWarriorTargetDeath;
+
     [SerializeField] protected float _damage;
     [SerializeField] protected float _attackCoolDown;
 
@@ -28,7 +31,7 @@ public abstract class Warrior : HitableEntity
         {
             _currentTarget = value;
 
-            if(_currentTarget is null)
+            if (_currentTarget is null)
             {
                 _isCanArgueOnAreaTarget = true;
                 _currentState = WarriorState.FollowGlobalTarget;
@@ -42,13 +45,18 @@ public abstract class Warrior : HitableEntity
     }
 
     // Baked variables
-    private WaitForSeconds _waitForSecondsAttackCooldown; 
+    private WaitForSeconds _waitForSecondsAttackCooldown;
 
     private bool _isOnCoolDown = false;
     private bool _isCanArgueOnAreaTarget = true;
 
 
-    protected abstract void Attack();
+    protected virtual void Attack()
+    {
+        if (_currentTarget is null)
+            OnWarriorTargetDeath?.Invoke(this);
+    }
+
     protected abstract bool IsOnArguingDistance();
 
 
@@ -78,7 +86,7 @@ public abstract class Warrior : HitableEntity
 
     private void CheckForAttackDistance()
     {
-        var distanceForEnemy =  Vector3.Distance(_currentTarget.transform.position , transform.position);
+        var distanceForEnemy = Vector3.Distance(_currentTarget.transform.position, transform.position);
 
         if (distanceForEnemy <= _attackDistance)
         {
@@ -109,9 +117,10 @@ public abstract class Warrior : HitableEntity
     {
         _arguingTrigger.gameObject.SetActive(true);
 
-        
         CurrentTarget = _arguingTrigger.GetNearliestTarget();
     }
+
+    public void SetNewGlobalTarget(HitableEntity globalTarget) => _globalTarget = globalTarget;
 
 
     protected virtual void Awake()
@@ -120,7 +129,7 @@ public abstract class Warrior : HitableEntity
 
         _arguingTrigger.OnTargetEnter += (HitableEntity target) =>
         {
-            if(_isCanArgueOnAreaTarget)
+            if (_isCanArgueOnAreaTarget)
             {
                 _currentTarget = target; // If warrioir hasn't target before - chose it and start arguing
                 _currentState = WarriorState.Arguing;
@@ -131,13 +140,17 @@ public abstract class Warrior : HitableEntity
         _arguingTrigger.OnTargetExit += (HitableEntity target) =>
         {
             // IF it was warrioir target
-            if(_currentTarget == target)
+            if (_currentTarget == target)
             {
                 _currentTarget = null;
                 _currentState = WarriorState.FollowGlobalTarget;
                 target.OnDie -= GetNewLocalTarget;
             }
         };
+
+        OnWarriorTargetDeath?.Invoke(this);
+
+        _globalTarget.OnDie += () => OnWarriorTargetDeath?.Invoke(this);
     }
 
     protected virtual void Update()
@@ -145,6 +158,10 @@ public abstract class Warrior : HitableEntity
         OnStateUpdate();
     }
 
+    private void OnDestroy()
+    {
+        _globalTarget.OnDie -= () => OnWarriorTargetDeath?.Invoke(this);
+    }
 
 
     protected enum WarriorState
