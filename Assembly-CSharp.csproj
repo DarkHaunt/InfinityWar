@@ -53,31 +53,34 @@
     <UnityVersion>2020.3.24f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Assets\_Scripts\Interfaces\IHitable.cs" />
     <Compile Include="Assets\_Scripts\SpawnStrateies\ChoseRandomSingle.cs" />
     <Compile Include="Assets\_Scripts\Buildings\Building.cs" />
     <Compile Include="Assets\_Scripts\GameManager.cs" />
     <Compile Include="Assets\_Scripts\Warrioirs\Humans\Archer.cs" />
-    <Compile Include="Assets\_Scripts\Warrioirs\Warrior.cs" />
+    <Compile Include="Assets\_Scripts\Warrioirs\Basic Hierarchy\Warrior.cs" />
     <Compile Include="Assets\_TEST\For Cycle\CameraAnchor.cs" />
     <Compile Include="Assets\_Scripts\Buildings\Barrack.cs" />
+    <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\WarrioirsPickStrategy.cs" />
     <Compile Include="Assets\_Scripts\Buildings\TownHall.cs" />
-    <Compile Include="Assets\_Scripts\Warrioirs\Factoriy\WarriorFactory.cs" />
+    <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarriorFactory.cs" />
     <Compile Include="Assets\_TEST\For Cycle\ViewportHandler.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IShoot.cs" />
-    <Compile Include="Assets\_Scripts\HitableEntity.cs" />
+    <Compile Include="Assets\_Scripts\FractionEntity.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IGlobalTargetable.cs" />
     <Compile Include="Assets\_Scripts\SpawnStrateies\ChoseRandomGroup.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IWarrior.cs" />
     <Compile Include="Assets\_Scripts\StaticData.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IWarrioirChoseStrategy.cs" />
-    <Compile Include="Assets\_Scriptables\Fraction.cs" />
+    <Compile Include="Assets\_Scriptables\Fractions\Fraction.cs" />
+    <Compile Include="Assets\_Scripts\Warrioirs\Zombies\MeleeZombie.cs" />
+    <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Single Pick\RandomSinglePickStrategy.cs" />
     <Compile Include="Assets\_Scripts\Warrioirs\State Machine\FollowGlobalTarget.cs" />
-    <Compile Include="Assets\_Scripts\Warrioirs\ArguingTrigger.cs" />
+    <Compile Include="Assets\_Scripts\Warrioirs\Basic Hierarchy\ArguingTrigger.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IWarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Projectile.cs" />
+    <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Group Pick\RandomGroupPick.cs" />
     <Compile Include="Assets\_Scripts\Warrioirs\Humans\Swordman.cs" />
-    <Compile Include="Assets\_Scripts\Warrioirs\WarrioirSpawner.cs" />
+    <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Warrioirs\State Machine\BaseState.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IFractionTagable.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />

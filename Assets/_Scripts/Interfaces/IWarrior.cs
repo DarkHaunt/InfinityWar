@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IWarrior
 {
-    void Attack(HitableEntity target);
+    void Attack(FractionEntity target);
     bool IsOnAttackRadius();
 }

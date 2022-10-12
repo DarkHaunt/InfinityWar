@@ -13,22 +13,42 @@ namespace InfinityGame.Fractions.Humans
         [Range(0f, 3f)]
         [SerializeField] private float _atackRadius;
 
-        private float _damageForSurroundedWarrioirs; // Damage for every non-main target warrioirs in attack radidus
+        private float _damageForSurroundedNonMainEntities;
+
 
         protected override void Attack()
         {
-            _currentTarget.GetDamage(_damage);
+            var collidersInAttackRadius = Physics2D.OverlapCircleAll(transform.position, _atackRadius);
 
-            var colliders = Physics2D.OverlapCircleAll(transform.position, _atackRadius, LayerMask.GetMask(StaticData.WarrioirsLayerName));
-
-            foreach (var collider in colliders)
-                if (collider.TryGetComponent(out Warrior enemy))
-                    enemy.GetDamage(_damageForSurroundedWarrioirs);
+            var enemies = GetEnemiesFrom(collidersInAttackRadius);
+            DamageAllSurroundEnemies(enemies);
         }
 
-        protected override bool IsOnArguingDistance()
+        private bool IsColliderHostileEntity(Collider2D collider2D, out FractionEntity hostileEntity)
         {
-            throw new System.NotImplementedException();
+            var isHitableEntity = collider2D.TryGetComponent(out FractionEntity entity);
+
+            hostileEntity = entity;
+            return isHitableEntity && !entity.IsSameFraction(FractionTag);
+        }
+
+        private bool IsMainTarget(FractionEntity entity) => _localTarget == entity;
+
+        private void DamageAllSurroundEnemies(IEnumerable<FractionEntity> enemies)
+        {
+            // Non-main targets around get another damage value
+            foreach (var enemy in enemies)
+                if (IsMainTarget(enemy))
+                    enemy.GetDamage(_damage);
+                else
+                    enemy.GetDamage(_damageForSurroundedNonMainEntities);
+        }
+
+        private IEnumerable<FractionEntity> GetEnemiesFrom(Collider2D[] colliders)
+        {
+            foreach (var collider in colliders)
+                if (IsColliderHostileEntity(collider, out FractionEntity hostileEntity))
+                    yield return hostileEntity;
         }
 
 
@@ -36,12 +56,7 @@ namespace InfinityGame.Fractions.Humans
         {
             base.Awake();
 
-            _damageForSurroundedWarrioirs = _damage * _nonMainTargetDamagePercent;
+            _damageForSurroundedNonMainEntities = _damage * _nonMainTargetDamagePercent;
         }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-
-        }
-    } 
+    }
 }

@@ -8,4 +8,7 @@ using UnityEngine;
 public interface IFractionTagable
 {
     string FractionTag { get; }
+
+
+    bool IsSameFraction(string fractionTag);
 }

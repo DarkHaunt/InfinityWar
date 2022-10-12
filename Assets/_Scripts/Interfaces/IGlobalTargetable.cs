@@ -7,5 +7,5 @@ using UnityEngine;
 /// </summary>
 public interface IGlobalTargetable
 {
-    HitableEntity GlobalTarget { get; }
+    FractionEntity GlobalTarget { get; }
 }

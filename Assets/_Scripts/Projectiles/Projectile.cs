@@ -20,7 +20,7 @@ public class Projectile : MonoBehaviour
     {
         if (!collision.gameObject.layer.Equals(_ignoreLayer))
         {
-            if (collision.TryGetComponent(out HitableEntity hitableEntity))
+            if (collision.TryGetComponent(out FractionEntity hitableEntity))
                 hitableEntity.GetDamage(_damage);
 
             Destroy(gameObject);

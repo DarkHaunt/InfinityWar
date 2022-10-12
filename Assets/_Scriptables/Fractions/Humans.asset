@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa2b06e8bacd7124d9cade123f01de03, type: 3}
   m_Name: Humans
   m_EditorClassIdentifier: 
-  _name: Humans
+  _tag: Humans
   _townHallSprite: {fileID: 21300000, guid: 960b705970ebc1e449634dc7d11d9131, type: 3}
   _townHallHealth: 2000
   _barrackSprite: {fileID: 21300000, guid: e6ed75d2ec92bc14e9afedf4fc7306ec, type: 3}
   _barrackHealth: 1000
-  _spawnData:
-    NextSpawnTime: 2
-    SpawnTimeDelta: 1
-    SpawnType: 1
-  _tag: Humans
-  _fractionWarriours: []
+  _warrioirPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
+  _barracksSpawSettings:
+    SpawnCoolDownSeconds: 2
+    TimeDeltaSeconds: 1
+    WarriosToSpawn:
+    - {fileID: 1965941402268142816, guid: b7ffb1e5c6ce04c428227526b6add752, type: 3}

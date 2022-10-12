@@ -6,7 +6,9 @@ namespace InfinityGame.Fractions.Humans
 {
     public class Archer : Warrior, IShoot
     {
+        [SerializeField] protected float _attackRadius;
         [SerializeField] private Projectile _bullerPrefab;
+
 
 
         public void Shoot(Vector3 targetPosition)
@@ -19,17 +21,10 @@ namespace InfinityGame.Fractions.Humans
 
         protected override void Attack()
         {
-            base.Attack();
-
-            var shootDirection = (_currentTarget.transform.position - transform.position).normalized;
+            var shootDirection = (_localTarget.transform.position - transform.position).normalized;
 
             Shoot(shootDirection);
         }        
 
-
-        protected override bool IsOnArguingDistance()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

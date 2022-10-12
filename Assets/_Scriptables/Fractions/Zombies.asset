@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa2b06e8bacd7124d9cade123f01de03, type: 3}
   m_Name: Zombies
   m_EditorClassIdentifier: 
-  _name: Zombies
+  _tag: Zombies
   _townHallSprite: {fileID: 21300000, guid: a4bf3cc3f7b8996459d54e1ead4819f9, type: 3}
   _townHallHealth: 1750
   _barrackSprite: {fileID: 21300000, guid: 61cb1663120740543988d62e3ac402ca, type: 3}
   _barrackHealth: 900
-  _spawnData:
-    NextSpawnTime: 5
-    SpawnTimeDelta: 1
-    SpawnType: 0
-  _tag: Zombies
-  _fractionWarriours: []
+  _warrioirPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
+  _barracksSpawSettings:
+    SpawnCoolDownSeconds: 3
+    TimeDeltaSeconds: 1
+    WarriosToSpawn:
+    - {fileID: 6678378742720138629, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}
