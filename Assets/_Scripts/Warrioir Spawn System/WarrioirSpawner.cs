@@ -4,26 +4,19 @@ using System.Threading.Tasks;
 using System;
 using System.Threading;
 using UnityEngine;
-using InfinityGame.WarriorFactory;
+using InfinityGame.Factories.WarriorFactory;
 
-public class WarrioirSpawner
+public class WarrioirSpawner : MonoBehaviour
 {
-    public event Action OnGeneration;
-
     private float _generalSpawnCoolDownSeconds;
     private float _spawnTimeDeltaSeconds;
 
     private List<Warrior> _warriorsToSpawn;
     private CancellationTokenSource _spawnCanceller;
     private WarrioirsPickStrategy _warriorsPickStrategy;
-    private Vector2 _spawnerPosition;
 
 
-    public CancellationTokenSource SpawnCanceller => _spawnCanceller;
-    public Vector2 SpawnerPosition { set => _spawnerPosition = value; }
-
-
-    public WarrioirSpawner(SpawnData spawnData, WarrioirsPickStrategy warrioirChoseStrategy)
+    public void Initialize(SpawnData spawnData, WarrioirsPickStrategy warrioirChoseStrategy)
     {
         _generalSpawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
         _spawnTimeDeltaSeconds = spawnData.TimeDeltaSeconds;
@@ -32,48 +25,55 @@ public class WarrioirSpawner
         _warriorsPickStrategy = warrioirChoseStrategy;
         _spawnCanceller = new CancellationTokenSource();
 
-        GameManager.OnGameEnd += SpawnCanceller.Cancel;
+        StartGeneration();
     }
 
-
-    public async void StartGeneration()
+    private async void StartGeneration()
     {
         while (true)
         {
-            var taskOfGettingWave = Task.Run(() => _warriorsPickStrategy.ChoseWarrioirsToSawn(_warriorsToSpawn), SpawnCanceller.Token);
+            var taskOfGettingWave = Task.Run(() => _warriorsPickStrategy.ChoseWarrioirsToSawn(_warriorsToSpawn), _spawnCanceller.Token);
 
-            var coolDownTask = Task.Delay(GetNewSpawnDelayMiliseconds(), SpawnCanceller.Token);
+            var coolDownTask = Task.Delay(GetNewSpawnDelayMiliseconds(), _spawnCanceller.Token);
 
             try
             {
                 await Task.WhenAll(taskOfGettingWave, coolDownTask);
             }
-            catch (OperationCanceledException e)
+            catch(Exception e)
             {
-                return;
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e.Message);
+                if (_spawnCanceller.IsCancellationRequested)
+                    return;
+                else
+                    Debug.Log(e.Message);
             }
 
-
-            var warriorPrefabs = taskOfGettingWave.Result;
-
-            foreach (var warrioirPrefab in warriorPrefabs)
+            await Task.Run(() =>
             {
-                var warrioir = WarriorFactory.InstantiateWarriorOnPosition(warrioirPrefab);
-                warrioir.transform.position = _spawnerPosition;
-            }
+                var warriorPrefabs = taskOfGettingWave.Result;
+
+                foreach (var warrioirPrefab in warriorPrefabs)
+                {
+                    var warrioir = WarriorFactory.InstantiateWarrior(warrioirPrefab);
+                    warrioir.transform.position = transform.position;
+                }
+
+            }, _spawnCanceller.Token);
         }
     }
 
     private int GetNewSpawnDelayMiliseconds()
     {
-        var randomPercentOfDeltaMiliseconds = StaticData.Randomizer.NextDouble();
-        var rawTime = (_generalSpawnCoolDownSeconds + (StaticData.GetRandomSign() * _spawnTimeDeltaSeconds * randomPercentOfDeltaMiliseconds)) * 1000;
+        var randomPercentOfDeltaMiliseconds = StaticNumberOperator.Randomizer.NextDouble();
+        var rawTime = (_generalSpawnCoolDownSeconds + (StaticNumberOperator.GetRandomSign() * _spawnTimeDeltaSeconds * randomPercentOfDeltaMiliseconds)) * 1000;
 
         return (int)rawTime;
+    }
+
+
+    private void OnDestroy()
+    {
+        _spawnCanceller.Cancel();
     }
 
 

@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: Zombies
   m_EditorClassIdentifier: 
   _tag: Zombies
-  _townHallSprite: {fileID: 21300000, guid: a4bf3cc3f7b8996459d54e1ead4819f9, type: 3}
-  _townHallHealth: 1750
-  _barrackSprite: {fileID: 21300000, guid: 61cb1663120740543988d62e3ac402ca, type: 3}
-  _barrackHealth: 900
+  _townHallBuildingData:
+    _buildingSprite: {fileID: 21300000, guid: a4bf3cc3f7b8996459d54e1ead4819f9, type: 3}
+    _buildingHealthPoints: 1700
+  _barrackBuildingData:
+    _buildingSprite: {fileID: 21300000, guid: 61cb1663120740543988d62e3ac402ca, type: 3}
+    _buildingHealthPoints: 850
   _warrioirPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
-  _barracksSpawSettings:
-    SpawnCoolDownSeconds: 3
-    TimeDeltaSeconds: 1
+  _warrioirSpawnSettings:
+    SpawnCoolDownSeconds: 2
+    TimeDeltaSeconds: 0
     WarriosToSpawn:
     - {fileID: 6678378742720138629, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}
