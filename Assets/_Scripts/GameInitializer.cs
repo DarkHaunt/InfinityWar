@@ -17,6 +17,9 @@ internal class GameInitializer : MonoBehaviour
 
     [SerializeField] private Building _buildingPrefab;
 
+/*    [SerializeField] private Projectile _projectilePrefab;
+    [SerializeField] private Transform _projectileTarget;*/
+
 
     /// <summary>
     /// Asseblies all fraction settings for game
@@ -101,6 +104,11 @@ internal class GameInitializer : MonoBehaviour
         #endregion
 
         AssembleArena();
+
+        // TEST
+
+ /*       var testProjectile = Instantiate(_projectilePrefab);
+        testProjectile.Throw(_projectileTarget);*/
     }
 
     private void OnApplicationQuit()

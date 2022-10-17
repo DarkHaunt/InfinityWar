@@ -58,22 +58,29 @@
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Building.cs" />
     <Compile Include="Assets\_Scripts\Static Data\GameCasher.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Humans\Archer.cs" />
+    <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Lineal\Lineal Projectile.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Humans\Shooter.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Warrior.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\WarrioirsPickStrategy.cs" />
     <Compile Include="Assets\_Scripts\Factories\WarriorFactory.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IShoot.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\FractionEntity.cs" />
+    <Compile Include="Assets\_Scriptables\Shoot Strategiies\Single Shot\SingleShot.cs" />
     <Compile Include="Assets\_Scripts\GameInitializer.cs" />
     <Compile Include="Assets\_Scripts\Static Data\StaticNumberOperator.cs" />
     <Compile Include="Assets\_Scriptables\Fractions\Fraction.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Zombies\MeleeZombie.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Single Pick\RandomSinglePickStrategy.cs" />
+    <Compile Include="Assets\_Scripts\Interfaces\IRotatable.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\ArguingTrigger.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Lineal\Infection Spit\InfectedSpit.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Projectile.cs" />
+    <Compile Include="Assets\_Scripts\Factories\BulletFactory.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Group Pick\RandomGroupPick.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Humans\Swordman.cs" />
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Lineal\Arrow\Arrow.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IFractionTagable.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
   </ItemGroup>

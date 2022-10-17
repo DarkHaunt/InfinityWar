@@ -39,6 +39,14 @@ public class WarrioirSpawner : MonoBehaviour
             try
             {
                 await Task.WhenAll(taskOfGettingWave, coolDownTask);
+
+                var warriorPrefabs = taskOfGettingWave.Result;
+
+                foreach (var warrioirPrefab in warriorPrefabs)
+                {
+                    var warrioir = WarriorFactory.InstantiateWarrior(warrioirPrefab);
+                    warrioir.transform.position = transform.position;
+                }
             }
             catch(Exception e)
             {
@@ -47,18 +55,6 @@ public class WarrioirSpawner : MonoBehaviour
                 else
                     Debug.Log(e.Message);
             }
-
-            await Task.Run(() =>
-            {
-                var warriorPrefabs = taskOfGettingWave.Result;
-
-                foreach (var warrioirPrefab in warriorPrefabs)
-                {
-                    var warrioir = WarriorFactory.InstantiateWarrior(warrioirPrefab);
-                    warrioir.transform.position = transform.position;
-                }
-
-            }, _spawnCanceller.Token);
         }
     }
 

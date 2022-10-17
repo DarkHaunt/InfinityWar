@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IShoot
 {
-    void Shoot(Vector3 targetPosition);
+    void Shoot();
 }

@@ -135,18 +135,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c015132b3fba844b87d0c455e26497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 20
+  _health: 100
   _fractionTag: Humans
   _damage: 30
-  _attackCoolDown: 1.5
+  _attackCoolDown: 3
   _speedMult: 2
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 1965941402268142818}
   _arguingTrigger: {fileID: 6460703564526533429}
   _globalTarget: {fileID: 0}
   _localTarget: {fileID: 0}
-  _currentState: 2
-  _isCanArgueOnAreaTarget: 1
   _nonMainTargetDamagePercent: 0.75
   _atackRadius: 1.2
 --- !u!1 &4526939469205197240
@@ -208,4 +206,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 3

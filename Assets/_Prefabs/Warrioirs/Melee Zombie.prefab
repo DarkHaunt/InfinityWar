@@ -59,7 +59,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 10
+  m_Radius: 5
 --- !u!1 &6053835020616567280
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,12 +198,10 @@ MonoBehaviour:
   _health: 60
   _fractionTag: Zombies
   _damage: 10
-  _attackCoolDown: 0.9
-  _speedMult: 3
+  _attackCoolDown: 0.8
+  _speedMult: 5
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 9134285203207437134}
   _arguingTrigger: {fileID: 1300813147675546496}
   _globalTarget: {fileID: 0}
   _localTarget: {fileID: 0}
-  _currentState: 2
-  _isCanArgueOnAreaTarget: 1
