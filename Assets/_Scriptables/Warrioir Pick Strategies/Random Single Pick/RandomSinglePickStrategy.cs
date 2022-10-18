@@ -1,17 +1,20 @@
-using System.Collections;
 using System.Collections.Generic;
-using System;
+using InfinityGame.GameEntities;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SpawnStrategy", menuName = "Data/WarrioirChoseStrategies/RandomSinglePick", order = 52)]
-public class RandomSinglePickStrategy : WarrioirsPickStrategy
+
+namespace InfinityGame.Strategies.WarrioirSpawnStrategies
 {
-    private System.Random _randomizer = new System.Random();
-
-    public override IEnumerable<Warrior> ChoseWarrioirsToSawn(IList<Warrior> warrioirs)
+    [CreateAssetMenu(fileName = "SpawnStrategy", menuName = "Data/WarrioirChoseStrategies/RandomSinglePick", order = 52)]
+    public class RandomSinglePickStrategy : WarrioirsPickStrategy
     {
-        var chosenIndex = _randomizer.Next(0, warrioirs.Count);
+        private System.Random _randomizer = new System.Random();
 
-        yield return warrioirs[chosenIndex];
-    }
+        public override IEnumerable<Warrior> ChoseWarrioirsToSawn(IList<Warrior> warrioirs)
+        {
+            var chosenIndex = _randomizer.Next(0, warrioirs.Count);
+
+            yield return warrioirs[chosenIndex];
+        }
+    } 
 }

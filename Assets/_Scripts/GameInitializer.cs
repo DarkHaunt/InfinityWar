@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using InfinityGame.Buildings;
+using InfinityGame.GameEntities;
 using InfinityGame.Arena;
 using InfinityGame.Fractions;
-using InfinityGame.CashedData;
+using InfinityGame.Factories.BuildingFactory;
 using UnityEngine;
 
 internal class GameInitializer : MonoBehaviour
@@ -17,8 +17,7 @@ internal class GameInitializer : MonoBehaviour
 
     [SerializeField] private Building _buildingPrefab;
 
-/*    [SerializeField] private Projectile _projectilePrefab;
-    [SerializeField] private Transform _projectileTarget;*/
+    private BuildingFactory _buildingFactory;
 
 
     /// <summary>
@@ -30,32 +29,22 @@ internal class GameInitializer : MonoBehaviour
     private void AssembleFraction(Fraction fraction, SpawnPlace spawnPlace, ref Action onArenaAssebmlyEnd)
     {
         // TODO: ־עהוכüםûי לועמה
-        var townHall = Building.Instantiate(_buildingPrefab, fraction.Tag, fraction.TownHallBuildingData);
+        var fractionTownHallData = new Fraction.FractionBuildingData(fraction.Tag, $"TownHall {fraction.Tag}", fraction.TownHallBuildingData);
+        var townHall = _buildingFactory.SpawnBuilding(fractionTownHallData, spawnPlace.TownHallSpawnPointPosition);
+
         var townHallSpawner = townHall.gameObject.AddComponent<WarrioirSpawner>();
-        townHall.transform.position = spawnPlace.TownHallSpawnPointPosition;
-        townHall.name = $"TownHall {fraction.Tag}";
-
         onArenaAssebmlyEnd += () => townHallSpawner.Initialize(fraction.WarrioirSpawnSettings, fraction.WarrioirPickStrategy);
-
-        GameCasher.CashBuilding(townHall);
-        townHall.OnDie += () => GameCasher.UncashBuilding(townHall);
 
         // Set all barracks on positions
         foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsTransforms)
         {
-            var barrack = Building.Instantiate(_buildingPrefab, fraction.Tag, fraction.BarrackBuildingData);
-            var barrackSpawner = barrack.gameObject.AddComponent<WarrioirSpawner>();
-            barrack.transform.position = barrackPosition;
-            barrack.name = $"Barrack {fraction.Tag} {barrack.transform.position}";
+            var fractionBarrackData = new Fraction.FractionBuildingData(fraction.Tag, $"Barrack {fraction.Tag} {barrackPosition}", fraction.BarrackBuildingData);
+            var barrack = _buildingFactory.SpawnBuilding(fractionBarrackData, barrackPosition);
 
-            GameCasher.CashBuilding(barrack);
+            var barrackSpawner = barrack.gameObject.AddComponent<WarrioirSpawner>();
             onArenaAssebmlyEnd += () => barrackSpawner.Initialize(fraction.WarrioirSpawnSettings, fraction.WarrioirPickStrategy);
 
-            townHall.OnDie += () =>
-            {
-                GameCasher.UncashBuilding(barrack);
-                Destroy(barrack.gameObject); // If townhall dies - then all barrack get destroyed too
-            };
+            townHall.OnDie += () => barrack.Die();
         }
     }
 
@@ -71,6 +60,8 @@ internal class GameInitializer : MonoBehaviour
 
     private void AssembleArena()
     {
+        _buildingFactory = new BuildingFactory(_buildingPrefab);
+
         Action onAreanaAssemblyEnd = null;
 
         var emptySpawnPlaceIndexes = GetReservedSpawnPlaceIndexes();
@@ -99,16 +90,11 @@ internal class GameInitializer : MonoBehaviour
         if (_instance != null)
             Destroy(gameObject);
 
-        _instance = this; 
+        _instance = this;
 
         #endregion
 
         AssembleArena();
-
-        // TEST
-
- /*       var testProjectile = Instantiate(_projectilePrefab);
-        testProjectile.Throw(_projectileTarget);*/
     }
 
     private void OnApplicationQuit()

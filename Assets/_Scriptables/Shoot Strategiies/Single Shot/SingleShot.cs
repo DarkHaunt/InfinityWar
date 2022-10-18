@@ -1,15 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+using InfinityGame.Factories.ProjectileFactory;
+using InfinityGame.Projectiles;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "ShootStrategy", menuName = "Data/ShootStrategy/SingleShot", order = 52)]
-public class SingleShot : ShootStrategy
+namespace InfinityGame.Strategies.ShootStrategies
 {
-    public override void Shoot(Transform source, Transform target, Projectile projectilePrefab)
+    [CreateAssetMenu(fileName = "ShootStrategy", menuName = "Data/ShootStrategy/SingleShot", order = 52)]
+    public class SingleShot : ShootStrategy
     {
-        var bullet = BulletFactory.Instantiate(projectilePrefab);
-        bullet.transform.position = source.position;
-        bullet.Throw(target);
+        public override void Shoot(Transform source, Transform target, Projectile projectilePrefab)
+        {
+            var bullet = ProjectileFactory.Instantiate(projectilePrefab);
+            bullet.transform.position = source.position;
+            bullet.ThrowToTarget(target);
+        }
     }
 }

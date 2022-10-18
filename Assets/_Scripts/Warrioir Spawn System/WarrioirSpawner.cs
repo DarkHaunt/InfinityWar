@@ -1,10 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using System.Threading;
 using UnityEngine;
 using InfinityGame.Factories.WarriorFactory;
+using InfinityGame.GameEntities;
+using InfinityGame.Strategies.WarrioirSpawnStrategies;
 
 public class WarrioirSpawner : MonoBehaviour
 {
@@ -33,7 +34,6 @@ public class WarrioirSpawner : MonoBehaviour
         while (true)
         {
             var taskOfGettingWave = Task.Run(() => _warriorsPickStrategy.ChoseWarrioirsToSawn(_warriorsToSpawn), _spawnCanceller.Token);
-
             var coolDownTask = Task.Delay(GetNewSpawnDelayMiliseconds(), _spawnCanceller.Token);
 
             try
@@ -48,7 +48,7 @@ public class WarrioirSpawner : MonoBehaviour
                     warrioir.transform.position = transform.position;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (_spawnCanceller.IsCancellationRequested)
                     return;
@@ -76,16 +76,24 @@ public class WarrioirSpawner : MonoBehaviour
     [Serializable]
     public struct SpawnData
     {
-        public float SpawnCoolDownSeconds;
-        public float TimeDeltaSeconds;
+        [SerializeField] private float _spawnCoolDownSeconds;
+        [SerializeField] private float _timeDeltaSeconds;
 
-        public List<Warrior> WarriosToSpawn;
+        [SerializeField] private List<Warrior> _warriosToSpawn;
+
+
+        public float SpawnCoolDownSeconds => _spawnCoolDownSeconds;
+
+        public float TimeDeltaSeconds => _timeDeltaSeconds;
+
+        public List<Warrior> WarriosToSpawn => _warriosToSpawn;
+
 
         public SpawnData(float spawnCoolDownSeconds, float timeDeltaSeconds, List<Warrior> warriorsToSpawn)
         {
-            SpawnCoolDownSeconds = spawnCoolDownSeconds;
-            TimeDeltaSeconds = timeDeltaSeconds;
-            WarriosToSpawn = warriorsToSpawn;
+            _spawnCoolDownSeconds = spawnCoolDownSeconds;
+            _timeDeltaSeconds = timeDeltaSeconds;
+            _warriosToSpawn = warriorsToSpawn;
         }
     }
 }

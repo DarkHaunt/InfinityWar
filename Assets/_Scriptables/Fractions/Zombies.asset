@@ -21,7 +21,8 @@ MonoBehaviour:
     _buildingHealthPoints: 850
   _warrioirPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
   _warrioirSpawnSettings:
-    SpawnCoolDownSeconds: 2
-    TimeDeltaSeconds: 0
-    WarriosToSpawn:
+    _spawnCoolDownSeconds: 2
+    _timeDeltaSeconds: 1
+    _warriosToSpawn:
     - {fileID: 6678378742720138629, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}
+    - {fileID: 7703586299865400854, guid: e1d75e256b111824eb74b66fb7c84370, type: 3}

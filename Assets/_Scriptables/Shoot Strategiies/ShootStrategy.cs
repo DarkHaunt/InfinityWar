@@ -1,8 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using InfinityGame.Projectiles;
 using UnityEngine;
 
-public abstract class ShootStrategy : ScriptableObject
+
+namespace InfinityGame.Strategies.ShootStrategies
 {
-    public abstract void Shoot(Transform source, Transform target, Projectile projectilePrefab);
+    public abstract class ShootStrategy : ScriptableObject
+    {
+        public abstract void Shoot(Transform source, Transform target, Projectile projectilePrefab);
+    } 
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine ;
-using InfinityGame.Buildings;
+using UnityEngine;
+using InfinityGame.GameEntities;
 
 namespace InfinityGame.CashedData
 {
@@ -12,16 +12,18 @@ namespace InfinityGame.CashedData
 
         public static IEnumerable<Building> GetCashedBuildings() => _cashedBuildings;
 
-        public static void CashBuilding(Building townHall)
+        public static void CashBuilding(Building building)
         {
-            if (!_cashedBuildings.Add(townHall))
-                throw new UnityException($"Townhall {townHall.name} {townHall.transform.position} is already cashed, but you're trying to cash it again.");
+            if (!_cashedBuildings.Add(building))
+                throw new UnityException($"Townhall {building.name} {building.transform.position} is already cashed, but you're trying to cash it again.");
+
+            building.OnDie += () => UncashBuilding(building);
         }
 
-        public static void UncashBuilding(Building townHall)
+        private static void UncashBuilding(Building building)
         {
-            if (!_cashedBuildings.Remove(townHall))
-                throw new UnityException($"Townhall {townHall.name} {townHall.transform.position} is not cashed, but you're trying to uncash it.");
+            if (!_cashedBuildings.Remove(building))
+                throw new UnityException($"Townhall {building.name} {building.transform.position} is not cashed, but you're trying to uncash it.");
         }
     }
 }

@@ -1,48 +1,63 @@
 using System.Collections;
+using System;
+using InfinityGame.GameEntities;
 using UnityEngine;
 
-
-[RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Rigidbody2D))]
-public abstract class Projectile : MonoBehaviour
+namespace InfinityGame.Projectiles
 {
-    [SerializeField] protected float _damage = 10f;
-    [SerializeField] protected float _speedMult = 2f;
-    [SerializeField] protected Rigidbody2D _rigidbody2D;
-
-    [Range(1f, 10f)]
-    [SerializeField] private float _lifeTime = 5f;
-
-    [SerializeField] private string _shooterFractionTag;
-
-
-    public abstract void Throw(Transform targetTransform);
-    protected abstract void OnTargetTouch(FractionEntity target);
-
-    protected bool ColliderIsEnemyEntity(Collider2D collider2D, out FractionEntity enemy)
+    [RequireComponent(typeof(SpriteRenderer))]
+    [RequireComponent(typeof(Rigidbody2D))]
+    public abstract class Projectile : MonoBehaviour
     {
-        var isHitableEntity = collider2D.TryGetComponent(out FractionEntity entity);
+        protected event Action OnAffectEnd;
 
-        enemy = entity;
-        return isHitableEntity && !entity.IsSameFraction(_shooterFractionTag);
-    }
+        [SerializeField] protected float _damage = 10f;
+        [SerializeField] protected float _speedMult = 2f;
 
-    private IEnumerator LifeTimeCoroutine()
-    {
-        yield return new WaitForSeconds(_lifeTime);
+        [SerializeField] protected Rigidbody2D _rigidbody2D;
 
-        Destroy(gameObject);
-    }
+        [Range(1f, 10f)]
+        [SerializeField] private float _lifeTime = 5f;
+
+        [SerializeField] private string _shooterFractionTag;
 
 
-    private void Awake()
-    {
-        StartCoroutine(LifeTimeCoroutine());
-    }
+        public abstract void ThrowToTarget(Transform targetTransform);
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (ColliderIsEnemyEntity(collision, out FractionEntity enemy))
-            OnTargetTouch(enemy);
-    }
+        protected abstract void OnCollitionWith(FractionEntity target);
+
+        protected bool ColliderIsEnemyEntity(Collider2D collider2D, out FractionEntity enemy)
+        {
+            var isHitableEntity = collider2D.TryGetComponent(out FractionEntity entity);
+
+            enemy = entity;
+            return isHitableEntity && !entity.IsSameFraction(_shooterFractionTag);
+        }
+
+        private void InteractWithCollitionEntity(FractionEntity entity)
+        {
+            OnCollitionWith(entity);
+
+            OnAffectEnd?.Invoke();
+        }
+
+        private IEnumerator LifeTimeCoroutine()
+        {
+            yield return new WaitForSeconds(_lifeTime);
+
+            Destroy(gameObject);
+        }
+
+
+        protected virtual void Awake()
+        {
+            StartCoroutine(LifeTimeCoroutine());
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (ColliderIsEnemyEntity(collision, out FractionEntity enemy))
+                InteractWithCollitionEntity(enemy);
+        }
+    } 
 }

@@ -1,28 +1,35 @@
 using UnityEngine;
+using InfinityGame.GameEntities;
 
-public class Arrow : LinealProjectile, IRotatable
+namespace InfinityGame.Projectiles
 {
-    protected override void OnTargetTouch(FractionEntity target)
+    public class Arrow : LinealProjectile, IRotatable
     {
-        target.GetDamage(_damage);
+        protected override void OnCollitionWith(FractionEntity target) => target.GetDamage(_damage);
 
-        Destroy(gameObject);
-    }
+        public override void ThrowToTarget(Transform targetTransform)
+        {
+            RoteteToTarget(targetTransform);
 
-    public override void Throw(Transform targetTransform)
-    {
-        RoteteToTarget(targetTransform);
+            base.ThrowToTarget(targetTransform);
+        }
 
-        base.Throw(targetTransform);
-    }
+        public void RoteteToTarget(Transform target)
+        {
+            var xDistance = target.position.x - transform.position.x;
+            var yDistance = target.position.y - transform.position.y;
 
-    public void RoteteToTarget(Transform target)
-    {
-        var xDistance = target.position.x - transform.position.x;
-        var yDistance = target.position.y - transform.position.y;
+            _rigidbody2D.rotation = Mathf.Atan2(yDistance, xDistance) * Mathf.Rad2Deg - 90f;
+        }
 
-        _rigidbody2D.rotation = Mathf.Atan2(yDistance, xDistance) * Mathf.Rad2Deg - 90f;
-    }
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            OnAffectEnd += () => Destroy(gameObject);
+        }
+    } 
 }
 
 

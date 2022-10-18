@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using InfinityGame.GameEntities;
 using UnityEngine;
 
 
-namespace InfinityGame.Fractions.Humans
+namespace InfinityGame.GameEntities.Humans
 {
-    public class Swordman : Warrior
+    public class Swordman : MeleeWarrioir
     {
         [Range(0f, 1f)]
         [SerializeField] private float _nonMainTargetDamagePercent;
@@ -39,7 +40,7 @@ namespace InfinityGame.Fractions.Humans
             // Non-main targets around get another damage value
             foreach (var enemy in enemies)
                 if (IsMainTarget(enemy))
-                    enemy.GetDamage(_damage);
+                    enemy.GetDamage(_meleeDamage);
                 else
                     enemy.GetDamage(_damageForSurroundedNonMainEntities);
         }
@@ -56,7 +57,7 @@ namespace InfinityGame.Fractions.Humans
         {
             base.Awake();
 
-            _damageForSurroundedNonMainEntities = _damage * _nonMainTargetDamagePercent;
+            _damageForSurroundedNonMainEntities = _meleeDamage * _nonMainTargetDamagePercent;
         }
     }
 }

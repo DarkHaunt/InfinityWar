@@ -1,7 +1,10 @@
 using UnityEngine;
+using InfinityGame.Strategies.WarrioirSpawnStrategies;
 
 namespace InfinityGame.Fractions
 {
+    using WarrioirSpawnSettings = WarrioirSpawner.SpawnData;
+
     [CreateAssetMenu(fileName = "Fraction", menuName = "Data/New Fraction", order = 52)]
     public class Fraction : ScriptableObject
     {
@@ -15,12 +18,12 @@ namespace InfinityGame.Fractions
         [SerializeField] private WarrioirsPickStrategy _warrioirPickStrategy;
 
         [Space(10f)]
-        [SerializeField] private WarrioirSpawner.SpawnData _warrioirSpawnSettings;
+        [SerializeField] private WarrioirSpawnSettings _warrioirSpawnSettings;
 
 
         public string Tag => _tag;
         public WarrioirsPickStrategy WarrioirPickStrategy => _warrioirPickStrategy;
-        public WarrioirSpawner.SpawnData WarrioirSpawnSettings => _warrioirSpawnSettings;
+        public WarrioirSpawnSettings WarrioirSpawnSettings => _warrioirSpawnSettings;
         public BuildingData BarrackBuildingData => _barrackBuildingData;
         public BuildingData TownHallBuildingData => _townHallBuildingData;
 
@@ -33,6 +36,22 @@ namespace InfinityGame.Fractions
 
             public Sprite BuildingSprite => _buildingSprite;
             public float BuildingHealthPoints => _buildingHealthPoints;
+        }
+
+        public struct FractionBuildingData
+        {
+            public readonly string FractionTag;
+            public readonly string Name;
+            public readonly BuildingData BuildingData;
+
+
+            public FractionBuildingData(string fractionTag, string name, BuildingData buildingData)
+            {
+                FractionTag = fractionTag;
+                Name = name;
+                BuildingData = buildingData;
+            }
+
         }
     }
 }

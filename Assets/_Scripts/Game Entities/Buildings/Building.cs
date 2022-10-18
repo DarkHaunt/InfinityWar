@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 
-namespace InfinityGame.Buildings
+namespace InfinityGame.GameEntities
 {
     using BuildingData = Fractions.Fraction.BuildingData;
 

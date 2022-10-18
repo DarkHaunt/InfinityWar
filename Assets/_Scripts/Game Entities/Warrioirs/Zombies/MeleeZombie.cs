@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeZombie : Warrior
+namespace InfinityGame.GameEntities.Zombies
 {
-    protected override void Attack()
+    public class MeleeZombie : MeleeWarrioir
     {
-        _localTarget.GetDamage(_damage);
-    }
+        protected override void Attack()
+        {
+            _localTarget.GetDamage(_meleeDamage);
+        }
+    } 
 }

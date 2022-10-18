@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class LinealProjectile : Projectile
+namespace InfinityGame.Projectiles
 {
-    protected override abstract void OnTargetTouch(FractionEntity target);
-
-    public override void Throw(Transform targetTransform)
+    /// <summary>
+    /// Projectile, which has straight line traectory of moving
+    /// </summary>
+    public abstract class LinealProjectile : Projectile
     {
-        _rigidbody2D.velocity = (targetTransform.position - transform.position).normalized * _speedMult;
+        public override void ThrowToTarget(Transform targetTransform)
+        {
+            _rigidbody2D.velocity = (targetTransform.position - transform.position).normalized * _speedMult;
+        }
     }
 }
