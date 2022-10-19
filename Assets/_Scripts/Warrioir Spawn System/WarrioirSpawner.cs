@@ -38,15 +38,18 @@ public class WarrioirSpawner : MonoBehaviour
 
             try
             {
-                await Task.WhenAll(taskOfGettingWave, coolDownTask);
+                await Task.WhenAll(taskOfGettingWave, coolDownTask).
+                    ContinueWith(task =>
+                    {
+                        var warriorPrefabs = taskOfGettingWave.Result;
 
-                var warriorPrefabs = taskOfGettingWave.Result;
+                        foreach (var warrioirPrefab in warriorPrefabs)
+                        {
+                            var warrioir = WarriorFactory.InstantiateWarrior(warrioirPrefab);
+                            warrioir.transform.position = transform.position;
+                        }
 
-                foreach (var warrioirPrefab in warriorPrefabs)
-                {
-                    var warrioir = WarriorFactory.InstantiateWarrior(warrioirPrefab);
-                    warrioir.transform.position = transform.position;
-                }
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
             }
             catch (Exception e)
             {
