@@ -7,6 +7,7 @@ using InfinityGame.Factories.WarriorFactory;
 using InfinityGame.GameEntities;
 using InfinityGame.Strategies.WarrioirSpawnStrategies;
 
+
 public class WarrioirSpawner : MonoBehaviour
 {
     private float _generalSpawnCoolDownSeconds;
@@ -38,18 +39,7 @@ public class WarrioirSpawner : MonoBehaviour
 
             try
             {
-                await Task.WhenAll(taskOfGettingWave, coolDownTask).
-                    ContinueWith(task =>
-                    {
-                        var warriorPrefabs = taskOfGettingWave.Result;
-
-                        foreach (var warrioirPrefab in warriorPrefabs)
-                        {
-                            var warrioir = WarriorFactory.InstantiateWarrior(warrioirPrefab);
-                            warrioir.transform.position = transform.position;
-                        }
-
-                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                await Task.WhenAll(taskOfGettingWave, coolDownTask);
             }
             catch (Exception e)
             {
@@ -57,6 +47,14 @@ public class WarrioirSpawner : MonoBehaviour
                     return;
                 else
                     Debug.Log(e.Message);
+            }
+
+            var warriorPrefabs = taskOfGettingWave.Result;
+
+            foreach (var warrioirPrefab in warriorPrefabs)
+            {
+                var warrioir = WarriorFactory.InstantiateWarrior(warrioirPrefab);
+                warrioir.transform.position = transform.position;
             }
         }
     }

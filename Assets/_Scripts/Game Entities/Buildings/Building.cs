@@ -12,7 +12,7 @@ namespace InfinityGame.GameEntities
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public class Building : FractionEntity // TODO: Пересмотреть архитектуру
+    public class Building : FractionEntity
     {
         public static Building Instantiate(Building prefab, string fractionTag, BuildingData buildingData)
         {

@@ -10,9 +10,9 @@ namespace InfinityGame.Strategies.ShootStrategies
     {
         public override void Shoot(Transform source, Transform target, Projectile projectilePrefab)
         {
-            var bullet = ProjectileFactory.Instantiate(projectilePrefab);
-            bullet.transform.position = source.position;
-            bullet.ThrowToTarget(target);
+            var projectile = ProjectileFactory.Instantiate(projectilePrefab);
+            projectile.transform.position = source.position;
+            projectile.HeadTowardsTarget(target);
         }
     }
 }

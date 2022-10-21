@@ -9,7 +9,7 @@ namespace InfinityGame.GameEntities
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(CircleCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public abstract class Warrior : FractionEntity
+    public abstract class Warrior : FractionEntity, IPoolable
     {
         private const float MinimalDistanceToAttack = 0.5f;
 
@@ -28,34 +28,27 @@ namespace InfinityGame.GameEntities
 
         private WarriorState _currentState = WarriorState.FollowGlobalTarget;
 
-        // Baked variables
-        private WaitForSeconds _waitForSecondsAttackCooldown;
-
         private bool _isOnCoolDown = false;
         private bool _isOnArgue = true;
 
-
-        private FractionEntity LocalTarget
-        {
-            set
-            {
-                _localTarget = value;
-
-                if (_localTarget is null)
-                {
-                    _isOnArgue = false;
-                    _currentState = WarriorState.FollowGlobalTarget;
-                    return;
-                }
-
-                _localTarget.OnDie += TryToGetNewLocalTarget;
-                _isOnArgue = true;
-                _currentState = WarriorState.Arguing;
-            }
-        }
+        // Baked variables
+        private WaitForSeconds _waitForSecondsAttackCooldown;
+        private float _maxHealthPoints;
 
 
         protected abstract void Attack();
+
+        public void PullInPreparations()
+        {
+            _globalTarget.OnDie -= GetNewGlobalTarget;
+            gameObject.SetActive(false);
+        }
+
+        public void PullOutPreparation()
+        {
+            _health = _maxHealthPoints;
+            gameObject.SetActive(true);
+        }
 
         private void OnStateUpdate()
         {
@@ -98,6 +91,22 @@ namespace InfinityGame.GameEntities
             _isOnCoolDown = false;
         }
 
+        private void SetLocalTarget(FractionEntity newLocalTarget)
+        {
+            _localTarget = newLocalTarget;
+
+            if (_localTarget is null)
+            {
+                _isOnArgue = false;
+                _currentState = WarriorState.FollowGlobalTarget;
+                return;
+            }
+
+            _localTarget.OnDie += TryToGetNewLocalTarget;
+            _isOnArgue = true;
+            _currentState = WarriorState.Arguing;
+        }
+
         private void FollowLocalTarget()
         {
             var walkDirection = (_localTarget.transform.position - transform.position).normalized;
@@ -125,7 +134,7 @@ namespace InfinityGame.GameEntities
             // No need to allocate momory for variables below, if there is no any enemies
             if (!enumenatorOfEnemies.MoveNext())
             {
-                LocalTarget = null;
+                SetLocalTarget(null);
                 return;
             }
 
@@ -143,7 +152,7 @@ namespace InfinityGame.GameEntities
                 }
             }
 
-            LocalTarget = newLocaltarget;
+            SetLocalTarget(newLocaltarget);
         }
 
         private IEnumerable<FractionEntity> GetEnemiesAround()
@@ -176,6 +185,7 @@ namespace InfinityGame.GameEntities
         }
 
 
+
         protected virtual void Awake()
         {
             _waitForSecondsAttackCooldown = new WaitForSeconds(_attackCoolDown);
@@ -183,7 +193,7 @@ namespace InfinityGame.GameEntities
             _arguingTrigger.OnEntityEnter += (FractionEntity target) =>
             {
                 if (!_isOnArgue && !target.IsSameFraction(FractionTag))
-                    LocalTarget = target;
+                    SetLocalTarget(target);
             };
 
             _arguingTrigger.OnEntityExit += (FractionEntity target) =>
@@ -191,6 +201,8 @@ namespace InfinityGame.GameEntities
                 if (_localTarget == target)
                     TryToGetNewLocalTarget();
             };
+
+            _maxHealthPoints = _health;
         }
 
         private void Start()
@@ -200,11 +212,6 @@ namespace InfinityGame.GameEntities
         }
 
         protected virtual void Update() => OnStateUpdate();
-
-        private void OnDestroy()
-        {
-            _globalTarget.OnDie -= GetNewGlobalTarget;
-        }
 
 
         protected enum WarriorState

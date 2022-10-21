@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d932ae1207a66440a733fa3eb273436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 60
+  _health: 40
   _fractionTag: Zombies
   _attackCoolDown: 0.8
   _speedMult: 5
@@ -204,4 +204,4 @@ MonoBehaviour:
   _arguingTrigger: {fileID: 1300813147675546496}
   _globalTarget: {fileID: 0}
   _localTarget: {fileID: 0}
-  _damage: 50
+  _meleeDamage: 15

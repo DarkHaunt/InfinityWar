@@ -29,8 +29,7 @@ namespace InfinityGame.GameEntities
 
             if (_health <= 0)
             {
-                //OnDie?.Invoke();
-                Destroy(gameObject);
+                OnDie?.Invoke();
                 return;
             }
 

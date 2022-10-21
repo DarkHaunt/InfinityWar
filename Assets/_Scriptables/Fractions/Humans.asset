@@ -24,5 +24,5 @@ MonoBehaviour:
     _spawnCoolDownSeconds: 3
     _timeDeltaSeconds: 0.8
     _warriosToSpawn:
-    - {fileID: 1965941402268142816, guid: b7ffb1e5c6ce04c428227526b6add752, type: 3}
     - {fileID: 3829235489145816803, guid: 7a72723681bca1440bcf1b10c4c65062, type: 3}
+    - {fileID: 1965941402268142816, guid: b7ffb1e5c6ce04c428227526b6add752, type: 3}

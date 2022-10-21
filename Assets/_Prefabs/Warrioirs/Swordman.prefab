@@ -137,7 +137,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 100
   _fractionTag: Humans
-  _damage: 30
   _attackCoolDown: 3
   _speedMult: 2
   _attackDistance: 0.5
@@ -145,6 +144,7 @@ MonoBehaviour:
   _arguingTrigger: {fileID: 6460703564526533429}
   _globalTarget: {fileID: 0}
   _localTarget: {fileID: 0}
+  _meleeDamage: 30
   _nonMainTargetDamagePercent: 0.75
   _atackRadius: 1.2
 --- !u!1 &4526939469205197240

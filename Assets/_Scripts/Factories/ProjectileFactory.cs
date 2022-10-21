@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using InfinityGame.Projectiles;
+using InfinityGame.ObjectPooling;
 using UnityEngine;
 
 
@@ -8,6 +7,18 @@ namespace InfinityGame.Factories.ProjectileFactory
 {
     public static class ProjectileFactory
     {
-        public static ProjectileType Instantiate<ProjectileType>(ProjectileType prefab) where ProjectileType : Projectile => MonoBehaviour.Instantiate(prefab);
+        private static ObjectPooler<Projectile> _projectilPool = new ObjectPooler<Projectile>();
+
+        public static Projectile Instantiate(Projectile prefab)
+        {
+            var literalTypeOfProjectile = prefab.GetType();
+
+            if (!_projectilPool.TryGetFromPool(literalTypeOfProjectile, out Projectile pooledProjectile))
+                pooledProjectile = MonoBehaviour.Instantiate(prefab);
+
+            pooledProjectile.OnExpluatationEnd += () => _projectilPool.AddToPool(literalTypeOfProjectile, pooledProjectile);
+
+            return pooledProjectile;
+        }
     }
 }

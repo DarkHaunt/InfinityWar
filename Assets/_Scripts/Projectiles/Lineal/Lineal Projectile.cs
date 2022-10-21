@@ -7,11 +7,16 @@ namespace InfinityGame.Projectiles
     /// <summary>
     /// Projectile, which has straight line traectory of moving
     /// </summary>
-    public abstract class LinealProjectile : Projectile
+    public abstract class RotatableProjectile : Projectile
     {
-        public override void ThrowToTarget(Transform targetTransform)
+        protected IObjectRotateStrategy _rotateStrategy;
+
+
+        protected override void Awake()
         {
-            _rigidbody2D.velocity = (targetTransform.position - transform.position).normalized * _speedMult;
+            base.Awake();
+
+            OnHeadingTowardsTarget += (Transform target) => _rotateStrategy.RoteteObjectToTarget(_rigidbody2D, target);
         }
     }
 }

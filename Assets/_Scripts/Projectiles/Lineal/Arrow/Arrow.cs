@@ -3,31 +3,21 @@ using InfinityGame.GameEntities;
 
 namespace InfinityGame.Projectiles
 {
-    public class Arrow : LinealProjectile, IRotatable
+    public class Arrow : RotatableProjectile
     {
-        protected override void OnCollitionWith(FractionEntity target) => target.GetDamage(_damage);
-
-        public override void ThrowToTarget(Transform targetTransform)
+        protected override void OnCollitionWith(FractionEntity target)
         {
-            RoteteToTarget(targetTransform);
+            target.GetDamage(_damage);
 
-            base.ThrowToTarget(targetTransform);
+            EndExpluatation();
         }
-
-        public void RoteteToTarget(Transform target)
-        {
-            var xDistance = target.position.x - transform.position.x;
-            var yDistance = target.position.y - transform.position.y;
-
-            _rigidbody2D.rotation = Mathf.Atan2(yDistance, xDistance) * Mathf.Rad2Deg - 90f;
-        }
-
 
         protected override void Awake()
         {
-            base.Awake();
+            _disptacher = new LinealDispatcher(_speedMult);
+            _rotateStrategy = new RotateToTargetOnce();
 
-            OnAffectEnd += () => Destroy(gameObject);
+            base.Awake();
         }
     } 
 }
