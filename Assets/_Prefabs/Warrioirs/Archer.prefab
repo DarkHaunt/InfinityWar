@@ -55,7 +55,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &2601021033520452848
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -137,7 +137,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 30
   _fractionTag: Humans
-  _damage: 15
   _attackCoolDown: 2
   _speedMult: 2
   _attackDistance: 8
@@ -145,6 +144,7 @@ MonoBehaviour:
   _arguingTrigger: {fileID: 7715318570710870164}
   _globalTarget: {fileID: 0}
   _localTarget: {fileID: 0}
+  _poolTag: Archer
   _projectilePrefab: {fileID: 4623219380320850042, guid: 0ccc8594d17ffac479d6509d5f35c368, type: 3}
   _shootStrategy: {fileID: 11400000, guid: 4ef7cdfdedbe9b140a4e1dadac17a6e4, type: 2}
 --- !u!1 &7149089028672182229

@@ -24,9 +24,11 @@ namespace InfinityGame.GameEntities
         [SerializeField] private ArguingTrigger _arguingTrigger;
 
         [SerializeField] private FractionEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
-        [SerializeField] protected FractionEntity _localTarget = null; // Target around, which was deceted by arguing trigger
+        [SerializeField] private FractionEntity _localTarget = null; // Target around, which was deceted by arguing trigger // TODO: Make a readobly Property not a field
 
-        private WarriorState _currentState = WarriorState.FollowGlobalTarget;
+        [SerializeField] private string _poolTag;
+
+        [SerializeField] private WarriorState _currentState = WarriorState.FollowGlobalTarget;
 
         private bool _isOnCoolDown = false;
         private bool _isOnArgue = true;
@@ -36,17 +38,28 @@ namespace InfinityGame.GameEntities
         private float _maxHealthPoints;
 
 
+
+        protected FractionEntity LocalTarget => _localTarget;
+        public string PoolTag => _poolTag;
+
+
+
         protected abstract void Attack();
 
         public void PullInPreparations()
         {
-            _globalTarget.OnDie -= GetNewGlobalTarget;
+            _globalTarget.OnZeroHealth -= GetNewGlobalTarget;
+
+            GameInitializer.OnGameEnd -= EndWarrioirBehavior;
             gameObject.SetActive(false);
         }
 
         public void PullOutPreparation()
         {
             _health = _maxHealthPoints;
+            GetNewGlobalTarget();
+
+            GameInitializer.OnGameEnd += EndWarrioirBehavior;
             gameObject.SetActive(true);
         }
 
@@ -62,6 +75,8 @@ namespace InfinityGame.GameEntities
                     break;
                 case WarriorState.FollowGlobalTarget:
                     FollowGlobalTarget();
+                    break;
+                case WarriorState.Stay:
                     break;
                 default:
                     throw new UnityException("Warrioir's state machine can't find current state!");
@@ -81,31 +96,6 @@ namespace InfinityGame.GameEntities
         }
 
         private bool IsOnAttackDistance() => Vector3.Distance(_localTarget.transform.position, transform.position) < _attackDistance;
-
-        private IEnumerator CoolDownCoroutine()
-        {
-            _isOnCoolDown = true;
-
-            yield return _waitForSecondsAttackCooldown;
-
-            _isOnCoolDown = false;
-        }
-
-        private void SetLocalTarget(FractionEntity newLocalTarget)
-        {
-            _localTarget = newLocalTarget;
-
-            if (_localTarget is null)
-            {
-                _isOnArgue = false;
-                _currentState = WarriorState.FollowGlobalTarget;
-                return;
-            }
-
-            _localTarget.OnDie += TryToGetNewLocalTarget;
-            _isOnArgue = true;
-            _currentState = WarriorState.Arguing;
-        }
 
         private void FollowLocalTarget()
         {
@@ -155,6 +145,52 @@ namespace InfinityGame.GameEntities
             SetLocalTarget(newLocaltarget);
         }
 
+        private void SetLocalTarget(FractionEntity newLocalTarget)
+        {
+            _localTarget = newLocalTarget;
+
+            if (_localTarget is null)
+            {
+                _isOnArgue = false;
+                _currentState = WarriorState.FollowGlobalTarget;
+                return;
+            }
+
+            _isOnArgue = true;
+            _currentState = WarriorState.Arguing;
+        }
+
+        private void GetNewGlobalTarget()
+        {
+            var minimalDistanceToTwonHall = float.MaxValue;
+            var cashedBuildings = BuildingCasher.GetCashedBuildings();
+
+            foreach (var building in cashedBuildings)
+            {
+                if (building.IsSameFraction(FractionTag))
+                    continue;
+
+                var distanceToCurrentTownhall = Vector3.Distance(building.transform.position, transform.position);
+
+                if (distanceToCurrentTownhall < minimalDistanceToTwonHall)
+                {
+                    _globalTarget = building;
+                    minimalDistanceToTwonHall = distanceToCurrentTownhall;
+                }
+            }
+
+            _globalTarget.OnZeroHealth += GetNewGlobalTarget;
+        }
+
+        private void EndWarrioirBehavior()
+        {
+            _globalTarget.OnZeroHealth -= GetNewGlobalTarget;
+
+            _arguingTrigger.gameObject.SetActive(false);
+            _currentState = WarriorState.Stay;
+            _rigidbody2D.velocity = Vector2.zero;
+        }
+
         private IEnumerable<FractionEntity> GetEnemiesAround()
         {
             foreach (var entity in _arguingTrigger.GetEntitiesInTriggerArea)
@@ -162,27 +198,15 @@ namespace InfinityGame.GameEntities
                     yield return entity;
         }
 
-        private void GetNewGlobalTarget()
+        private IEnumerator CoolDownCoroutine()
         {
-            var minimalDistanceToTwonHall = float.MaxValue;
-            var cashedBuilding = GameCasher.GetCashedBuildings();
+            _isOnCoolDown = true;
 
-            foreach (var townHall in cashedBuilding)
-            {
-                if (townHall.IsSameFraction(FractionTag))
-                    continue;
+            yield return _waitForSecondsAttackCooldown;
 
-                var distanceToCurrentTownhall = Vector3.Distance(townHall.transform.position, transform.position);
-
-                if (distanceToCurrentTownhall < minimalDistanceToTwonHall)
-                {
-                    _globalTarget = townHall;
-                    minimalDistanceToTwonHall = distanceToCurrentTownhall;
-                }
-            }
-
-            _globalTarget.OnDie += GetNewGlobalTarget;
+            _isOnCoolDown = false;
         }
+
 
 
 
@@ -202,6 +226,8 @@ namespace InfinityGame.GameEntities
                     TryToGetNewLocalTarget();
             };
 
+            GameInitializer.OnGameEnd += EndWarrioirBehavior;
+
             _maxHealthPoints = _health;
         }
 
@@ -214,11 +240,13 @@ namespace InfinityGame.GameEntities
         protected virtual void Update() => OnStateUpdate();
 
 
+
         protected enum WarriorState
         {
             Attack,
             Arguing,
             FollowGlobalTarget,
+            Stay
         }
     }
 }

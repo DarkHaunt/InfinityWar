@@ -145,7 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 15
-  _speedMult: 20
+  _speedMult: 15
   _rigidbody2D: {fileID: 4623219380320850043}
   _lifeTime: 10
   _shooterFractionTag: Humans
+  _poolTag: Arrows

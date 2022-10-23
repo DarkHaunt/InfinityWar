@@ -58,7 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Projectiles\Object Disparcher\ObjectDispatcher.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Building.cs" />
-    <Compile Include="Assets\_Scripts\Static Data\GameCasher.cs" />
+    <Compile Include="Assets\_Scripts\Static Data\BuildingCasher.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Lineal Projectile.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooter.cs" />
@@ -80,6 +80,7 @@
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\ArguingTrigger.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Infection Spit\SplashedSpit.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Projectile.cs" />
+    <Compile Include="Assets\_Scripts\Interfaces\IPoolable.cs" />
     <Compile Include="Assets\_Scripts\Factories\BuildingFactory.cs" />
     <Compile Include="Assets\_Scripts\Factories\ProjectileFactory.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Group Pick\RandomGroupPick.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Arrow\Arrow.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IFractionTagable.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
-    <Compile Include="Assets\_Scripts\Object Pooler\IPoolable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

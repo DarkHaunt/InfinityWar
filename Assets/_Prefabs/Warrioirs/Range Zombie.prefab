@@ -138,12 +138,14 @@ MonoBehaviour:
   _health: 30
   _fractionTag: Zombies
   _attackCoolDown: 2
-  _speedMult: 4
+  _speedMult: 3
   _attackDistance: 5
   _rigidbody2D: {fileID: 7703586299865400853}
   _arguingTrigger: {fileID: 7703586300254247331}
   _globalTarget: {fileID: 0}
   _localTarget: {fileID: 0}
+  _poolTag: Range Zombie
+  _currentState: 2
   _projectilePrefab: {fileID: 819447614314087422, guid: 37679435b14651f438f4bd1d83764a79, type: 3}
   _shootStrategy: {fileID: 11400000, guid: 4ef7cdfdedbe9b140a4e1dadac17a6e4, type: 2}
 --- !u!1 &7703586300254247333

@@ -5,9 +5,12 @@ using System;
 /// </summary>
 internal static class StaticNumberOperator
 {
-    public static readonly Random Randomizer = new Random();
+    public static readonly Random Randomizer = new Random(); 
+    // TODO : Maybe in other class?
+    // Можно попробовать сделать метд расширения для класса Math
+    
 
-    public static readonly int[] Sign = new int[2]
+    private static readonly int[] Sign = new int[2]
     {
         1,
         -1

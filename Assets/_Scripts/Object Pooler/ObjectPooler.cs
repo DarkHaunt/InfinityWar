@@ -1,37 +1,38 @@
 using System;
+using UnityEngine;
 using System.Collections.Generic;
 
 
 namespace InfinityGame.ObjectPooling
 {
-    public class ObjectPooler<OooledType> where OooledType : IPoolable
+    public class ObjectPooler<PooledType> where PooledType : IPoolable
     {
-        private Dictionary<Type, Stack<OooledType>> _pool = new Dictionary<Type, Stack<OooledType>>();
+        private Dictionary<string, Stack<PooledType>> _pool = new Dictionary<string, Stack<PooledType>>();
 
 
-        public void AddToPool(Type objectType, OooledType poolObject) 
+        public void AddToPool(PooledType poolObject)
         {
-            if (!UnityEngine.Application.isPlaying)
+            if (!Application.isPlaying)
                 return;
 
-            if (!_pool.ContainsKey(objectType))
-                _pool.Add(objectType, new Stack<OooledType>());
+            if (!_pool.ContainsKey(poolObject.PoolTag))
+                _pool.Add(poolObject.PoolTag, new Stack<PooledType>());
 
             poolObject.PullInPreparations();
-            _pool[objectType].Push(poolObject);
+            _pool[poolObject.PoolTag].Push(poolObject);
         }
 
-        public bool TryGetFromPool(Type objectType , out OooledType pooledObject)
+        public bool TryGetFromPool(string poolTag, out PooledType poolObject)
         {
-            if (!_pool.TryGetValue(objectType, out Stack<OooledType> pooledObjects) || pooledObjects.Count == 0)
+            if (_pool.TryGetValue(poolTag, out Stack<PooledType> pooledObjects) && pooledObjects.Count != 0)
             {
-                pooledObject = default;
-                return false;
+                poolObject = pooledObjects.Pop();
+                poolObject.PullOutPreparation();
+                return true;
             }
 
-            pooledObject = pooledObjects.Pop();
-            pooledObject.PullOutPreparation();
-            return true;
+            poolObject = default;
+            return false;
         }
-    } 
+    }
 }

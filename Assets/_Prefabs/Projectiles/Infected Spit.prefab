@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 819447614314087416}
   - component: {fileID: 819447614314087423}
   - component: {fileID: 819447614314087422}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Infected Spit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,8 +135,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 10
-  _speedMult: 15
+  _speedMult: 10
   _rigidbody2D: {fileID: 819447614314087416}
   _lifeTime: 5
   _shooterFractionTag: Zombies
-  _explosionRadius: 1
+  _poolTag: Infected Spit
+  _splashRadius: 1

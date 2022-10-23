@@ -13,14 +13,13 @@ namespace InfinityGame.Factories.WarriorFactory
 
         public static Warrior InstantiateWarrior(Warrior prefab)
         {
-            var literalTypeOfWarrioir = prefab.GetType();
+            if (!_warrioirPool.TryGetFromPool(prefab.PoolTag, out Warrior warrior))
+            {
+                warrior = MonoBehaviour.Instantiate(prefab);
+                warrior.OnZeroHealth += () => _warrioirPool.AddToPool(warrior);
+            }
 
-            if (!_warrioirPool.TryGetFromPool(literalTypeOfWarrioir, out Warrior warrioirProjectile))
-                warrioirProjectile = MonoBehaviour.Instantiate(prefab);
-
-            warrioirProjectile.OnDie += () => _warrioirPool.AddToPool(literalTypeOfWarrioir, warrioirProjectile);
-
-            return warrioirProjectile;
+            return warrior;
         }
     }
 }

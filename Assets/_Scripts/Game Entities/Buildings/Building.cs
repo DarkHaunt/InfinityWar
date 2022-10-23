@@ -28,5 +28,7 @@ namespace InfinityGame.GameEntities
 
             return building;
         }
+
+        public override string ToString() => $"{name} {transform.position}";
     }
 }

@@ -10,6 +10,9 @@ using InfinityGame.Strategies.WarrioirSpawnStrategies;
 
 public class WarrioirSpawner : MonoBehaviour
 {
+    // A scratter between spawn position and spawner in units
+    private static Vector2 SpawnPositionScatter = new Vector2(1f, 1f);
+
     private float _generalSpawnCoolDownSeconds;
     private float _spawnTimeDeltaSeconds;
 
@@ -27,6 +30,7 @@ public class WarrioirSpawner : MonoBehaviour
         _warriorsPickStrategy = warrioirChoseStrategy;
         _spawnCanceller = new CancellationTokenSource();
 
+        GameInitializer.OnGameEnd += _spawnCanceller.Cancel;
         StartGeneration();
     }
 
@@ -35,7 +39,7 @@ public class WarrioirSpawner : MonoBehaviour
         while (true)
         {
             var taskOfGettingWave = Task.Run(() => _warriorsPickStrategy.ChoseWarrioirsToSawn(_warriorsToSpawn), _spawnCanceller.Token);
-            var coolDownTask = Task.Delay(GetNewSpawnDelayMiliseconds(), _spawnCanceller.Token);
+            var coolDownTask = Task.Delay(NewSpawnDelayMiliseconds(), _spawnCanceller.Token);
 
             try
             {
@@ -54,12 +58,20 @@ public class WarrioirSpawner : MonoBehaviour
             foreach (var warrioirPrefab in warriorPrefabs)
             {
                 var warrioir = WarriorFactory.InstantiateWarrior(warrioirPrefab);
-                warrioir.transform.position = transform.position;
+                warrioir.transform.position = transform.position + RandomPositionDeviation();
             }
         }
     }
 
-    private int GetNewSpawnDelayMiliseconds()
+    private Vector3 RandomPositionDeviation()
+    {
+        var randomX = (float)(StaticNumberOperator.GetRandomSign() * StaticNumberOperator.Randomizer.NextDouble() * SpawnPositionScatter.x);
+        var randomY = (float)(StaticNumberOperator.GetRandomSign() * StaticNumberOperator.Randomizer.NextDouble() * SpawnPositionScatter.y);
+
+        return new Vector3(randomX, randomY);
+    }
+
+    private int NewSpawnDelayMiliseconds()
     {
         var randomPercentOfDeltaMiliseconds = StaticNumberOperator.Randomizer.NextDouble();
         var rawTime = (_generalSpawnCoolDownSeconds + (StaticNumberOperator.GetRandomSign() * _spawnTimeDeltaSeconds * randomPercentOfDeltaMiliseconds)) * 1000;

@@ -21,6 +21,7 @@ namespace InfinityGame.Fractions
         [SerializeField] private WarrioirSpawnSettings _warrioirSpawnSettings;
 
 
+
         public string Tag => _tag;
         public WarrioirsPickStrategy WarrioirPickStrategy => _warrioirPickStrategy;
         public WarrioirSpawnSettings WarrioirSpawnSettings => _warrioirSpawnSettings;
@@ -28,12 +29,16 @@ namespace InfinityGame.Fractions
         public BuildingData TownHallBuildingData => _townHallBuildingData;
 
 
+
         [System.Serializable]
         public struct BuildingData
         {
+            [SerializeField] private string _name;
             [SerializeField] private Sprite _buildingSprite;
             [SerializeField] private float _buildingHealthPoints;
 
+
+            public string Name => _name;
             public Sprite BuildingSprite => _buildingSprite;
             public float BuildingHealthPoints => _buildingHealthPoints;
         }
@@ -45,11 +50,11 @@ namespace InfinityGame.Fractions
             public readonly BuildingData BuildingData;
 
 
-            public FractionBuildingData(string fractionTag, string name, BuildingData buildingData)
+            public FractionBuildingData(string fractionTag, BuildingData buildingData)
             {
                 FractionTag = fractionTag;
-                Name = name;
                 BuildingData = buildingData;
+                Name = buildingData.Name;
             }
 
         }

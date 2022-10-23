@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using InfinityGame.GameEntities;
 using InfinityGame.CashedData;
+using InfinityGame.Fractions;
 using UnityEngine;
 
 namespace InfinityGame.Factories.BuildingFactory
 {
-    using FractionBuildingData = Fractions.Fraction.FractionBuildingData;
+    using FractionBuildingData = Fraction.FractionBuildingData;
 
     public class BuildingFactory
     {
@@ -18,15 +17,26 @@ namespace InfinityGame.Factories.BuildingFactory
         }
 
 
-        public Building SpawnBuilding(FractionBuildingData fractionBuildingData, Vector2 position)
+        public Building CreateBuilding(FractionBuildingData fractionBuildingData, Vector2 position)
         {
             var building = Building.Instantiate(_prefab, fractionBuildingData.FractionTag, fractionBuildingData.BuildingData);
             building.transform.position = position;
             building.name = fractionBuildingData.Name;
 
-            GameCasher.CashBuilding(building);
+            BuildingCasher.CashBuilding(building);
 
             return building;
         }
-    } 
+
+        public Building CreateSpawnBuilding(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData) // TODO: Название не отражает действия
+        {
+            var fractionBarrackData = new FractionBuildingData(fraction.Tag, buildingData);
+            var building = CreateBuilding(fractionBarrackData, position);
+
+            var barrackSpawner = building.gameObject.AddComponent<WarrioirSpawner>();
+            barrackSpawner.Initialize(fraction.WarrioirSpawnSettings, fraction.WarrioirPickStrategy);
+
+            return building;
+        }
+    }
 }

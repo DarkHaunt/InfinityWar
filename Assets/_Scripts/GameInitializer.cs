@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using InfinityGame.GameEntities;
+using InfinityGame.CashedData;
 using InfinityGame.Arena;
 using InfinityGame.Fractions;
 using InfinityGame.Factories.BuildingFactory;
@@ -26,27 +27,38 @@ internal class GameInitializer : MonoBehaviour
     /// <param name="fraction"></param>
     /// <param name="spawnPlace"></param>
     /// <returns>List of all barracks of fraction</returns>
-    private void AssembleFraction(Fraction fraction, SpawnPlace spawnPlace, ref Action onArenaAssebmlyEnd)
+    private void AssembleFraction(Fraction fraction, SpawnPlace spawnPlace)
     {
-        // TODO: ־עהוכüםûי לועמה
-        var fractionTownHallData = new Fraction.FractionBuildingData(fraction.Tag, $"TownHall {fraction.Tag}", fraction.TownHallBuildingData);
-        var townHall = _buildingFactory.SpawnBuilding(fractionTownHallData, spawnPlace.TownHallSpawnPointPosition);
+        var townHall = _buildingFactory.CreateSpawnBuilding(fraction, spawnPlace.TownHallSpawnPointPosition, fraction.TownHallBuildingData);
 
-        var townHallSpawner = townHall.gameObject.AddComponent<WarrioirSpawner>();
-        onArenaAssebmlyEnd += () => townHallSpawner.Initialize(fraction.WarrioirSpawnSettings, fraction.WarrioirPickStrategy);
-
-        // Set all barracks on positions
+        // Spawn all sub barracks
         foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsTransforms)
         {
-            var fractionBarrackData = new Fraction.FractionBuildingData(fraction.Tag, $"Barrack {fraction.Tag} {barrackPosition}", fraction.BarrackBuildingData);
-            var barrack = _buildingFactory.SpawnBuilding(fractionBarrackData, barrackPosition);
-
-            var barrackSpawner = barrack.gameObject.AddComponent<WarrioirSpawner>();
-            onArenaAssebmlyEnd += () => barrackSpawner.Initialize(fraction.WarrioirSpawnSettings, fraction.WarrioirPickStrategy);
-
-            townHall.OnDie += () => barrack.Die();
+            var barrack = _buildingFactory.CreateSpawnBuilding(fraction, barrackPosition, fraction.BarrackBuildingData);
+            barrack.OnZeroHealth += () => Destroy(barrack.gameObject);
         }
+
+        townHall.OnZeroHealth += () =>
+        {
+            var barracks = new List<Building>();
+
+            foreach (var cashedBuilding in BuildingCasher.GetCashedBuildings())
+                if (cashedBuilding.IsSameFraction(townHall.FractionTag))
+                    barracks.Add(cashedBuilding);
+
+            foreach (var barrack in barracks)
+                barrack.Die();
+        };
+
+        townHall.OnZeroHealth += () =>
+        {
+            if (BuildingCasher.IsOnlyOneFractionBuildingsLeft())
+                OnGameEnd?.Invoke();
+
+            Destroy(townHall.gameObject);
+        };
     }
+    
 
     private IList<int> GetReservedSpawnPlaceIndexes()
     {
@@ -62,8 +74,6 @@ internal class GameInitializer : MonoBehaviour
     {
         _buildingFactory = new BuildingFactory(_buildingPrefab);
 
-        Action onAreanaAssemblyEnd = null;
-
         var emptySpawnPlaceIndexes = GetReservedSpawnPlaceIndexes();
         var possibleToGenerateFractions = new List<Fraction>(_fractions);
 
@@ -72,15 +82,13 @@ internal class GameInitializer : MonoBehaviour
             var randomIndexOfFraction = StaticNumberOperator.Randomizer.Next(0, possibleToGenerateFractions.Count);
             var radnomIndexOfPlace = StaticNumberOperator.Randomizer.Next(0, emptySpawnPlaceIndexes.Count);
 
-            AssembleFraction(possibleToGenerateFractions[randomIndexOfFraction], _spawnPlaces[emptySpawnPlaceIndexes[radnomIndexOfPlace]], ref onAreanaAssemblyEnd);
+            AssembleFraction(possibleToGenerateFractions[randomIndexOfFraction], _spawnPlaces[emptySpawnPlaceIndexes[radnomIndexOfPlace]]);
 
             possibleToGenerateFractions.RemoveAt(randomIndexOfFraction);
             emptySpawnPlaceIndexes.RemoveAt(radnomIndexOfPlace);
         }
-
-        // Invoke all preparation, after full map spawn 
-        onAreanaAssemblyEnd?.Invoke();
     }
+
 
 
     private void Awake()
@@ -99,6 +107,6 @@ internal class GameInitializer : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        OnGameEnd?.Invoke();
+       // OnGameEnd?.Invoke();
     }
 }

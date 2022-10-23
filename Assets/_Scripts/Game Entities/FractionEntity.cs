@@ -11,8 +11,7 @@ namespace InfinityGame.GameEntities
     /// </summary>
     public class FractionEntity : MonoBehaviour, IFractionTagable
     {
-        public event Action OnDie;
-        public event Action OnHit;
+        public event Action OnZeroHealth;
 
         [SerializeField] protected float _health;
         [SerializeField] protected string _fractionTag;
@@ -29,16 +28,14 @@ namespace InfinityGame.GameEntities
 
             if (_health <= 0)
             {
-                OnDie?.Invoke();
+                OnZeroHealth?.Invoke();
                 return;
             }
-
-            OnHit?.Invoke();
         }
 
         public void Die()
         {
-            OnDie?.Invoke();
+            OnZeroHealth?.Invoke();
             Destroy(gameObject);
         }
     } 

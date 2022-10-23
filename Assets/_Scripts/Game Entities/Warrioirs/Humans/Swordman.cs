@@ -33,7 +33,7 @@ namespace InfinityGame.GameEntities.Humans
             return isHitableEntity && !entity.IsSameFraction(FractionTag);
         }
 
-        private bool IsMainTarget(FractionEntity entity) => _localTarget == entity;
+        private bool IsMainTarget(FractionEntity entity) => LocalTarget == entity;
 
         private void DamageAllSurroundEnemies(IEnumerable<FractionEntity> enemies)
         {

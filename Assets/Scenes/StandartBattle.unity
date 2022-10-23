@@ -437,11 +437,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6642834543085699432, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.1
+      value: 24.19
       objectReference: {fileID: 0}
     - target: {fileID: 6642834543085699432, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.21
+      value: -9.19
       objectReference: {fileID: 0}
     - target: {fileID: 6642834543085699432, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -478,6 +478,18 @@ PrefabInstance:
     - target: {fileID: 6678378742720138629, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}
       propertyPath: _damage
       value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6678378742720138629, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}
+      propertyPath: _health
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6678378742720138629, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}
+      propertyPath: _meleeDamage
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6678378742720138629, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}
+      propertyPath: _attackCoolDown
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}

@@ -7,14 +7,14 @@ namespace InfinityGame.Projectiles
     {
         protected override void OnCollitionWith(FractionEntity target)
         {
-            target.GetDamage(_damage);
+            target.GetDamage(Damage);
 
             EndExpluatation();
         }
 
         protected override void Awake()
         {
-            _disptacher = new LinealDispatcher(_speedMult);
+            _disptacher = new LinealDispatcher(Speed);
             _rotateStrategy = new RotateToTargetOnce();
 
             base.Awake();

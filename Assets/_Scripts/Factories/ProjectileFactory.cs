@@ -11,12 +11,11 @@ namespace InfinityGame.Factories.ProjectileFactory
 
         public static Projectile Instantiate(Projectile prefab)
         {
-            var literalTypeOfProjectile = prefab.GetType();
-
-            if (!_projectilPool.TryGetFromPool(literalTypeOfProjectile, out Projectile pooledProjectile))
+            if (!_projectilPool.TryGetFromPool(prefab.PoolTag, out Projectile pooledProjectile))
+            {
                 pooledProjectile = MonoBehaviour.Instantiate(prefab);
-
-            pooledProjectile.OnExpluatationEnd += () => _projectilPool.AddToPool(literalTypeOfProjectile, pooledProjectile);
+                pooledProjectile.OnExpluatationEnd += () => _projectilPool.AddToPool(pooledProjectile);
+            }
 
             return pooledProjectile;
         }

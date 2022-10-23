@@ -8,7 +8,7 @@ namespace InfinityGame.GameEntities.Zombies
     {
         protected override void Attack()
         {
-            _localTarget.GetDamage(_meleeDamage);
+            LocalTarget.GetDamage(_meleeDamage);
         }
     } 
 }

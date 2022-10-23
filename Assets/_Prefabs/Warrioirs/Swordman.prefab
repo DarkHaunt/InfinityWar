@@ -106,7 +106,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &3816726196558790145
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -144,6 +144,7 @@ MonoBehaviour:
   _arguingTrigger: {fileID: 6460703564526533429}
   _globalTarget: {fileID: 0}
   _localTarget: {fileID: 0}
+  _poolTag: Swordman
   _meleeDamage: 30
   _nonMainTargetDamagePercent: 0.75
   _atackRadius: 1.2
