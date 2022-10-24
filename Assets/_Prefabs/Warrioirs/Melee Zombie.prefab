@@ -201,7 +201,7 @@ MonoBehaviour:
   _speedMult: 4
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 9134285203207437134}
-  _arguingTrigger: {fileID: 1300813147675546496}
+  _entityDetector: {fileID: 1300813147675546496}
   _globalTarget: {fileID: 0}
   _localTarget: {fileID: 0}
   _poolTag: Melee Zombie

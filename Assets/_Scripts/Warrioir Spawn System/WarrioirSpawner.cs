@@ -8,6 +8,9 @@ using InfinityGame.GameEntities;
 using InfinityGame.Strategies.WarrioirSpawnStrategies;
 
 
+/// <summary>
+/// Loop spawning certain count of warriors determied by spawn strategy
+/// </summary>
 public class WarrioirSpawner : MonoBehaviour
 {
     // A scratter between spawn position and spawner in units
@@ -21,6 +24,7 @@ public class WarrioirSpawner : MonoBehaviour
     private WarrioirsPickStrategy _warriorsPickStrategy;
 
 
+
     public void Initialize(SpawnData spawnData, WarrioirsPickStrategy warrioirChoseStrategy)
     {
         _generalSpawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
@@ -31,10 +35,10 @@ public class WarrioirSpawner : MonoBehaviour
         _spawnCanceller = new CancellationTokenSource();
 
         GameInitializer.OnGameEnd += _spawnCanceller.Cancel;
-        StartGeneration();
+        StartGeneration(); // TODO: Вынести от сюда запуск спавна
     }
 
-    private async void StartGeneration()
+    private async void StartGeneration() 
     {
         while (true)
         {
@@ -48,7 +52,7 @@ public class WarrioirSpawner : MonoBehaviour
             catch (Exception e)
             {
                 if (_spawnCanceller.IsCancellationRequested)
-                    return;
+                    break;
                 else
                     Debug.Log(e.Message);
             }
@@ -61,29 +65,38 @@ public class WarrioirSpawner : MonoBehaviour
                 warrioir.transform.position = transform.position + RandomPositionDeviation();
             }
         }
+
+
+  /*      if (_spawnCanceller.IsCancellationRequested)
+        {
+            _spawnCanceller.Dispose();
+            _spawnCanceller = new CancellationTokenSource();
+        }*/
     }
 
     private Vector3 RandomPositionDeviation()
     {
-        var randomX = (float)(StaticNumberOperator.GetRandomSign() * StaticNumberOperator.Randomizer.NextDouble() * SpawnPositionScatter.x);
-        var randomY = (float)(StaticNumberOperator.GetRandomSign() * StaticNumberOperator.Randomizer.NextDouble() * SpawnPositionScatter.y);
+        var randomX = (float)(StaticRandomizer.GetRandomSign() * StaticRandomizer.Randomizer.NextDouble() * SpawnPositionScatter.x);
+        var randomY = (float)(StaticRandomizer.GetRandomSign() * StaticRandomizer.Randomizer.NextDouble() * SpawnPositionScatter.y);
 
         return new Vector3(randomX, randomY);
     }
 
     private int NewSpawnDelayMiliseconds()
     {
-        var randomPercentOfDeltaMiliseconds = StaticNumberOperator.Randomizer.NextDouble();
-        var rawTime = (_generalSpawnCoolDownSeconds + (StaticNumberOperator.GetRandomSign() * _spawnTimeDeltaSeconds * randomPercentOfDeltaMiliseconds)) * 1000;
+        var randomPercentOfDeltaMiliseconds = StaticRandomizer.Randomizer.NextDouble();
+        var rawTime = (_generalSpawnCoolDownSeconds + (StaticRandomizer.GetRandomSign() * _spawnTimeDeltaSeconds * randomPercentOfDeltaMiliseconds)) * 1000;
 
         return (int)rawTime;
     }
+
 
 
     private void OnDestroy()
     {
         _spawnCanceller.Cancel();
     }
+
 
 
     [Serializable]

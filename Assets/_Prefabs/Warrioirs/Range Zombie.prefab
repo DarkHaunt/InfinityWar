@@ -141,7 +141,7 @@ MonoBehaviour:
   _speedMult: 3
   _attackDistance: 5
   _rigidbody2D: {fileID: 7703586299865400853}
-  _arguingTrigger: {fileID: 7703586300254247331}
+  _entityDetector: {fileID: 7703586300254247331}
   _globalTarget: {fileID: 0}
   _localTarget: {fileID: 0}
   _poolTag: Range Zombie

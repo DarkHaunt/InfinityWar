@@ -20,11 +20,11 @@ namespace InfinityGame.GameEntities
         [Range(MinimalDistanceToAttack, 30)]
         [SerializeField] private float _attackDistance;
 
-        [SerializeField] private Rigidbody2D _rigidbody2D;
-        [SerializeField] private ArguingTrigger _arguingTrigger;
+        [SerializeField] private Rigidbody2D _rigidbody2D; // TODO : Убрать не нужные сериализации
+        [SerializeField] private EntityDetector _entityDetector;
 
         [SerializeField] private FractionEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
-        [SerializeField] private FractionEntity _localTarget = null; // Target around, which was deceted by arguing trigger // TODO: Make a readobly Property not a field
+        [SerializeField] private FractionEntity _localTarget = null; // Target around, which was deceted by arguing trigger
 
         [SerializeField] private string _poolTag;
 
@@ -50,7 +50,7 @@ namespace InfinityGame.GameEntities
         {
             _globalTarget.OnZeroHealth -= GetNewGlobalTarget;
 
-            GameInitializer.OnGameEnd -= EndWarrioirBehavior;
+            GameInitializer.OnGameEnd -= BecomeNeutral;
             gameObject.SetActive(false);
         }
 
@@ -59,7 +59,7 @@ namespace InfinityGame.GameEntities
             _health = _maxHealthPoints;
             GetNewGlobalTarget();
 
-            GameInitializer.OnGameEnd += EndWarrioirBehavior;
+            GameInitializer.OnGameEnd += BecomeNeutral;
             gameObject.SetActive(true);
         }
 
@@ -182,18 +182,21 @@ namespace InfinityGame.GameEntities
             _globalTarget.OnZeroHealth += GetNewGlobalTarget;
         }
 
-        private void EndWarrioirBehavior()
+        /// <summary>
+        /// Won't be able to argue / attack anything anymore
+        /// </summary>
+        private void BecomeNeutral()
         {
             _globalTarget.OnZeroHealth -= GetNewGlobalTarget;
 
-            _arguingTrigger.gameObject.SetActive(false);
+            _entityDetector.gameObject.SetActive(false);
             _currentState = WarriorState.Stay;
             _rigidbody2D.velocity = Vector2.zero;
         }
 
         private IEnumerable<FractionEntity> GetEnemiesAround()
         {
-            foreach (var entity in _arguingTrigger.GetEntitiesInTriggerArea)
+            foreach (var entity in _entityDetector.DetecedEntities)
                 if (!entity.IsSameFraction(FractionTag))
                     yield return entity;
         }
@@ -214,19 +217,19 @@ namespace InfinityGame.GameEntities
         {
             _waitForSecondsAttackCooldown = new WaitForSeconds(_attackCoolDown);
 
-            _arguingTrigger.OnEntityEnter += (FractionEntity target) =>
+            _entityDetector.OnEntityEnter += (FractionEntity target) =>
             {
                 if (!_isOnArgue && !target.IsSameFraction(FractionTag))
                     SetLocalTarget(target);
             };
 
-            _arguingTrigger.OnEntityExit += (FractionEntity target) =>
+            _entityDetector.OnEntityExit += (FractionEntity target) =>
             {
                 if (_localTarget == target)
                     TryToGetNewLocalTarget();
             };
 
-            GameInitializer.OnGameEnd += EndWarrioirBehavior;
+            GameInitializer.OnGameEnd += BecomeNeutral;
 
             _maxHealthPoints = _health;
         }

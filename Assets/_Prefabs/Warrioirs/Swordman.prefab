@@ -141,10 +141,11 @@ MonoBehaviour:
   _speedMult: 2
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 1965941402268142818}
-  _arguingTrigger: {fileID: 6460703564526533429}
+  _entityDetector: {fileID: 6460703564526533429}
   _globalTarget: {fileID: 0}
   _localTarget: {fileID: 0}
   _poolTag: Swordman
+  _currentState: 2
   _meleeDamage: 30
   _nonMainTargetDamagePercent: 0.75
   _atackRadius: 1.2

@@ -41,8 +41,6 @@ namespace InfinityGame.CashedData
 
             building.OnZeroHealth += () =>
             {
-                if (building.name.Contains("UN"))
-                    MonoBehaviour.print($"{building} gets uncashed");
                 UncashBuilding(building);
             };
         }
