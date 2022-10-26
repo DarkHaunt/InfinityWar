@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Projectiles\Object Disparcher\ObjectDispatcher.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Building.cs" />
+    <Compile Include="Assets\_Scripts\Static Data\FractionCasher.cs" />
     <Compile Include="Assets\_Scripts\Static Data\BuildingCasher.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Lineal Projectile.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Assets\_Scripts\Interfaces\IObjectRotateStrategy.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IShoot.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\FractionEntity.cs" />
+    <Compile Include="Assets\_Scripts\Static Data\CacheStateMachine\FractionCacheState.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\Single Shot\SingleShot.cs" />
     <Compile Include="Assets\_Scripts\Arena\GameInitializer.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\MeleeWarrioir.cs" />

@@ -6,6 +6,8 @@ using UnityEngine;
 using InfinityGame.Factories.WarriorFactory;
 using InfinityGame.GameEntities;
 using InfinityGame.Strategies.WarrioirSpawnStrategies;
+using InfinityGame.CashedData;
+
 
 
 /// <summary>
@@ -34,7 +36,7 @@ public class WarrioirSpawner : MonoBehaviour
         _warriorsPickStrategy = warrioirChoseStrategy;
         _spawnCanceller = new CancellationTokenSource();
 
-        GameInitializer.OnGameEnd += _spawnCanceller.Cancel;
+        FractionCasher.OnGameEnd += _spawnCanceller.Cancel;
         StartGeneration(); // TODO: Вынести от сюда запуск спавна
     }
 

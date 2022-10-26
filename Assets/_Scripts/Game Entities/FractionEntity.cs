@@ -20,7 +20,6 @@ namespace InfinityGame.GameEntities
         public string FractionTag => _fractionTag;
 
 
-        public bool IsSameFraction(string fractionTag) => _fractionTag == fractionTag;
 
         public void GetDamage(float damage)
         {
@@ -38,5 +37,9 @@ namespace InfinityGame.GameEntities
             OnZeroHealth?.Invoke();
             Destroy(gameObject);
         }
+
+        public bool IsSameFraction(string fractionTag) => _fractionTag == fractionTag;
+
+        public override string ToString() => $"{name} {transform.position} {FractionTag}";
     } 
 }

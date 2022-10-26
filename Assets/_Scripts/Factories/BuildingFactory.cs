@@ -23,7 +23,8 @@ namespace InfinityGame.Factories.BuildingFactory
             building.transform.position = position;
             building.name = fractionBuildingData.Name;
 
-            BuildingCasher.CashBuilding(building);
+            FractionCasher.CacheBuilding(building);
+            //BuildingCasher.CashBuilding(building);
 
             return building;
         }

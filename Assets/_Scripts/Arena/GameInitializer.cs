@@ -1,15 +1,14 @@
-using System;
 using System.Collections.Generic;
 using InfinityGame.GameEntities;
+using InfinityGame.Factories.BuildingFactory;
 using InfinityGame.CashedData;
 using InfinityGame.Arena;
 using InfinityGame.Fractions;
-using InfinityGame.Factories.BuildingFactory;
 using UnityEngine;
 
 internal class GameInitializer : MonoBehaviour
 {
-    public static event Action OnGameEnd;
+   // public static event Action OnGameEnd;
 
     private static GameInitializer _instance;
 
@@ -29,6 +28,8 @@ internal class GameInitializer : MonoBehaviour
     /// <returns>List of all barracks of fraction</returns>
     private void AssembleFraction(Fraction fraction, SpawnPlace spawnPlace)
     {
+
+        FractionCasher.CashFraction(fraction);
         // TODO: “х должен иметь в себе размер армии и считать, сколько войнов определЄнног типа сейчас на арене
         // ≈сли войнов такое же колличесвто, как и макс ращмер армии, то спавн любого война прекращаетс€
         // ѕосле уменьшени€ коллличества войнов - вновь работаетt
@@ -43,11 +44,11 @@ internal class GameInitializer : MonoBehaviour
 
         townHall.OnZeroHealth += () =>
         {
-            var barracks = new List<Building>();
+            var barracks = new List<FractionEntity>();
 
-            foreach (var cashedBuilding in BuildingCasher.GetCashedBuildings())
-                if (cashedBuilding.IsSameFraction(townHall.FractionTag))
-                    barracks.Add(cashedBuilding);
+            foreach (var cashedBuilding in FractionCasher.GetAllyEntities(townHall.FractionTag))
+                //if (cashedBuilding.IsSameFraction(townHall.FractionTag))
+                barracks.Add(cashedBuilding);
 
             foreach (var barrack in barracks)
                 barrack.Die();
@@ -55,13 +56,12 @@ internal class GameInitializer : MonoBehaviour
 
         townHall.OnZeroHealth += () =>
         {
-            if (BuildingCasher.IsOnlyOneFractionBuildingsLeft())
-                OnGameEnd?.Invoke();
+            /*            if (BuildingCasher.IsOnlyOneFractionBuildingsLeft())
+                            OnGameEnd?.Invoke();*/
 
             Destroy(townHall.gameObject);
         };
     }
-    
 
     private IList<int> GetReservedSpawnPlaceIndexes()
     {

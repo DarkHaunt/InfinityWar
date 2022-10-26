@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using InfinityGame.GameEntities;
 using InfinityGame.ObjectPooling;
+using InfinityGame.CashedData;
 using UnityEngine;
 
 
@@ -18,6 +18,9 @@ namespace InfinityGame.Factories.WarriorFactory
                 warrior = MonoBehaviour.Instantiate(prefab);
                 warrior.OnZeroHealth += () => _warrioirPool.AddToPool(warrior);
             }
+
+            FractionCasher.CacheWarrior(warrior);
+            //OnWarrioirSpawn?.Invoke(warrior);
 
             return warrior;
         }

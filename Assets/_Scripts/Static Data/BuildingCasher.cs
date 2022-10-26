@@ -5,7 +5,7 @@ using InfinityGame.GameEntities;
 
 namespace InfinityGame.CashedData
 {
-    public static class BuildingCasher
+   /* public static class BuildingCasher
     {
         private static HashSet<Building> _cashedBuildings = new HashSet<Building>();
 
@@ -50,5 +50,5 @@ namespace InfinityGame.CashedData
             if (!_cashedBuildings.Remove(building))
                 throw new UnityException($"{building} is not cashed, but you're trying to uncash it.");
         }
-    }
+    }*/
 }

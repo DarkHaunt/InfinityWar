@@ -9,6 +9,7 @@ namespace InfinityGame.Fractions
     public class Fraction : ScriptableObject
     {
         [SerializeField] private string _tag;
+        [SerializeField] private int _warrioirMaxCount;
 
         [Space(10f)]
         [SerializeField] private BuildingData _townHallBuildingData;
@@ -23,6 +24,7 @@ namespace InfinityGame.Fractions
 
 
         public string Tag => _tag;
+        public int WarrioirMaxCount => _warrioirMaxCount;
         public WarrioirsPickStrategy WarrioirPickStrategy => _warrioirPickStrategy;
         public WarrioirSpawnSettings WarrioirSpawnSettings => _warrioirSpawnSettings;
         public BuildingData BarrackBuildingData => _barrackBuildingData;

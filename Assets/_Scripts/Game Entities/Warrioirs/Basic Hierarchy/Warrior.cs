@@ -20,7 +20,7 @@ namespace InfinityGame.GameEntities
         [Range(MinimalDistanceToAttack, 30)]
         [SerializeField] private float _attackDistance;
 
-        [SerializeField] private Rigidbody2D _rigidbody2D; // TODO : Убрать не нужные сериализации
+        [SerializeField] private Rigidbody2D _rigidbody2D; // TODO : Убрать не нужные сериализации (После глубоких тестов перед отправкой)
         [SerializeField] private EntityDetector _entityDetector;
 
         [SerializeField] private FractionEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
@@ -50,7 +50,7 @@ namespace InfinityGame.GameEntities
         {
             _globalTarget.OnZeroHealth -= GetNewGlobalTarget;
 
-            GameInitializer.OnGameEnd -= BecomeNeutral;
+            FractionCasher.OnGameEnd -= BecomeNeutral;
             gameObject.SetActive(false);
         }
 
@@ -59,7 +59,7 @@ namespace InfinityGame.GameEntities
             _health = _maxHealthPoints;
             GetNewGlobalTarget();
 
-            GameInitializer.OnGameEnd += BecomeNeutral;
+            FractionCasher.OnGameEnd += BecomeNeutral;
             gameObject.SetActive(true);
         }
 
@@ -163,12 +163,13 @@ namespace InfinityGame.GameEntities
         private void GetNewGlobalTarget()
         {
             var minimalDistanceToTwonHall = float.MaxValue;
-            var cashedBuildings = BuildingCasher.GetCashedBuildings();
+            //var cashedBuildings = BuildingCasher.GetCashedBuildings();
+            var cashedBuildings = FractionCasher.GetEnemyEntities(FractionTag);
 
             foreach (var building in cashedBuildings)
             {
-                if (building.IsSameFraction(FractionTag))
-                    continue;
+          /*      if (building.IsSameFraction(FractionTag))
+                    continue;*/
 
                 var distanceToCurrentTownhall = Vector3.Distance(building.transform.position, transform.position);
 
@@ -229,7 +230,7 @@ namespace InfinityGame.GameEntities
                     TryToGetNewLocalTarget();
             };
 
-            GameInitializer.OnGameEnd += BecomeNeutral;
+            FractionCasher.OnGameEnd += BecomeNeutral;
 
             _maxHealthPoints = _health;
         }
