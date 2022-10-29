@@ -58,8 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Projectiles\Object Disparcher\ObjectDispatcher.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Building.cs" />
-    <Compile Include="Assets\_Scripts\Static Data\FractionCasher.cs" />
-    <Compile Include="Assets\_Scripts\Static Data\BuildingCasher.cs" />
+    <Compile Include="Assets\_Scripts\Static Data\FractionCacher.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Lineal Projectile.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooter.cs" />

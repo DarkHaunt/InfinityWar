@@ -5,6 +5,9 @@ using UnityEngine;
 
 public interface IPoolable
 {
+    /// <summary>
+    /// Tag, which will give a object unique key in pool
+    /// </summary>
     public string PoolTag { get; }
 
     void PullInPreparations();

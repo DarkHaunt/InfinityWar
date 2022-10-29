@@ -16,6 +16,9 @@ namespace InfinityGame.GameEntities
         [SerializeField] protected float _health;
         [SerializeField] protected string _fractionTag;
 
+        protected bool _isDead = false; 
+
+
 
         public string FractionTag => _fractionTag;
 
@@ -25,8 +28,9 @@ namespace InfinityGame.GameEntities
         {
             _health -= damage;
 
-            if (_health <= 0)
+            if (_health <= 0 && !_isDead)
             {
+                _isDead = true;
                 OnZeroHealth?.Invoke();
                 return;
             }

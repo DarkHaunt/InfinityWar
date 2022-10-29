@@ -25,7 +25,7 @@ MonoBehaviour:
   _warrioirPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
   _warrioirSpawnSettings:
     _spawnCoolDownSeconds: 4
-    _timeDeltaSeconds: 1
+    _timeDeltaSeconds: 2
     _warriosToSpawn:
     - {fileID: 3829235489145816803, guid: 7a72723681bca1440bcf1b10c4c65062, type: 3}
     - {fileID: 1965941402268142816, guid: b7ffb1e5c6ce04c428227526b6add752, type: 3}

@@ -14,19 +14,22 @@ namespace InfinityGame.GameEntities
     [RequireComponent(typeof(SpriteRenderer))]
     public class Building : FractionEntity
     {
-        public static Building Instantiate(Building prefab, string fractionTag, BuildingData buildingData)
+        public void Initialize(string fractionTag, BuildingData buildingData)
         {
-            var building = MonoBehaviour.Instantiate(prefab);
-            building._fractionTag = fractionTag;
-            building._health = buildingData.BuildingHealthPoints;
+            _health = buildingData.BuildingHealthPoints;
+            _fractionTag = fractionTag;
 
-            var buildingSpriteRenderer = building.gameObject.GetComponent<SpriteRenderer>();
-            buildingSpriteRenderer.sprite = buildingData.BuildingSprite;
+            var spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = buildingData.BuildingSprite;
 
-            var boxCollider2d = building.GetComponent<BoxCollider2D>();
-            boxCollider2d.size = buildingSpriteRenderer.sprite.bounds.size;
+            var boxCollider2d = GetComponent<BoxCollider2D>();
+            boxCollider2d.size = spriteRenderer.sprite.bounds.size;
 
-            return building;
+            var rigidBody = GetComponent<Rigidbody2D>();
+            rigidBody.gravityScale = 0f;
+            rigidBody.angularDrag = 0f;
+            rigidBody.drag = 0f;
+            rigidBody.freezeRotation = true;
         }
 
         public override string ToString() => $"{name} {transform.position}";

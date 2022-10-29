@@ -1,7 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using InfinityGame.CashedData;
+using InfinityGame.DataCaching;
 using UnityEngine;
 
 namespace InfinityGame.GameEntities
@@ -20,11 +19,11 @@ namespace InfinityGame.GameEntities
         [Range(MinimalDistanceToAttack, 30)]
         [SerializeField] private float _attackDistance;
 
-        [SerializeField] private Rigidbody2D _rigidbody2D; // TODO : Убрать не нужные сериализации (После глубоких тестов перед отправкой)
+        [SerializeField] private Rigidbody2D _rigidbody2D;
         [SerializeField] private EntityDetector _entityDetector;
 
         [SerializeField] private FractionEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
-        [SerializeField] private FractionEntity _localTarget = null; // Target around, which was deceted by arguing trigger
+        [SerializeField] private FractionEntity _localTarget = null; // Target around, which was deceted by detector 
 
         [SerializeField] private string _poolTag;
 
@@ -50,16 +49,19 @@ namespace InfinityGame.GameEntities
         {
             _globalTarget.OnZeroHealth -= GetNewGlobalTarget;
 
-            FractionCasher.OnGameEnd -= BecomeNeutral;
+            FractionCacher.OnGameEnd -= BecomeNeutral;
             gameObject.SetActive(false);
         }
 
         public void PullOutPreparation()
         {
             _health = _maxHealthPoints;
+            _isDead = false;
+            _isOnCoolDown = false;
+
             GetNewGlobalTarget();
 
-            FractionCasher.OnGameEnd += BecomeNeutral;
+            FractionCacher.OnGameEnd += BecomeNeutral;
             gameObject.SetActive(true);
         }
 
@@ -163,14 +165,10 @@ namespace InfinityGame.GameEntities
         private void GetNewGlobalTarget()
         {
             var minimalDistanceToTwonHall = float.MaxValue;
-            //var cashedBuildings = BuildingCasher.GetCashedBuildings();
-            var cashedBuildings = FractionCasher.GetEnemyEntities(FractionTag);
+            var cashedBuildings = FractionCacher.GetEnemyEntitiesOfFraction(FractionTag);
 
             foreach (var building in cashedBuildings)
             {
-          /*      if (building.IsSameFraction(FractionTag))
-                    continue;*/
-
                 var distanceToCurrentTownhall = Vector3.Distance(building.transform.position, transform.position);
 
                 if (distanceToCurrentTownhall < minimalDistanceToTwonHall)
@@ -230,8 +228,7 @@ namespace InfinityGame.GameEntities
                     TryToGetNewLocalTarget();
             };
 
-            FractionCasher.OnGameEnd += BecomeNeutral;
-
+            FractionCacher.OnGameEnd += BecomeNeutral;
             _maxHealthPoints = _health;
         }
 

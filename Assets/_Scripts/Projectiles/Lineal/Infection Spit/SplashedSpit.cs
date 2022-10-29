@@ -10,12 +10,12 @@ namespace InfinityGame.Projectiles
 
 
 
-        protected override void OnCollitionWith(FractionEntity target)
+        protected override void OnCollisionWith(FractionEntity target)
         {
             var collidersInAttackRadius = Physics2D.OverlapCircleAll(target.transform.position, _splashRadius);
 
             foreach (var collider2D in collidersInAttackRadius)
-                if (IsColliderEnemyEntity(collider2D, out FractionEntity enemy))
+                if (IsColliderHasEnemyFractionEntityComponent(collider2D, out FractionEntity enemy))
                     enemy.GetDamage(Damage);
 
             EndExpluatation();
@@ -25,7 +25,7 @@ namespace InfinityGame.Projectiles
 
         protected override void Awake()
         {
-            _disptacher = new LinealDispatcher(Speed);
+            InitializeDispatcher(new LinealDispatcher(Speed));
 
             base.Awake();
         }

@@ -1,21 +1,17 @@
 using System.Collections.Generic;
-using InfinityGame.GameEntities;
+using System;
 using InfinityGame.Factories.BuildingFactory;
-using InfinityGame.CashedData;
+using InfinityGame.DataCaching;
 using InfinityGame.Arena;
 using InfinityGame.Fractions;
 using UnityEngine;
 
 internal class GameInitializer : MonoBehaviour
 {
-   // public static event Action OnGameEnd;
-
     private static GameInitializer _instance;
 
     [SerializeField] private List<SpawnPlace> _spawnPlaces = new List<SpawnPlace>(4);
     [SerializeField] private List<Fraction> _fractions = new List<Fraction>(2);
-
-    [SerializeField] private Building _buildingPrefab;
 
     private BuildingFactory _buildingFactory;
 
@@ -28,37 +24,28 @@ internal class GameInitializer : MonoBehaviour
     /// <returns>List of all barracks of fraction</returns>
     private void AssembleFraction(Fraction fraction, SpawnPlace spawnPlace)
     {
-
-        FractionCasher.CashFraction(fraction);
-        // TODO: “х должен иметь в себе размер армии и считать, сколько войнов определЄнног типа сейчас на арене
-        // ≈сли войнов такое же колличесвто, как и макс ращмер армии, то спавн любого война прекращаетс€
-        // ѕосле уменьшени€ коллличества войнов - вновь работаетt
-        var townHall = _buildingFactory.CreateSpawnBuilding(fraction, spawnPlace.TownHallSpawnPointPosition, fraction.TownHallBuildingData);
+        FractionCacher.CashFraction(fraction);
+        var townHall = _buildingFactory.CreateAndInitializeSpawnBuilding(fraction, spawnPlace.TownHallSpawnPointPosition, fraction.TownHallBuildingData);
 
         // Spawn all sub barracks
         foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsTransforms)
         {
-            var barrack = _buildingFactory.CreateSpawnBuilding(fraction, barrackPosition, fraction.BarrackBuildingData);
+            var barrack = _buildingFactory.CreateAndInitializeSpawnBuilding(fraction, barrackPosition, fraction.BarrackBuildingData);
             barrack.OnZeroHealth += () => Destroy(barrack.gameObject);
         }
 
         townHall.OnZeroHealth += () =>
         {
-            var barracks = new List<FractionEntity>();
+            Action onAllBuildingsIterationEnd = null;
 
-            foreach (var cashedBuilding in FractionCasher.GetAllyEntities(townHall.FractionTag))
-                //if (cashedBuilding.IsSameFraction(townHall.FractionTag))
-                barracks.Add(cashedBuilding);
+            foreach (var aliveFractionBuilding in FractionCacher.GetBuildingsOfFraction(townHall.FractionTag))
+                onAllBuildingsIterationEnd += aliveFractionBuilding.Die;
 
-            foreach (var barrack in barracks)
-                barrack.Die();
+            onAllBuildingsIterationEnd?.Invoke();
         };
 
         townHall.OnZeroHealth += () =>
         {
-            /*            if (BuildingCasher.IsOnlyOneFractionBuildingsLeft())
-                            OnGameEnd?.Invoke();*/
-
             Destroy(townHall.gameObject);
         };
     }
@@ -75,7 +62,7 @@ internal class GameInitializer : MonoBehaviour
 
     private void AssembleArena()
     {
-        _buildingFactory = new BuildingFactory(_buildingPrefab);
+        _buildingFactory = new BuildingFactory();
 
         var emptySpawnPlaceIndexes = GetReservedSpawnPlaceIndexes();
         var possibleToGenerateFractions = new List<Fraction>(_fractions);
@@ -85,7 +72,8 @@ internal class GameInitializer : MonoBehaviour
             var randomIndexOfFraction = StaticRandomizer.Randomizer.Next(0, possibleToGenerateFractions.Count);
             var radnomIndexOfPlace = StaticRandomizer.Randomizer.Next(0, emptySpawnPlaceIndexes.Count);
 
-            AssembleFraction(possibleToGenerateFractions[randomIndexOfFraction], _spawnPlaces[emptySpawnPlaceIndexes[radnomIndexOfPlace]]);
+            AssembleFraction(possibleToGenerateFractions[randomIndexOfFraction],
+                _spawnPlaces[emptySpawnPlaceIndexes[radnomIndexOfPlace]]);
 
             possibleToGenerateFractions.RemoveAt(randomIndexOfFraction);
             emptySpawnPlaceIndexes.RemoveAt(radnomIndexOfPlace);
@@ -106,10 +94,5 @@ internal class GameInitializer : MonoBehaviour
         #endregion
 
         AssembleArena();
-    }
-
-    private void OnApplicationQuit()
-    {
-       // OnGameEnd?.Invoke();
     }
 }

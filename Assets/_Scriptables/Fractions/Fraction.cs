@@ -24,7 +24,7 @@ namespace InfinityGame.Fractions
 
 
         public string Tag => _tag;
-        public int WarrioirMaxCount => _warrioirMaxCount;
+        public int WarrioirMaxLimit => _warrioirMaxCount;
         public WarrioirsPickStrategy WarrioirPickStrategy => _warrioirPickStrategy;
         public WarrioirSpawnSettings WarrioirSpawnSettings => _warrioirSpawnSettings;
         public BuildingData BarrackBuildingData => _barrackBuildingData;

@@ -9,7 +9,8 @@ namespace InfinityGame.Projectiles
     /// </summary>
     public abstract class RotatableProjectile : Projectile
     {
-        protected IObjectRotateStrategy _rotateStrategy;
+        private IObjectRotateStrategy _rotateStrategy;
+
 
 
         public override void HeadTowardsTarget(Transform target)
@@ -17,6 +18,11 @@ namespace InfinityGame.Projectiles
             base.HeadTowardsTarget(target);
 
             _rotateStrategy.RoteteObjectToTarget(RigidBody2D, target);
+        }
+
+        protected void InitializeRotationStrategy(IObjectRotateStrategy rotateStrategy)
+        {
+            _rotateStrategy = rotateStrategy;
         }
     }
 }

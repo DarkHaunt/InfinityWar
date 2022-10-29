@@ -1,5 +1,5 @@
 using InfinityGame.GameEntities;
-using InfinityGame.CashedData;
+using InfinityGame.DataCaching;
 using InfinityGame.Fractions;
 using UnityEngine;
 
@@ -9,33 +9,32 @@ namespace InfinityGame.Factories.BuildingFactory
 
     public class BuildingFactory
     {
-        private Building _prefab;
+        public BuildingFactory() { }
 
-        public BuildingFactory(Building buildingPrefab)
-        {
-            _prefab = buildingPrefab;
-        }
 
 
         public Building CreateBuilding(FractionBuildingData fractionBuildingData, Vector2 position)
         {
-            var building = Building.Instantiate(_prefab, fractionBuildingData.FractionTag, fractionBuildingData.BuildingData);
+            var buildingGameObject = new GameObject(fractionBuildingData.Name);
+            var building = buildingGameObject.AddComponent<Building>();
+
+            building.Initialize(fractionBuildingData.FractionTag, fractionBuildingData.BuildingData);
             building.transform.position = position;
             building.name = fractionBuildingData.Name;
 
-            FractionCasher.CacheBuilding(building);
-            //BuildingCasher.CashBuilding(building);
+            FractionCacher.CacheBuilding(building);
+            building.OnZeroHealth += () => FractionCacher.UncacheBuilding(building);
 
             return building;
         }
 
-        public Building CreateSpawnBuilding(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData) // TODO: Название не отражает действия
+        public Building CreateAndInitializeSpawnBuilding(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData)
         {
             var fractionBarrackData = new FractionBuildingData(fraction.Tag, buildingData);
             var building = CreateBuilding(fractionBarrackData, position);
 
             var barrackSpawner = building.gameObject.AddComponent<WarrioirSpawner>();
-            barrackSpawner.Initialize(fraction.WarrioirSpawnSettings, fraction.WarrioirPickStrategy);
+            barrackSpawner.Initialize(fraction.Tag ,fraction.WarrioirSpawnSettings, fraction.WarrioirPickStrategy);
 
             return building;
         }

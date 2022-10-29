@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
 using System.Threading;
+using System;
 using UnityEngine;
+using InfinityGame.Strategies.WarrioirSpawnStrategies;
 using InfinityGame.Factories.WarriorFactory;
 using InfinityGame.GameEntities;
-using InfinityGame.Strategies.WarrioirSpawnStrategies;
-using InfinityGame.CashedData;
-
+using InfinityGame.DataCaching;
 
 
 /// <summary>
@@ -15,11 +14,11 @@ using InfinityGame.CashedData;
 /// </summary>
 public class WarrioirSpawner : MonoBehaviour
 {
-    // A scratter between spawn position and spawner in units
-    private static Vector2 SpawnPositionScatter = new Vector2(1f, 1f);
+    // A max scatter between spawn position and spawner position in units
+    private static Vector2 MaxSpawnPositionScatter = new Vector2(1f, 1f);
 
-    private float _generalSpawnCoolDownSeconds;
-    private float _spawnTimeDeltaSeconds;
+    private float _spawnCoolDownSeconds;
+    private float _spawnDelaySeconds;
 
     private List<Warrior> _warriorsToSpawn;
     private CancellationTokenSource _spawnCanceller;
@@ -27,20 +26,29 @@ public class WarrioirSpawner : MonoBehaviour
 
 
 
-    public void Initialize(SpawnData spawnData, WarrioirsPickStrategy warrioirChoseStrategy)
+    public void Initialize(string fractionTag, SpawnData spawnData, WarrioirsPickStrategy warriorPickStrategy)
     {
-        _generalSpawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
-        _spawnTimeDeltaSeconds = spawnData.TimeDeltaSeconds;
+        _spawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
+        _spawnDelaySeconds = spawnData.TimeDeltaSeconds;
+
+        if (_spawnDelaySeconds >= _spawnCoolDownSeconds)
+            throw new UnityException($"Spawn delay can't be equal or higher than cool down seconds!");
+
         _warriorsToSpawn = spawnData.WarriosToSpawn;
 
-        _warriorsPickStrategy = warrioirChoseStrategy;
+        _warriorsPickStrategy = warriorPickStrategy;
         _spawnCanceller = new CancellationTokenSource();
 
-        FractionCasher.OnGameEnd += _spawnCanceller.Cancel;
-        StartGeneration(); // TODO: Вынести от сюда запуск спавна
+        FractionCacher.OnGameEnd += _spawnCanceller.Cancel;
+
+        var cashedFraction = FractionCacher.TryToGetFractionCashedData(fractionTag);
+        cashedFraction.OnWarrioirLimitRelease += StartSpawn;
+        cashedFraction.OnWarrioirLimitOverflow += CancelSpawning;
+
+        StartSpawn();
     }
 
-    private async void StartGeneration() 
+    private async void StartSpawn()
     {
         while (true)
         {
@@ -63,23 +71,34 @@ public class WarrioirSpawner : MonoBehaviour
 
             foreach (var warrioirPrefab in warriorPrefabs)
             {
-                var warrioir = WarriorFactory.InstantiateWarrior(warrioirPrefab);
-                warrioir.transform.position = transform.position + RandomPositionDeviation();
+                if (_spawnCanceller.IsCancellationRequested)
+                {
+                    RefreshCancellationToken();
+                    return;
+                }
+
+                var warrior =  WarriorFactory.InstantiateWarrior(warrioirPrefab);
+                warrior.transform.position = transform.position + RandomPositionDeviation();
+
+                await Task.Delay(1000);
             }
         }
 
-
-  /*      if (_spawnCanceller.IsCancellationRequested)
-        {
-            _spawnCanceller.Dispose();
-            _spawnCanceller = new CancellationTokenSource();
-        }*/
+        RefreshCancellationToken();
     }
+
+    private void RefreshCancellationToken()
+    {
+        _spawnCanceller.Dispose();
+        _spawnCanceller = new CancellationTokenSource();
+    }
+
+    private void CancelSpawning() => _spawnCanceller.Cancel();
 
     private Vector3 RandomPositionDeviation()
     {
-        var randomX = (float)(StaticRandomizer.GetRandomSign() * StaticRandomizer.Randomizer.NextDouble() * SpawnPositionScatter.x);
-        var randomY = (float)(StaticRandomizer.GetRandomSign() * StaticRandomizer.Randomizer.NextDouble() * SpawnPositionScatter.y);
+        var randomX = (float)(StaticRandomizer.GetRandomSign() * StaticRandomizer.Randomizer.NextDouble() * MaxSpawnPositionScatter.x);
+        var randomY = (float)(StaticRandomizer.GetRandomSign() * StaticRandomizer.Randomizer.NextDouble() * MaxSpawnPositionScatter.y);
 
         return new Vector3(randomX, randomY);
     }
@@ -87,7 +106,7 @@ public class WarrioirSpawner : MonoBehaviour
     private int NewSpawnDelayMiliseconds()
     {
         var randomPercentOfDeltaMiliseconds = StaticRandomizer.Randomizer.NextDouble();
-        var rawTime = (_generalSpawnCoolDownSeconds + (StaticRandomizer.GetRandomSign() * _spawnTimeDeltaSeconds * randomPercentOfDeltaMiliseconds)) * 1000;
+        var rawTime = (_spawnCoolDownSeconds + (StaticRandomizer.GetRandomSign() * _spawnDelaySeconds * randomPercentOfDeltaMiliseconds)) * 1000;
 
         return (int)rawTime;
     }

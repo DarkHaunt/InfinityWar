@@ -1,21 +1,22 @@
-using UnityEngine;
 using InfinityGame.GameEntities;
 
 namespace InfinityGame.Projectiles
 {
     public class Arrow : RotatableProjectile
     {
-        protected override void OnCollitionWith(FractionEntity target)
+        protected override void OnCollisionWith(FractionEntity target)
         {
             target.GetDamage(Damage);
 
             EndExpluatation();
         }
 
+
+
         protected override void Awake()
         {
-            _disptacher = new LinealDispatcher(Speed);
-            _rotateStrategy = new RotateToTargetOnce();
+            InitializeDispatcher(new LinealDispatcher(Speed));
+            InitializeRotationStrategy(new RotateToTargetOnce());
 
             base.Awake();
         }

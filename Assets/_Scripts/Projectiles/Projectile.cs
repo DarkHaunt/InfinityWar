@@ -11,6 +11,8 @@ namespace InfinityGame.Projectiles
     {
         public event Action OnExpluatationEnd;
 
+        [SerializeField] private string _shooterFractionTag;
+        [SerializeField] private string _poolTag;
 
         [SerializeField] private float _damage = 10f;
         [SerializeField] private float _speedMult = 2f;
@@ -20,23 +22,20 @@ namespace InfinityGame.Projectiles
         [Range(1f, 10f)]
         [SerializeField] private float _lifeTime = 5f;
 
-        [SerializeField] private string _shooterFractionTag;
-        [SerializeField] private string _poolTag;
         private Coroutine _lifeTimeCoroutine;
 
-        protected ObjectDispatcher _disptacher; // Implements fly trajectory
+        private ObjectDispatcher _disptacher; // Implements fly trajectory
 
 
 
         public string PoolTag => _poolTag;
-
         protected float Damage => _damage;
         protected float Speed => _speedMult;
         protected Rigidbody2D RigidBody2D => _rigidbody2D;
 
 
 
-        protected abstract void OnCollitionWith(FractionEntity target);
+        protected abstract void OnCollisionWith(FractionEntity target);
 
         public void PullInPreparations()
         {
@@ -67,12 +66,17 @@ namespace InfinityGame.Projectiles
             OnExpluatationEnd?.Invoke();
         }
 
-        protected bool IsColliderEnemyEntity(Collider2D collider2D, out FractionEntity enemy)
+        protected bool IsColliderHasEnemyFractionEntityComponent(Collider2D collider2D, out FractionEntity enemy)
         {
             var isHitableEntity = collider2D.TryGetComponent(out FractionEntity entity);
 
             enemy = entity;
             return isHitableEntity && !entity.IsSameFraction(_shooterFractionTag);
+        }
+
+        protected void InitializeDispatcher(ObjectDispatcher dispatcher)
+        {
+            _disptacher = dispatcher;
         }
 
 
@@ -84,8 +88,8 @@ namespace InfinityGame.Projectiles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (IsColliderEnemyEntity(collision, out FractionEntity enemy))
-                OnCollitionWith(enemy);
+            if (IsColliderHasEnemyFractionEntityComponent(collision, out FractionEntity enemy))
+                OnCollisionWith(enemy);
         }
     }
 }
