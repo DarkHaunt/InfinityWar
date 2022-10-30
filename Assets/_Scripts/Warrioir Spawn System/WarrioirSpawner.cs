@@ -1,13 +1,12 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Threading;
 using System;
 using UnityEngine;
 using InfinityGame.Strategies.WarrioirSpawnStrategies;
 using InfinityGame.Factories.WarriorFactory;
 using InfinityGame.GameEntities;
+using InfinityGame.Fractions;
 using InfinityGame.DataCaching;
-
+using System.Collections;
 
 /// <summary>
 /// Loop spawning certain count of warriors determied by spawn strategy
@@ -20,13 +19,16 @@ public class WarrioirSpawner : MonoBehaviour
     private float _spawnCoolDownSeconds;
     private float _spawnDelaySeconds;
 
-    private List<Warrior> _warriorsToSpawn;
-    private CancellationTokenSource _spawnCanceller;
+    private IReadOnlyList<Warrior> _warriorsToSpawn;
     private WarrioirsPickStrategy _warriorsPickStrategy;
 
+    private Coroutine _spawning;
 
 
-    public void Initialize(string fractionTag, SpawnData spawnData, WarrioirsPickStrategy warriorPickStrategy)
+
+    public void Initialize(Fraction fraction) => Initialize(fraction.WarrioirSpawnSettings, fraction.WarrioirPickStrategy);
+
+    public void Initialize(SpawnData spawnData, WarrioirsPickStrategy warriorPickStrategy)
     {
         _spawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
         _spawnDelaySeconds = spawnData.TimeDeltaSeconds;
@@ -35,65 +37,38 @@ public class WarrioirSpawner : MonoBehaviour
             throw new UnityException($"Spawn delay can't be equal or higher than cool down seconds!");
 
         _warriorsToSpawn = spawnData.WarriosToSpawn;
-
         _warriorsPickStrategy = warriorPickStrategy;
-        _spawnCanceller = new CancellationTokenSource();
 
-        FractionCacher.OnGameEnd += _spawnCanceller.Cancel;
+        FractionCacher.OnGameEnd += StopSpawning;
 
-        var cashedFraction = FractionCacher.TryToGetFractionCashedData(fractionTag);
-        cashedFraction.OnWarrioirLimitRelease += StartSpawn;
-        cashedFraction.OnWarrioirLimitOverflow += CancelSpawning;
-
-        StartSpawn();
+        StartSpawning();
     }
 
-    private async void StartSpawn()
+
+
+    public void StartSpawning()
+    {
+        _spawning = StartCoroutine(SpawnCoroutine());
+    }
+
+    public void StopSpawning() => StopCoroutine(_spawning);
+
+    private IEnumerator SpawnCoroutine()
     {
         while (true)
         {
-            var taskOfGettingWave = Task.Run(() => _warriorsPickStrategy.ChoseWarrioirsToSawn(_warriorsToSpawn), _spawnCanceller.Token);
-            var coolDownTask = Task.Delay(NewSpawnDelayMiliseconds(), _spawnCanceller.Token);
+            yield return new WaitForSeconds(NewSpawnDelaySeconds());
 
-            try
+            var pickedWarioirsPrefabs = _warriorsPickStrategy.ChoseWarrioirsToSawn(_warriorsToSpawn);
+
+
+            foreach (var warrioirPrefab in pickedWarioirsPrefabs)
             {
-                await Task.WhenAll(taskOfGettingWave, coolDownTask);
-            }
-            catch (Exception e)
-            {
-                if (_spawnCanceller.IsCancellationRequested)
-                    break;
-                else
-                    Debug.Log(e.Message);
-            }
-
-            var warriorPrefabs = taskOfGettingWave.Result;
-
-            foreach (var warrioirPrefab in warriorPrefabs)
-            {
-                if (_spawnCanceller.IsCancellationRequested)
-                {
-                    RefreshCancellationToken();
-                    return;
-                }
-
-                var warrior =  WarriorFactory.InstantiateWarrior(warrioirPrefab);
+                var warrior = WarriorFactory.InstantiateWarrior(warrioirPrefab);
                 warrior.transform.position = transform.position + RandomPositionDeviation();
-
-                await Task.Delay(1000);
             }
         }
-
-        RefreshCancellationToken();
     }
-
-    private void RefreshCancellationToken()
-    {
-        _spawnCanceller.Dispose();
-        _spawnCanceller = new CancellationTokenSource();
-    }
-
-    private void CancelSpawning() => _spawnCanceller.Cancel();
 
     private Vector3 RandomPositionDeviation()
     {
@@ -103,19 +78,19 @@ public class WarrioirSpawner : MonoBehaviour
         return new Vector3(randomX, randomY);
     }
 
-    private int NewSpawnDelayMiliseconds()
+    private float NewSpawnDelaySeconds()
     {
         var randomPercentOfDeltaMiliseconds = StaticRandomizer.Randomizer.NextDouble();
-        var rawTime = (_spawnCoolDownSeconds + (StaticRandomizer.GetRandomSign() * _spawnDelaySeconds * randomPercentOfDeltaMiliseconds)) * 1000;
+        var rawTime = (_spawnCoolDownSeconds + (StaticRandomizer.GetRandomSign() * _spawnDelaySeconds * randomPercentOfDeltaMiliseconds));
 
-        return (int)rawTime;
+        return (float)rawTime;
     }
 
 
 
     private void OnDestroy()
     {
-        _spawnCanceller.Cancel();
+        FractionCacher.OnGameEnd -= StopSpawning;
     }
 
 

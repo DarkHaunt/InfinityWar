@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using InfinityGame.GameEntities;
-using InfinityGame.Factories.WarriorFactory;
 using InfinityGame.Fractions;
 
 namespace InfinityGame.DataCaching
@@ -33,7 +32,14 @@ namespace InfinityGame.DataCaching
                 yield return entity;
         }
 
-        public static IEnumerable<Building> GetBuildingsOfFraction(string fractionTag) => _cachedFractions[fractionTag].GetBuildings;
+        public static bool TryToGetBuildingsOfFraction(string fractionTag, out IEnumerable<Building> buildings)
+        {
+            var isFractionCached = IsFractionCached(fractionTag);
+
+            buildings = (isFractionCached) ? _cachedFractions[fractionTag].GetBuildings : null;
+
+            return isFractionCached;
+        }
 
         public static void CashFraction(Fraction fraction)
         {
@@ -77,10 +83,12 @@ namespace InfinityGame.DataCaching
             _cachedFractions[warrior.FractionTag].UncacheWarrior(warrior);
         }
 
+        private static bool IsFractionCached(string fractionTag) => _cachedFractions.ContainsKey(fractionTag);
+
         public static FractionCachedData TryToGetFractionCashedData(string fractionTag)
         {
-            if (_cachedFractions.TryGetValue(fractionTag, out FractionCachedData fractionData))
-                return fractionData;
+            if (IsFractionCached(fractionTag))
+                return _cachedFractions[fractionTag];
 
             throw new UnityException($"Fraction Cahser doesn't contain fraction {fractionTag}");
         }
@@ -185,11 +193,7 @@ namespace InfinityGame.DataCaching
                 if (_warriorCount >= WarrioirCountLimit)
                 {
                     _isWarrioirLimitOverflow = true;
-                    OnWarrioirLimitOverflow.Invoke();
-
-/*                    if (FractionTag.Contains("Z"))
-                        MonoBehaviour.print("ZOMBIE FRACTION OVERLOADED");*/
-                   // WarriorFactory.StopSpawningWarrioirsOfFraction(FractionTag);
+                    OnWarrioirLimitOverflow?.Invoke();
                 }
             }
 
@@ -200,8 +204,7 @@ namespace InfinityGame.DataCaching
                 if (_isWarrioirLimitOverflow && _warriorCount < WarrioirCountLimit)
                 {
                     _isWarrioirLimitOverflow = false;
-                    OnWarrioirLimitRelease.Invoke();
-                    //WarriorFactory.ContinueSpawningWarrioirsOfFraction(FractionTag);
+                    OnWarrioirLimitRelease?.Invoke();
                 }
             }
 

@@ -14,22 +14,15 @@ namespace InfinityGame.GameEntities.Humans
         [SerializeField] private float _atackRadius;
 
         private float _damageForSurroundedNonMainEntities;
+        private FractionEntitesDetector _enemyDetector;
+
 
 
         protected override void Attack()
         {
-            var collidersInAttackRadius = Physics2D.OverlapCircleAll(transform.position, _atackRadius);
+            var detectedEnemies =  _enemyDetector.GetDetectedFractionEntities(transform.position);
 
-            var enemies = GetEnemiesFrom(collidersInAttackRadius);
-            DamageAllSurroundEnemies(enemies);
-        }
-
-        private bool IsColliderHostileEntity(Collider2D collider2D, out FractionEntity hostileEntity)
-        {
-            var isHitableEntity = collider2D.TryGetComponent(out FractionEntity entity);
-
-            hostileEntity = entity;
-            return isHitableEntity && !entity.IsSameFraction(FractionTag);
+            DamageAllSurroundEnemies(detectedEnemies);
         }
 
         private bool IsMainTarget(FractionEntity entity) => LocalTarget == entity;
@@ -39,24 +32,20 @@ namespace InfinityGame.GameEntities.Humans
             // Non-main targets around get another damage value
             foreach (var enemy in enemies)
                 if (IsMainTarget(enemy))
-                    enemy.GetDamage(_meleeDamage);
+                    enemy.GetDamage(MeleeDamage);
                 else
                     enemy.GetDamage(_damageForSurroundedNonMainEntities);
         }
 
-        private IEnumerable<FractionEntity> GetEnemiesFrom(Collider2D[] colliders)
-        {
-            foreach (var collider in colliders)
-                if (IsColliderHostileEntity(collider, out FractionEntity hostileEntity))
-                    yield return hostileEntity;
-        }
+
 
 
         protected override void Awake()
         {
             base.Awake();
 
-            _damageForSurroundedNonMainEntities = _meleeDamage * _nonMainTargetDamagePercent;
+            _damageForSurroundedNonMainEntities = MeleeDamage * _nonMainTargetDamagePercent;
+            _enemyDetector = new FractionEntitesDetector(_atackRadius, FractionTag);
         }
     }
 }

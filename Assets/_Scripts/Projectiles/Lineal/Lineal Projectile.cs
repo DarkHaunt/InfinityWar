@@ -13,16 +13,27 @@ namespace InfinityGame.Projectiles
 
 
 
-        public override void HeadTowardsTarget(Transform target)
-        {
-            base.HeadTowardsTarget(target);
-
-            _rotateStrategy.RoteteObjectToTarget(RigidBody2D, target);
-        }
-
         protected void InitializeRotationStrategy(IObjectRotateStrategy rotateStrategy)
         {
             _rotateStrategy = rotateStrategy;
+        }
+
+        private void RotateToTarget(Transform target) => _rotateStrategy.RoteteObjectToTarget(RigidBody2D, target);
+
+
+
+        protected override void Awake()
+        {
+            OnHeadingTowardsTargetStart += RotateToTarget;
+
+            base.Awake();
+        }
+
+        protected override void OnDestroy()
+        {
+            OnHeadingTowardsTargetStart -= RotateToTarget;
+
+            base.OnDestroy();
         }
     }
 }

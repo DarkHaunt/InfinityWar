@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1300813147675546496}
   - component: {fileID: 4124313768366383762}
   m_Layer: 10
-  m_Name: Zombie Arguing Trigger
+  m_Name: Entity Detector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -195,10 +195,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d932ae1207a66440a733fa3eb273436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 10
+  _health: 40
   _fractionTag: Zombies
   _attackCoolDown: 0.9
-  _speedMult: 4
+  _speedMult: 3
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 9134285203207437134}
   _entityDetector: {fileID: 1300813147675546496}

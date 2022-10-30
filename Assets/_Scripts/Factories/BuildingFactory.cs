@@ -20,23 +20,36 @@ namespace InfinityGame.Factories.BuildingFactory
 
             building.Initialize(fractionBuildingData.FractionTag, fractionBuildingData.BuildingData);
             building.transform.position = position;
-            building.name = fractionBuildingData.Name;
 
             FractionCacher.CacheBuilding(building);
-            building.OnZeroHealth += () => FractionCacher.UncacheBuilding(building);
+            //building.OnZeroHealth += () => FractionCacher.UncacheBuilding(building);
 
             return building;
         }
 
-        public Building CreateAndInitializeSpawnBuilding(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData)
+        public FractionSpawnBuilding CreateSpawnBuilding(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData)
+        {
+            var buildingGameObject = new GameObject(buildingData.Name);
+            var building = buildingGameObject.AddComponent<FractionSpawnBuilding>();
+
+            building.Initialize(fraction, buildingData);
+            building.transform.position = position;
+
+            FractionCacher.CacheBuilding(building);
+            //building.OnZeroHealth += () => FractionCacher.UncacheBuilding(building); // ”брать от сюда
+
+            return building;
+        }
+
+/*        public Building CreateAndInitializeSpawnBuilding(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData)
         {
             var fractionBarrackData = new FractionBuildingData(fraction.Tag, buildingData);
             var building = CreateBuilding(fractionBarrackData, position);
 
-            var barrackSpawner = building.gameObject.AddComponent<WarrioirSpawner>();
-            barrackSpawner.Initialize(fraction.Tag ,fraction.WarrioirSpawnSettings, fraction.WarrioirPickStrategy);
+            var barrackSpawner = building.gameObject.AddComponent<FractionWarrioirSpawner>();
+            barrackSpawner.Initialize(fraction);
 
             return building;
-        }
+        }*/
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using InfinityGame.DataCaching;
@@ -78,7 +79,7 @@ namespace InfinityGame.GameEntities
                 case WarriorState.FollowGlobalTarget:
                     FollowGlobalTarget();
                     break;
-                case WarriorState.Stay:
+                case WarriorState.Unactive:
                     break;
                 default:
                     throw new UnityException("Warrioir's state machine can't find current state!");
@@ -93,8 +94,8 @@ namespace InfinityGame.GameEntities
             if (!IsOnAttackDistance())
                 _currentState = WarriorState.Arguing;
 
-            Attack();
             StartCoroutine(CoolDownCoroutine());
+            Attack();
         }
 
         private bool IsOnAttackDistance() => Vector3.Distance(_localTarget.transform.position, transform.position) < _attackDistance;
@@ -189,14 +190,14 @@ namespace InfinityGame.GameEntities
             _globalTarget.OnZeroHealth -= GetNewGlobalTarget;
 
             _entityDetector.gameObject.SetActive(false);
-            _currentState = WarriorState.Stay;
+            _currentState = WarriorState.Unactive;
             _rigidbody2D.velocity = Vector2.zero;
         }
 
         private IEnumerable<FractionEntity> GetEnemiesAround()
         {
             foreach (var entity in _entityDetector.DetecedEntities)
-                if (!entity.IsSameFraction(FractionTag))
+                if (!entity.IsBelongToFraction(FractionTag))
                     yield return entity;
         }
 
@@ -218,7 +219,7 @@ namespace InfinityGame.GameEntities
 
             _entityDetector.OnEntityEnter += (FractionEntity target) =>
             {
-                if (!_isOnArgue && !target.IsSameFraction(FractionTag))
+                if (!_isOnArgue && !target.IsBelongToFraction(FractionTag))
                     SetLocalTarget(target);
             };
 
@@ -247,7 +248,7 @@ namespace InfinityGame.GameEntities
             Attack,
             Arguing,
             FollowGlobalTarget,
-            Stay
+            Unactive
         }
     }
 }

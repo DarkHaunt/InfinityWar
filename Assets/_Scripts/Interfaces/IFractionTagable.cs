@@ -10,5 +10,5 @@ public interface IFractionTagable
     string FractionTag { get; }
 
 
-    bool IsSameFraction(string fractionTag);
+    bool IsBelongToFraction(string fractionTag);
 }

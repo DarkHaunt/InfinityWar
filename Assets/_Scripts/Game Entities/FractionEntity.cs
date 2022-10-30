@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System;
 using UnityEngine;
 
@@ -20,7 +18,7 @@ namespace InfinityGame.GameEntities
 
 
 
-        public string FractionTag => _fractionTag;
+        public string FractionTag => _fractionTag; // TODO: Может всё таки тег будет перечислителем?
 
 
 
@@ -42,7 +40,7 @@ namespace InfinityGame.GameEntities
             Destroy(gameObject);
         }
 
-        public bool IsSameFraction(string fractionTag) => _fractionTag == fractionTag;
+        public bool IsBelongToFraction(string fractionTag) => _fractionTag == fractionTag;
 
         public override string ToString() => $"{name} {transform.position} {FractionTag}";
     } 

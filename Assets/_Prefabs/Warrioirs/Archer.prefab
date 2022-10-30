@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b543b8b51778fd43b2ff7d7a9e0e6de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 10
+  _health: 30
   _fractionTag: Humans
   _attackCoolDown: 2
   _speedMult: 2
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 7715318570710870164}
   - component: {fileID: 4651877043822598403}
   m_Layer: 10
-  m_Name: Archer Arguing Trigger
+  m_Name: Entity Detector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

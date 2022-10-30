@@ -7,17 +7,18 @@ namespace InfinityGame.Factories.ProjectileFactory
 {
     public static class ProjectileFactory
     {
-        private static ObjectPooler<Projectile> _projectilPool = new ObjectPooler<Projectile>();
+        private static readonly ObjectPooler<Projectile> _projectilePool = new ObjectPooler<Projectile>();
 
         public static Projectile Instantiate(Projectile prefab)
         {
-            if (!_projectilPool.TryGetFromPool(prefab.PoolTag, out Projectile pooledProjectile))
+            // TODO: Тег присваивать тут
+            if (!_projectilePool.TryGetFromPool(prefab.PoolTag, out Projectile projectile))
             {
-                pooledProjectile = MonoBehaviour.Instantiate(prefab);
-                pooledProjectile.OnExpluatationEnd += () => _projectilPool.AddToPool(pooledProjectile);
+                projectile = MonoBehaviour.Instantiate(prefab);
+                projectile.OnExpluatationEnd += () => _projectilePool.AddToPool(projectile);
             }
 
-            return pooledProjectile;
+            return projectile;
         }
     }
 }

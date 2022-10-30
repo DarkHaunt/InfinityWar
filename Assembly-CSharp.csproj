@@ -61,8 +61,9 @@
     <Compile Include="Assets\_Scripts\Static Data\FractionCacher.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Lineal Projectile.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooter.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooting\Shooter.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Warrior.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Demons\Demon.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\WarrioirsPickStrategy.cs" />
     <Compile Include="Assets\_Scripts\Static Data\StatiRandomizer.cs" />
     <Compile Include="Assets\_Scripts\Factories\WarriorFactory.cs" />
@@ -72,7 +73,7 @@
     <Compile Include="Assets\_Scripts\Static Data\CacheStateMachine\FractionCacheState.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\Single Shot\SingleShot.cs" />
     <Compile Include="Assets\_Scripts\Arena\GameInitializer.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\MeleeWarrioir.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Melee\MeleeWarrioir.cs" />
     <Compile Include="Assets\_Scripts\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Rotation Strategies\RotateToTargetOnce.cs" />
     <Compile Include="Assets\_Scriptables\Fractions\Fraction.cs" />
@@ -91,6 +92,9 @@
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Arrow\Arrow.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IFractionTagable.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
+    <Compile Include="Assets\_Scripts\Fraction Entty Detector\Fraction Entity Detector.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\Buildings\FractionSpawnBuilding.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\Buildings\TownHall.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

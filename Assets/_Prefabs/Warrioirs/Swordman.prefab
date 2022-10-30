@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c015132b3fba844b87d0c455e26497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 10
+  _health: 80
   _fractionTag: Humans
   _attackCoolDown: 3
   _speedMult: 2
@@ -146,8 +146,8 @@ MonoBehaviour:
   _localTarget: {fileID: 0}
   _poolTag: Swordman
   _currentState: 2
-  _meleeDamage: 30
-  _nonMainTargetDamagePercent: 0.75
+  _meleeDamage: 25
+  _nonMainTargetDamagePercent: 0.5
   _atackRadius: 1.2
 --- !u!1 &4526939469205197240
 GameObject:
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 6460703564526533429}
   - component: {fileID: 3802083332534601291}
   m_Layer: 10
-  m_Name: Human Arguing Trigger
+  m_Name: Entity Detector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

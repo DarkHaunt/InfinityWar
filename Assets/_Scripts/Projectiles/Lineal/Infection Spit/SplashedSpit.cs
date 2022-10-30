@@ -8,15 +8,15 @@ namespace InfinityGame.Projectiles
         [Range(0.5f, 10f)]
         [SerializeField] private float _splashRadius = 1f;
 
+        private FractionEntitesDetector _enemyDetector;
 
 
         protected override void OnCollisionWith(FractionEntity target)
         {
-            var collidersInAttackRadius = Physics2D.OverlapCircleAll(target.transform.position, _splashRadius);
+            var detectedEnemies = _enemyDetector.GetDetectedFractionEntities(target.transform.position);
 
-            foreach (var collider2D in collidersInAttackRadius)
-                if (IsColliderHasEnemyFractionEntityComponent(collider2D, out FractionEntity enemy))
-                    enemy.GetDamage(Damage);
+            foreach (var enemy in detectedEnemies)
+                enemy.GetDamage(Damage);
 
             EndExpluatation();
         }
@@ -26,8 +26,9 @@ namespace InfinityGame.Projectiles
         protected override void Awake()
         {
             InitializeDispatcher(new LinealDispatcher(Speed));
+            _enemyDetector = new FractionEntitesDetector(_splashRadius, FractionTag);
 
             base.Awake();
         }
-    } 
+    }
 }

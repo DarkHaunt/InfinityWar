@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using InfinityGame.Factories.BuildingFactory;
+using InfinityGame.GameEntities;
 using InfinityGame.DataCaching;
 using InfinityGame.Arena;
 using InfinityGame.Fractions;
@@ -25,29 +26,33 @@ internal class GameInitializer : MonoBehaviour
     private void AssembleFraction(Fraction fraction, SpawnPlace spawnPlace)
     {
         FractionCacher.CashFraction(fraction);
-        var townHall = _buildingFactory.CreateAndInitializeSpawnBuilding(fraction, spawnPlace.TownHallSpawnPointPosition, fraction.TownHallBuildingData);
+        var townHall = _buildingFactory.CreateSpawnBuilding(fraction, spawnPlace.TownHallSpawnPointPosition, fraction.TownHallBuildingData);
 
         // Spawn all sub barracks
         foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsTransforms)
         {
-            var barrack = _buildingFactory.CreateAndInitializeSpawnBuilding(fraction, barrackPosition, fraction.BarrackBuildingData);
+            var barrack = _buildingFactory.CreateSpawnBuilding(fraction, barrackPosition, fraction.BarrackBuildingData);
+            barrack.OnZeroHealth += () => FractionCacher.UncacheBuilding(barrack);
             barrack.OnZeroHealth += () => Destroy(barrack.gameObject);
         }
 
         townHall.OnZeroHealth += () =>
         {
-            Action onAllBuildingsIterationEnd = null;
+            if (FractionCacher.TryToGetBuildingsOfFraction(townHall.FractionTag, out IEnumerable<Building> buildings)) // TODO: ћожет таки класс TownHall будет хранить все здани€ свои?
+            {
+                Action onAllBuildingsIterationEnd = null;
 
-            foreach (var aliveFractionBuilding in FractionCacher.GetBuildingsOfFraction(townHall.FractionTag))
-                onAllBuildingsIterationEnd += aliveFractionBuilding.Die;
+                foreach (var aliveFractionBuilding in buildings)
+                    if (aliveFractionBuilding != townHall)
+                        onAllBuildingsIterationEnd += aliveFractionBuilding.Die;
 
-            onAllBuildingsIterationEnd?.Invoke();
+                onAllBuildingsIterationEnd?.Invoke();
+            }
+
+            FractionCacher.UncacheBuilding(townHall);
         };
 
-        townHall.OnZeroHealth += () =>
-        {
-            Destroy(townHall.gameObject);
-        };
+        townHall.OnZeroHealth += () => Destroy(townHall.gameObject);
     }
 
     private IList<int> GetReservedSpawnPlaceIndexes()
