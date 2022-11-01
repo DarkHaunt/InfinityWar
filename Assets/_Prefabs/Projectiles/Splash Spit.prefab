@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b8d436fa0a2f11418ed616572d5a8d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shooterFractionTag: Zombies
+  _fractionTag: Zombies
   _poolTag: Infected Spit
   _damage: 10
   _speedMult: 8
