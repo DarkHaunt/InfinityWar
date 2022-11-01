@@ -18,7 +18,7 @@ namespace InfinityGame.Projectiles
             foreach (var enemy in detectedEnemies)
                 enemy.GetDamage(Damage);
 
-            EndExpluatation();
+            EndExploitation();
         }
 
 

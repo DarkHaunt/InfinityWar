@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aeb3a7706dd3dd4ca04503ed61a4d89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 1000
+  _health: 30
   _fractionTag: Demons
   _attackCoolDown: 1.2
   _speedMult: 3.5
@@ -206,6 +206,6 @@ MonoBehaviour:
   _localTarget: {fileID: 0}
   _poolTag: Demon
   _currentState: 2
-  _meleeDamage: 1000
+  _meleeDamage: 10
   _explodeDamage: 20
   _explodeRadius: 2

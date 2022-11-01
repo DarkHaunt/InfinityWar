@@ -198,7 +198,7 @@ MonoBehaviour:
   _health: 40
   _fractionTag: Zombies
   _attackCoolDown: 0.9
-  _speedMult: 3
+  _speedMult: 2.5
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 9134285203207437134}
   _entityDetector: {fileID: 1300813147675546496}
@@ -206,4 +206,4 @@ MonoBehaviour:
   _localTarget: {fileID: 0}
   _poolTag: Melee Zombie
   _currentState: 2
-  _meleeDamage: 10
+  _meleeDamage: 15

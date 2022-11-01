@@ -22,7 +22,6 @@ namespace InfinityGame.Factories.BuildingFactory
             building.transform.position = position;
 
             FractionCacher.CacheBuilding(building);
-            //building.OnZeroHealth += () => FractionCacher.UncacheBuilding(building);
 
             return building;
         }
@@ -30,26 +29,30 @@ namespace InfinityGame.Factories.BuildingFactory
         public FractionSpawnBuilding CreateSpawnBuilding(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData)
         {
             var buildingGameObject = new GameObject(buildingData.Name);
-            var building = buildingGameObject.AddComponent<FractionSpawnBuilding>();
+            var spawnBuilding = buildingGameObject.AddComponent<FractionSpawnBuilding>();
 
-            building.Initialize(fraction, buildingData);
-            building.transform.position = position;
+            spawnBuilding.Initialize(fraction, buildingData);
+            spawnBuilding.transform.position = position;
 
-            FractionCacher.CacheBuilding(building);
-            //building.OnZeroHealth += () => FractionCacher.UncacheBuilding(building); // ”брать от сюда
+            FractionCacher.CacheBuilding(spawnBuilding);
 
-            return building;
+            spawnBuilding.OnZeroHealth += () => FractionCacher.UncacheBuilding(spawnBuilding);
+            spawnBuilding.OnZeroHealth += () => Object.Destroy(spawnBuilding.gameObject);
+
+            return spawnBuilding;
         }
 
-/*        public Building CreateAndInitializeSpawnBuilding(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData)
+        public TownHall CreateTownHall(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData)
         {
-            var fractionBarrackData = new FractionBuildingData(fraction.Tag, buildingData);
-            var building = CreateBuilding(fractionBarrackData, position);
+            var buildingGameObject = new GameObject(buildingData.Name);
+            var townHall = buildingGameObject.AddComponent<TownHall>();
 
-            var barrackSpawner = building.gameObject.AddComponent<FractionWarrioirSpawner>();
-            barrackSpawner.Initialize(fraction);
+            townHall.Initialize(fraction, buildingData);
+            townHall.transform.position = position;
 
-            return building;
-        }*/
+            townHall.OnZeroHealth += () => Object.Destroy(townHall.gameObject);
+
+            return townHall;
+        }
     }
 }

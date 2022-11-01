@@ -138,7 +138,7 @@ MonoBehaviour:
   _health: 80
   _fractionTag: Humans
   _attackCoolDown: 3
-  _speedMult: 2
+  _speedMult: 1.5
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 1965941402268142818}
   _entityDetector: {fileID: 6460703564526533429}

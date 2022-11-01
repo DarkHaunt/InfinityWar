@@ -15,7 +15,7 @@ namespace InfinityGame.Factories.ProjectileFactory
             if (!_projectilePool.TryGetFromPool(prefab.PoolTag, out Projectile projectile))
             {
                 projectile = MonoBehaviour.Instantiate(prefab);
-                projectile.OnExpluatationEnd += () => _projectilePool.AddToPool(projectile);
+                projectile.OnExploitationEnd += () => _projectilePool.AddToPool(projectile);
             }
 
             return projectile;

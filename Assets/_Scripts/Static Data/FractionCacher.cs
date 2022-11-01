@@ -21,29 +21,14 @@ namespace InfinityGame.DataCaching
                 if (fractionData.Key == fractionTag)
                     continue;
 
-                foreach (var entity in fractionData.Value.GetEntities)
+                foreach (var entity in fractionData.Value.GetEntitiesForTargeting)
                     yield return entity;
             }
         }
 
-        public static IEnumerable<FractionEntity> GetAllyEntitiesOfFraction(string fractionTag)
-        {
-            foreach (var entity in _cachedFractions[fractionTag].GetEntities)
-                yield return entity;
-        }
-
-        public static bool TryToGetBuildingsOfFraction(string fractionTag, out IEnumerable<Building> buildings)
-        {
-            var isFractionCached = IsFractionCached(fractionTag);
-
-            buildings = (isFractionCached) ? _cachedFractions[fractionTag].GetBuildings : null;
-
-            return isFractionCached;
-        }
-
         public static void CashFraction(Fraction fraction)
         {
-            if (_cachedFractions.ContainsKey(fraction.Tag))
+            if (IsFractionCached(fraction.Tag))
                 throw new UnityException($"{fraction} is already cashed, but you're trying to cash it again.");
 
             var fractionCashedData = new FractionCachedData(fraction);
@@ -65,6 +50,9 @@ namespace InfinityGame.DataCaching
 
         public static void CacheBuilding(Building building)
         {
+            if (!IsFractionCached(building.FractionTag))
+                return;
+
             _cachedFractions[building.FractionTag].CacheBuilding(building);
         }
 
@@ -75,6 +63,9 @@ namespace InfinityGame.DataCaching
 
         public static void CacheWarrior(Warrior warrior)
         {
+            if (!IsFractionCached(warrior.FractionTag))
+                return;
+
             _cachedFractions[warrior.FractionTag].CacheWarrior(warrior);
         }
 
@@ -83,15 +74,15 @@ namespace InfinityGame.DataCaching
             _cachedFractions[warrior.FractionTag].UncacheWarrior(warrior);
         }
 
-        private static bool IsFractionCached(string fractionTag) => _cachedFractions.ContainsKey(fractionTag);
-
-        public static FractionCachedData TryToGetFractionCashedData(string fractionTag)
+        public static FractionCachedData TryToGetFractionCachedData(string fractionTag)
         {
             if (IsFractionCached(fractionTag))
                 return _cachedFractions[fractionTag];
 
             throw new UnityException($"Fraction Cahser doesn't contain fraction {fractionTag}");
         }
+
+        private static bool IsFractionCached(string fractionTag) => _cachedFractions.ContainsKey(fractionTag);
 
 
 
@@ -102,33 +93,51 @@ namespace InfinityGame.DataCaching
             public event Action OnWarrioirLimitRelease;
 
             private readonly int WarrioirCountLimit;
+            private int _warriorCount = 0;
 
-            private readonly HashSet<Building> _buildings;
+            private TownHall _townHall;
             private readonly HashSet<Warrior> _warriors;
 
-            private int _warriorCount = 0;
-            private EntityDistributionState _distributionState;
-
             private bool _isWarrioirLimitOverflow = false;
+            private bool _townHallIsDead = false;
 
 
 
-            public IEnumerable<FractionEntity> GetEntities
+            public IEnumerable<FractionEntity> GetEntitiesForTargeting
             {
                 get
                 {
-                    return _distributionState switch
-                    {
-                        EntityDistributionState.DistributeBuildingsOnly => _buildings,
-                        EntityDistributionState.DistributeWarriorsOnly => _warriors,
-                        _ => throw new UnityException($"Fraction Casher state machine can't find the state!"),
-                    };
+                    if (_townHallIsDead)
+                        return _warriors;
+
+                    return GetBuildings;
                 }
             }
 
-            public IEnumerable<Building> GetBuildings => _buildings;
+            public IEnumerable<Building> GetBuildings
+            {
+                get
+                {
+                    foreach (var building in _townHall.Buildings)
+                        yield return building;
+
+
+                    yield return _townHall; // Because town hall is a fraction building too
+                }
+
+            }
 
             public string FractionTag { get; }
+
+            public TownHall TownHall
+            {
+                set
+                {
+                    _townHall = value;
+
+                    _townHall.OnZeroHealth += OnTownHallDeath;
+                }
+            }
 
 
 
@@ -137,35 +146,30 @@ namespace InfinityGame.DataCaching
                 WarrioirCountLimit = fraction.WarrioirMaxLimit;
                 FractionTag = fraction.Tag;
 
-                _buildings = new HashSet<Building>();
                 _warriors = new HashSet<Warrior>();
-                _distributionState = EntityDistributionState.DistributeBuildingsOnly;
             }
 
 
 
             public void CacheBuilding(Building building)
             {
-                if (!_buildings.Add(building))
-                    throw new UnityException($"{building} building is already cashed, but you're trying to cash it again.");
+                if (_townHallIsDead)
+                    throw new UnityException($"Townhall fo fraction {FractionTag} has been destroyed, so you can't cache buildings of fraction anymore");
 
-                UpdateState();
+                _townHall.AddBuilding(building);
             }
 
             public void UncacheBuilding(Building building)
             {
-                if (!_buildings.Remove(building))
-                    throw new UnityException($"{building} building is not cashed, but you're trying to uncash it.");
+/*                if (_townHallIsDead)
+                    throw new UnityException($"Townhall fo fraction {FractionTag} has been destroyed, so you can't uncache buildings of fraction anymore");*/
 
-                if (_buildings.Count == 0)
-                    UpdateState();
-
-                CheckForLose();
+                _townHall.RemoveBuilding(building);
             }
 
             private void CheckForLose()
             {
-                if (_buildings.Count == 0 && _warriors.Count == 0)
+                if (_townHallIsDead && _warriors.Count == 0)
                     OnFractionLose?.Invoke();
             }
 
@@ -183,7 +187,9 @@ namespace InfinityGame.DataCaching
                     throw new UnityException($"{warrior} warrior is not cashed, but you're trying to uncash it.");
 
                 DecreaseWarriorCount();
-                CheckForLose();
+
+                if (_townHallIsDead)
+                    CheckForLose();
             }
 
             private void IncreaseWarrioirCount()
@@ -208,24 +214,10 @@ namespace InfinityGame.DataCaching
                 }
             }
 
-            private void UpdateState()
+            private void OnTownHallDeath()
             {
-                _distributionState = _distributionState switch
-                {
-                    EntityDistributionState.DistributeBuildingsOnly => EntityDistributionState.DistributeWarriorsOnly,
-                    EntityDistributionState.DistributeWarriorsOnly => EntityDistributionState.DistributeBuildingsOnly,
-                    _ => throw new Exception($"FractionCashedData state machine can't find the state {_distributionState}"),
-                };
-            }
-
-
-            /// <summary>
-            /// Controlls, which entities FractionCachedData should give for query 
-            /// </summary>
-            private enum EntityDistributionState
-            {
-                DistributeBuildingsOnly,
-                DistributeWarriorsOnly
+                _townHallIsDead = true;
+                CheckForLose();
             }
         }
     }

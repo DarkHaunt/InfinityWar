@@ -24,14 +24,14 @@ namespace InfinityGame.Projectiles
 
         protected override void Awake()
         {
-            OnHeadingTowardsTargetStart += RotateToTarget;
+            OnHeadingTowardsTarget += RotateToTarget;
 
             base.Awake();
         }
 
         protected override void OnDestroy()
         {
-            OnHeadingTowardsTargetStart -= RotateToTarget;
+            OnHeadingTowardsTarget -= RotateToTarget;
 
             base.OnDestroy();
         }

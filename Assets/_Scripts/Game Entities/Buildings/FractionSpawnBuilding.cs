@@ -15,7 +15,7 @@ namespace InfinityGame.GameEntities
 
             _warriorSpawner.Initialize(fraction);
 
-            var fractionCachedData = FractionCacher.TryToGetFractionCashedData(_fractionTag);
+            var fractionCachedData = FractionCacher.TryToGetFractionCachedData(_fractionTag);
             fractionCachedData.OnWarrioirLimitRelease += _warriorSpawner.StartSpawning;
             fractionCachedData.OnWarrioirLimitOverflow += _warriorSpawner.StopSpawning;
 
@@ -28,7 +28,7 @@ namespace InfinityGame.GameEntities
 
 
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _warriorSpawner = GetComponent<WarrioirSpawner>();
         }

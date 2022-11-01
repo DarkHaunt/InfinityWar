@@ -9,10 +9,10 @@ namespace InfinityGame.Projectiles
     [RequireComponent(typeof(Rigidbody2D))]
     public abstract class Projectile : MonoBehaviour, IPoolable
     {
-        public event Action OnExpluatationEnd;
-        protected event Action<Transform> OnHeadingTowardsTargetStart;
+        public event Action OnExploitationEnd;
+        protected event Action<Transform> OnHeadingTowardsTarget;
 
-        [SerializeField] private string _shooterFractionTag;
+        [SerializeField] private string _fractionTag;
         [SerializeField] private string _poolTag;
 
         [SerializeField] private float _damage = 10f;
@@ -26,9 +26,11 @@ namespace InfinityGame.Projectiles
         private Coroutine _lifeTimeCoroutine;
         private ObjectDispatcher _disptacher; // Implements fly trajectory
 
+        private WaitForSeconds _cachedLifeTime;
+        private bool _isExploitating = true;
 
 
-        public string FractionTag => _shooterFractionTag;
+        public string FractionTag => _fractionTag;
         public string PoolTag => _poolTag;
         protected float Damage => _damage;
         protected float Speed => _speedMult;
@@ -46,13 +48,14 @@ namespace InfinityGame.Projectiles
 
         public void PullOutPreparation()
         {
+            _isExploitating = true;
             gameObject.SetActive(true);
             _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
         }
 
         public void HeadTowardsTarget(Transform target)
         {
-            OnHeadingTowardsTargetStart?.Invoke(target);
+            OnHeadingTowardsTarget?.Invoke(target);
 
             _disptacher.DispatchProjectileToTarget(_rigidbody2D, target);
         }
@@ -64,14 +67,15 @@ namespace InfinityGame.Projectiles
 
         private IEnumerator LifeTimeCoroutine()
         {
-            yield return new WaitForSeconds(_lifeTime);
+            yield return _cachedLifeTime;
 
-            EndExpluatation();
+            EndExploitation();
         }
 
-        protected void EndExpluatation()
+        protected void EndExploitation()
         {
-            OnExpluatationEnd?.Invoke();
+            _isExploitating = false;
+            OnExploitationEnd?.Invoke();
         }
 
         private bool IsColliderEnemyEntity(Collider2D collider2D, out FractionEntity enemy)
@@ -79,13 +83,15 @@ namespace InfinityGame.Projectiles
             var isHitableEntity = collider2D.TryGetComponent(out FractionEntity entity);
 
             enemy = entity;
-            return isHitableEntity && !entity.IsBelongToFraction(_shooterFractionTag);
+            return isHitableEntity && !entity.IsBelongToFraction(_fractionTag);
         }
 
 
 
         protected virtual void Awake()
         {
+            _cachedLifeTime = new WaitForSeconds(_lifeTime);
+
             _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
         }
 
@@ -93,7 +99,7 @@ namespace InfinityGame.Projectiles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (IsColliderEnemyEntity(collision, out FractionEntity enemy))
+            if (IsColliderEnemyEntity(collision, out FractionEntity enemy) && _isExploitating)
                 OnCollisionWith(enemy);
         }
     }

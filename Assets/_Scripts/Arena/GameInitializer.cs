@@ -26,33 +26,13 @@ internal class GameInitializer : MonoBehaviour
     private void AssembleFraction(Fraction fraction, SpawnPlace spawnPlace)
     {
         FractionCacher.CashFraction(fraction);
-        var townHall = _buildingFactory.CreateSpawnBuilding(fraction, spawnPlace.TownHallSpawnPointPosition, fraction.TownHallBuildingData);
+        var townHall = _buildingFactory.CreateTownHall(fraction, spawnPlace.TownHallSpawnPointPosition, fraction.TownHallBuildingData);
+        var cachedFraction =  FractionCacher.TryToGetFractionCachedData(fraction.Tag);
+        cachedFraction.TownHall = townHall;
 
         // Spawn all sub barracks
         foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsTransforms)
-        {
-            var barrack = _buildingFactory.CreateSpawnBuilding(fraction, barrackPosition, fraction.BarrackBuildingData);
-            barrack.OnZeroHealth += () => FractionCacher.UncacheBuilding(barrack);
-            barrack.OnZeroHealth += () => Destroy(barrack.gameObject);
-        }
-
-        townHall.OnZeroHealth += () =>
-        {
-            if (FractionCacher.TryToGetBuildingsOfFraction(townHall.FractionTag, out IEnumerable<Building> buildings)) // TODO: ћожет таки класс TownHall будет хранить все здани€ свои?
-            {
-                Action onAllBuildingsIterationEnd = null;
-
-                foreach (var aliveFractionBuilding in buildings)
-                    if (aliveFractionBuilding != townHall)
-                        onAllBuildingsIterationEnd += aliveFractionBuilding.Die;
-
-                onAllBuildingsIterationEnd?.Invoke();
-            }
-
-            FractionCacher.UncacheBuilding(townHall);
-        };
-
-        townHall.OnZeroHealth += () => Destroy(townHall.gameObject);
+            _buildingFactory.CreateSpawnBuilding(fraction, barrackPosition, fraction.BarrackBuildingData);
     }
 
     private IList<int> GetReservedSpawnPlaceIndexes()

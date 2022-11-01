@@ -1,9 +1,9 @@
 sceneSetups:
-- path: Assets/Scenes/StandartBattle.unity
+- path: Assets/_Scenes/StandartBattle.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
-- path: Assets/Scenes/Warrioir Behaviour Test Scene.unity
+- path: Assets/_Scenes/Warrioir Behaviour Test Scene.unity
   isLoaded: 0
   isActive: 0
   isSubScene: 0

@@ -8,7 +8,7 @@ namespace InfinityGame.Projectiles
         {
             target.GetDamage(Damage);
 
-            EndExpluatation();
+            EndExploitation();
         }
 
 

@@ -124,7 +124,7 @@ namespace InfinityGame.GameEntities
             var enemiesAround = GetEnemiesAround();
             var enumenatorOfEnemies = enemiesAround.GetEnumerator();
 
-            // No need to allocate momory for variables below, if there is no any enemies
+            // No need to allocate memory for variables below, if there is no any enemies
             if (!enumenatorOfEnemies.MoveNext())
             {
                 SetLocalTarget(null);
@@ -136,7 +136,7 @@ namespace InfinityGame.GameEntities
 
             foreach (var enemy in enemiesAround)
             {
-                var distanceToCurrentTarget = Vector3.Distance(enemy.transform.position, newLocaltarget.transform.position);
+                var distanceToCurrentTarget = Vector3.Distance(enemy.transform.position, transform.position);
 
                 if (distanceToCurrentTarget < minimalDiscoveredDistance)
                 {
@@ -166,15 +166,15 @@ namespace InfinityGame.GameEntities
         private void GetNewGlobalTarget()
         {
             var minimalDistanceToTwonHall = float.MaxValue;
-            var cashedBuildings = FractionCacher.GetEnemyEntitiesOfFraction(FractionTag);
+            var enemies = FractionCacher.GetEnemyEntitiesOfFraction(FractionTag);
 
-            foreach (var building in cashedBuildings)
+            foreach (var enemyTarget in enemies)
             {
-                var distanceToCurrentTownhall = Vector3.Distance(building.transform.position, transform.position);
+                var distanceToCurrentTownhall = Vector3.Distance(enemyTarget.transform.position, transform.position);
 
                 if (distanceToCurrentTownhall < minimalDistanceToTwonHall)
                 {
-                    _globalTarget = building;
+                    _globalTarget = enemyTarget;
                     minimalDistanceToTwonHall = distanceToCurrentTownhall;
                 }
             }
@@ -210,12 +210,9 @@ namespace InfinityGame.GameEntities
             _isOnCoolDown = false;
         }
 
-
-
-
-        protected virtual void Awake()
+        private IEnumerator SubscribeForDetector()
         {
-            _waitForSecondsAttackCooldown = new WaitForSeconds(_attackCoolDown);
+            yield return new WaitForFixedUpdate();
 
             _entityDetector.OnEntityEnter += (FractionEntity target) =>
             {
@@ -230,13 +227,23 @@ namespace InfinityGame.GameEntities
             };
 
             FractionCacher.OnGameEnd += BecomeNeutral;
+            TryToGetNewLocalTarget();
+        }
+
+
+
+
+        protected virtual void Awake()
+        {
+            _waitForSecondsAttackCooldown = new WaitForSeconds(_attackCoolDown);
+
             _maxHealthPoints = _health;
         }
 
         private void Start()
         {
+            StartCoroutine(SubscribeForDetector());
             GetNewGlobalTarget();
-            TryToGetNewLocalTarget();
         }
 
         protected virtual void Update() => OnStateUpdate();
