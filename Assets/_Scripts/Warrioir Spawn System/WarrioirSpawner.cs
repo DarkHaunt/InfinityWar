@@ -22,7 +22,7 @@ public class WarrioirSpawner : MonoBehaviour
     private IReadOnlyList<Warrior> _warriorsToSpawn;
     private WarrioirsPickStrategy _warriorsPickStrategy;
 
-    private Coroutine _spawning;
+    private bool _isSpawning = true;
 
 
 
@@ -44,28 +44,33 @@ public class WarrioirSpawner : MonoBehaviour
         StartSpawning();
     }
 
-
-
     public void StartSpawning()
     {
-        _spawning = StartCoroutine(SpawnCoroutine());
+        _isSpawning = true;
+        StartCoroutine(SpawnCoroutine());
     }
 
-    public void StopSpawning() => StopCoroutine(_spawning);
+    public void StopSpawning()
+    {
+        _isSpawning = false;
+    }
 
     private IEnumerator SpawnCoroutine()
     {
-        while (true)
+        while (_isSpawning)
         {
             yield return new WaitForSeconds(NewSpawnDelaySeconds());
 
             var pickedWarioirsPrefabs = _warriorsPickStrategy.ChoseWarrioirsToSawn(_warriorsToSpawn);
 
 
-            foreach (var warrioirPrefab in pickedWarioirsPrefabs)
+            foreach (var warrioirPrefab in pickedWarioirsPrefabs) // TODO: Спавнит войнов свыше предела, пока не пройдет цикл полностью
             {
-                var warrior = WarriorFactory.InstantiateWarrior(warrioirPrefab);
-                warrior.transform.position = transform.position + RandomPositionDeviation();
+                if (!_isSpawning)
+                    break;
+
+                var warrioirPosition = transform.position + RandomPositionDeviation();
+                WarriorFactory.InstantiateWarrior(warrioirPrefab, warrioirPosition);
             }
         }
     }

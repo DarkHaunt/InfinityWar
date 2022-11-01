@@ -2,17 +2,20 @@ using System.Collections.Generic;
 using InfinityGame.GameEntities;
 using UnityEngine;
 
-public class FractionEntitesDetector
+/// <summary>
+/// Detect all fraction entities in area , ignoring selected fractions
+/// </summary>
+public class FractionEntityDetector
 {
     private readonly float _areaRadius;
     private readonly IReadOnlyList<string> _ignoredFractionTags;
 
 
 
-    public FractionEntitesDetector(float raduis, params string[] fractionToIgnore)
+    public FractionEntityDetector(float raduis, params string[] fractionsToIgnore)
     {
         _areaRadius = raduis;
-        _ignoredFractionTags = fractionToIgnore;
+        _ignoredFractionTags = fractionsToIgnore;
     }
 
 

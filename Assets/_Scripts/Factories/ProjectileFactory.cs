@@ -11,7 +11,6 @@ namespace InfinityGame.Factories.ProjectileFactory
 
         public static Projectile Instantiate(Projectile prefab)
         {
-            // TODO: Тег присваивать тут
             if (!_projectilePool.TryGetFromPool(prefab.PoolTag, out Projectile projectile))
             {
                 projectile = MonoBehaviour.Instantiate(prefab);

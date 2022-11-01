@@ -161,9 +161,6 @@ namespace InfinityGame.DataCaching
 
             public void UncacheBuilding(Building building)
             {
-/*                if (_townHallIsDead)
-                    throw new UnityException($"Townhall fo fraction {FractionTag} has been destroyed, so you can't uncache buildings of fraction anymore");*/
-
                 _townHall.RemoveBuilding(building);
             }
 

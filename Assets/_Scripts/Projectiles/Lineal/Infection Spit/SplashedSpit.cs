@@ -8,7 +8,7 @@ namespace InfinityGame.Projectiles
         [Range(0.5f, 10f)]
         [SerializeField] private float _splashRadius = 1f;
 
-        private FractionEntitesDetector _enemyDetector;
+        private FractionEntityDetector _enemyDetector;
 
 
         protected override void OnCollisionWith(FractionEntity target)
@@ -26,7 +26,7 @@ namespace InfinityGame.Projectiles
         protected override void Awake()
         {
             InitializeDispatcher(new LinealDispatcher(Speed));
-            _enemyDetector = new FractionEntitesDetector(_splashRadius, FractionTag);
+            _enemyDetector = new FractionEntityDetector(_splashRadius, FractionTag);
 
             base.Awake();
         }

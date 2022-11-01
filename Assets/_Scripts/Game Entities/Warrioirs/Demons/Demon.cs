@@ -11,7 +11,7 @@ namespace InfinityGame.GameEntities.Demons
         [SerializeField] private float _explodeDamage;
         [SerializeField] private float _explodeRadius;
 
-        private FractionEntitesDetector _enemyDetector;
+        private FractionEntityDetector _enemyDetector;
 
 
 
@@ -34,7 +34,7 @@ namespace InfinityGame.GameEntities.Demons
         {
             base.Awake();
 
-            _enemyDetector = new FractionEntitesDetector(_explodeRadius, FractionTag);
+            _enemyDetector = new FractionEntityDetector(_explodeRadius, FractionTag);
             OnZeroHealth += Explode;
         }
     }

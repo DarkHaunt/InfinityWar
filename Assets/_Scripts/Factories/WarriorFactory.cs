@@ -11,7 +11,7 @@ namespace InfinityGame.Factories.WarriorFactory
         private static readonly ObjectPooler<Warrior> _warrioirPool = new ObjectPooler<Warrior>();
 
 
-        public static Warrior InstantiateWarrior(Warrior prefab)
+        public static Warrior InstantiateWarrior(Warrior prefab, Vector2 position)
         {
             if (!_warrioirPool.TryGetFromPool(prefab.PoolTag, out Warrior warrior))
             {
@@ -20,6 +20,7 @@ namespace InfinityGame.Factories.WarriorFactory
                 warrior.OnZeroHealth += () => FractionCacher.UncacheWarrior(warrior);
             }
 
+            warrior.transform.position = position;
             FractionCacher.CacheWarrior(warrior);
 
             return warrior;

@@ -14,7 +14,7 @@ namespace InfinityGame.GameEntities.Humans
         [SerializeField] private float _atackRadius;
 
         private float _damageForSurroundedNonMainEntities;
-        private FractionEntitesDetector _enemyDetector;
+        private FractionEntityDetector _enemyDetector;
 
 
 
@@ -45,7 +45,7 @@ namespace InfinityGame.GameEntities.Humans
             base.Awake();
 
             _damageForSurroundedNonMainEntities = MeleeDamage * _nonMainTargetDamagePercent;
-            _enemyDetector = new FractionEntitesDetector(_atackRadius, FractionTag);
+            _enemyDetector = new FractionEntityDetector(_atackRadius, FractionTag);
         }
     }
 }

@@ -210,6 +210,10 @@ namespace InfinityGame.GameEntities
             _isOnCoolDown = false;
         }
 
+        /// <summary>
+        /// Waits when detector will detect all frame entities around, to get local target properly
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator SubscribeForDetector()
         {
             yield return new WaitForFixedUpdate();
