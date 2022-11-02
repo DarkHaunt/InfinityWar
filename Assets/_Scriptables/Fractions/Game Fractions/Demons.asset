@@ -12,19 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa2b06e8bacd7124d9cade123f01de03, type: 3}
   m_Name: Demons
   m_EditorClassIdentifier: 
-  _tag: Demons
-  _warrioirMaxCount: 7
+  _fraction: 0
+  _warrioirMaxCount: 0
   _townHallBuildingData:
-    _name: Inferno
-    _buildingSprite: {fileID: 21300000, guid: c9e30ea40f1d5524f8145a8d94e20b93, type: 3}
-    _buildingHealthPoints: 1900
+    _name: 
+    _buildingSprite: {fileID: 0}
+    _buildingHealthPoints: 0
   _barrackBuildingData:
-    _name: Demon Portals
-    _buildingSprite: {fileID: 21300000, guid: c79e9db17fc1dad449d1b9470c6a039d, type: 3}
-    _buildingHealthPoints: 750
-  _warrioirPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
+    _name: 
+    _buildingSprite: {fileID: 0}
+    _buildingHealthPoints: 0
+  _warrioirPickStrategy: {fileID: 0}
   _warrioirSpawnSettings:
-    _spawnCoolDownSeconds: 4
-    _timeDeltaSeconds: 1
-    _warriosToSpawn:
-    - {fileID: 4305212060841415620, guid: db83acac97cb41e4e80c4f09ba8dfd86, type: 3}
+    _spawnCoolDownSeconds: 0
+    _timeDeltaSeconds: 0
+    _warriosToSpawn: []

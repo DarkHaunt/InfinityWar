@@ -11,11 +11,11 @@ namespace InfinityGame.GameEntities
 
         public void Initialize(Fraction fraction, Fraction.BuildingData fractionBuildingData)
         {
-            Initialize(fraction.Tag, fractionBuildingData);
+            Initialize(fraction.FractionType, fractionBuildingData);
 
             _warriorSpawner.Initialize(fraction);
 
-            var fractionCachedData = FractionCacher.TryToGetFractionCachedData(_fractionTag);
+            var fractionCachedData = FractionCacher.TryToGetFractionCachedData(Fraction);
             fractionCachedData.OnWarrioirLimitRelease += _warriorSpawner.StartSpawning;
             fractionCachedData.OnWarrioirLimitOverflow += _warriorSpawner.StopSpawning;
 

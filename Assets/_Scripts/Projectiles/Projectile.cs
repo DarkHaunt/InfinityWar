@@ -1,18 +1,18 @@
 using System.Collections;
 using System;
 using InfinityGame.GameEntities;
+using InfinityGame.Fractions;
 using UnityEngine;
 
 namespace InfinityGame.Projectiles
 {
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(Rigidbody2D))]
-    public abstract class Projectile : MonoBehaviour, IPoolable
+    public abstract class Projectile : FractionHandler, IPoolable
     {
         public event Action OnExploitationEnd;
         protected event Action<Transform> OnHeadingTowardsTarget;
 
-        [SerializeField] private string _fractionTag;
         [SerializeField] private string _poolTag;
 
         [SerializeField] private float _damage = 10f;
@@ -30,7 +30,6 @@ namespace InfinityGame.Projectiles
         private bool _isExploitating = true;
 
 
-        public string FractionTag => _fractionTag;
         public string PoolTag => _poolTag;
         protected float Damage => _damage;
         protected float Speed => _speedMult;
@@ -38,7 +37,7 @@ namespace InfinityGame.Projectiles
 
 
 
-        protected abstract void OnCollisionWith(FractionEntity target);
+        protected abstract void OnCollisionWith(GameEntity target);
 
         public void PullInPreparations()
         {
@@ -78,12 +77,12 @@ namespace InfinityGame.Projectiles
             OnExploitationEnd?.Invoke();
         }
 
-        private bool IsColliderEnemyEntity(Collider2D collider2D, out FractionEntity enemy)
+        private bool IsColliderEnemyEntity(Collider2D collider2D, out GameEntity enemy)
         {
-            var isHitableEntity = collider2D.TryGetComponent(out FractionEntity entity);
+            var isHitableEntity = collider2D.TryGetComponent(out GameEntity entity);
 
             enemy = entity;
-            return isHitableEntity && !entity.IsBelongToFraction(_fractionTag);
+            return isHitableEntity && !entity.IsBelongsToFraction(Fraction);
         }
 
 
@@ -99,7 +98,7 @@ namespace InfinityGame.Projectiles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (IsColliderEnemyEntity(collision, out FractionEntity enemy) && _isExploitating)
+            if (IsColliderEnemyEntity(collision, out GameEntity enemy) && _isExploitating)
                 OnCollisionWith(enemy);
         }
     }

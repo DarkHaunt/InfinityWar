@@ -9,7 +9,7 @@ namespace InfinityGame.GameEntities
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(CircleCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public abstract class Warrior : FractionEntity, IPoolable
+    public abstract class Warrior : GameEntity, IPoolable
     {
         private const float MinimalDistanceToAttack = 0.5f;
 
@@ -23,8 +23,8 @@ namespace InfinityGame.GameEntities
         [SerializeField] private Rigidbody2D _rigidbody2D;
         [SerializeField] private EntityDetector _entityDetector;
 
-        [SerializeField] private FractionEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
-        [SerializeField] private FractionEntity _localTarget = null; // Target around, which was deceted by detector 
+        [SerializeField] private GameEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
+        [SerializeField] private GameEntity _localTarget = null; // Target around, which was deceted by detector 
 
         [SerializeField] private string _poolTag;
 
@@ -39,7 +39,7 @@ namespace InfinityGame.GameEntities
 
 
 
-        protected FractionEntity LocalTarget => _localTarget;
+        protected GameEntity LocalTarget => _localTarget;
         public string PoolTag => _poolTag;
 
 
@@ -131,7 +131,7 @@ namespace InfinityGame.GameEntities
                 return;
             }
 
-            FractionEntity newLocaltarget = enumenatorOfEnemies.Current;
+            GameEntity newLocaltarget = enumenatorOfEnemies.Current;
             var minimalDiscoveredDistance = float.MaxValue;
 
             foreach (var enemy in enemiesAround)
@@ -148,7 +148,7 @@ namespace InfinityGame.GameEntities
             SetLocalTarget(newLocaltarget);
         }
 
-        private void SetLocalTarget(FractionEntity newLocalTarget)
+        private void SetLocalTarget(GameEntity newLocalTarget)
         {
             _localTarget = newLocalTarget;
 
@@ -166,7 +166,7 @@ namespace InfinityGame.GameEntities
         private void GetNewGlobalTarget()
         {
             var minimalDistanceToTwonHall = float.MaxValue;
-            var enemies = FractionCacher.GetEnemyEntitiesOfFraction(FractionTag);
+            var enemies = FractionCacher.GetEnemyEntitiesOfFraction(Fraction);
 
             foreach (var enemyTarget in enemies)
             {
@@ -194,10 +194,10 @@ namespace InfinityGame.GameEntities
             _rigidbody2D.velocity = Vector2.zero;
         }
 
-        private IEnumerable<FractionEntity> GetEnemiesAround()
+        private IEnumerable<GameEntity> GetEnemiesAround()
         {
             foreach (var entity in _entityDetector.DetecedEntities)
-                if (!entity.IsBelongToFraction(FractionTag))
+                if (!entity.IsBelongsToFraction(Fraction))
                     yield return entity;
         }
 
@@ -218,13 +218,13 @@ namespace InfinityGame.GameEntities
         {
             yield return new WaitForFixedUpdate();
 
-            _entityDetector.OnEntityEnter += (FractionEntity target) =>
+            _entityDetector.OnEntityEnter += (GameEntity target) =>
             {
-                if (!_isOnArgue && !target.IsBelongToFraction(FractionTag))
+                if (!_isOnArgue && !target.IsBelongsToFraction(Fraction))
                     SetLocalTarget(target);
             };
 
-            _entityDetector.OnEntityExit += (FractionEntity target) =>
+            _entityDetector.OnEntityExit += (GameEntity target) =>
             {
                 if (_localTarget == target)
                     TryToGetNewLocalTarget();

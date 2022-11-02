@@ -4,11 +4,12 @@ using InfinityGame.Strategies.WarrioirSpawnStrategies;
 namespace InfinityGame.Fractions
 {
     using WarrioirSpawnSettings = WarrioirSpawner.SpawnData;
+    using FractionType = FractionHandler.FractionType;
 
     [CreateAssetMenu(fileName = "Fraction", menuName = "Data/New Fraction", order = 52)]
     public class Fraction : ScriptableObject
     {
-        [SerializeField] private string _tag;
+        [SerializeField] private FractionType _fraction;
         [SerializeField] private int _warrioirMaxCount;
 
         [Space(10f)]
@@ -23,7 +24,7 @@ namespace InfinityGame.Fractions
 
 
 
-        public string Tag => _tag;
+        public FractionType FractionType => _fraction;
         public int WarrioirMaxLimit => _warrioirMaxCount;
         public WarrioirsPickStrategy WarrioirPickStrategy => _warrioirPickStrategy;
         public WarrioirSpawnSettings WarrioirSpawnSettings => _warrioirSpawnSettings;
@@ -47,14 +48,14 @@ namespace InfinityGame.Fractions
 
         public struct FractionBuildingData
         {
-            public readonly string FractionTag;
+            public readonly FractionType Fraction;
             public readonly string Name;
             public readonly BuildingData BuildingData;
 
 
-            public FractionBuildingData(string fractionTag, BuildingData buildingData)
+            public FractionBuildingData(FractionType fraction, BuildingData buildingData)
             {
-                FractionTag = fractionTag;
+                Fraction = fraction;
                 BuildingData = buildingData;
                 Name = buildingData.Name;
             }

@@ -11,7 +11,7 @@ namespace InfinityGame.Projectiles
         private FractionEntityDetector _enemyDetector;
 
 
-        protected override void OnCollisionWith(FractionEntity target)
+        protected override void OnCollisionWith(GameEntity target)
         {
             var detectedEnemies = _enemyDetector.GetDetectedFractionEntities(target.transform.position);
 
@@ -26,7 +26,7 @@ namespace InfinityGame.Projectiles
         protected override void Awake()
         {
             InitializeDispatcher(new LinealDispatcher(Speed));
-            _enemyDetector = new FractionEntityDetector(_splashRadius, FractionTag);
+            _enemyDetector = new FractionEntityDetector(_splashRadius, Fraction);
 
             base.Awake();
         }

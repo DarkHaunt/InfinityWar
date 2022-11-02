@@ -20,19 +20,19 @@ internal class GameInitializer : MonoBehaviour
     /// <summary>
     /// Asseblies all fraction settings for game
     /// </summary>
-    /// <param name="fraction"></param>
+    /// <param name="fractionData"></param>
     /// <param name="spawnPlace"></param>
     /// <returns>List of all barracks of fraction</returns>
-    private void AssembleFraction(Fraction fraction, SpawnPlace spawnPlace)
+    private void AssembleFraction(Fraction fractionData, SpawnPlace spawnPlace)
     {
-        FractionCacher.CashFraction(fraction);
-        var townHall = _buildingFactory.CreateTownHall(fraction, spawnPlace.TownHallSpawnPointPosition, fraction.TownHallBuildingData);
-        var cachedFraction =  FractionCacher.TryToGetFractionCachedData(fraction.Tag);
+        FractionCacher.CashFraction(fractionData);
+        var townHall = _buildingFactory.CreateTownHall(fractionData, spawnPlace.TownHallSpawnPointPosition, fractionData.TownHallBuildingData);
+        var cachedFraction =  FractionCacher.TryToGetFractionCachedData(fractionData.FractionType);
         cachedFraction.TownHall = townHall;
 
         // Spawn all sub barracks
         foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsTransforms)
-            _buildingFactory.CreateSpawnBuilding(fraction, barrackPosition, fraction.BarrackBuildingData);
+            _buildingFactory.CreateSpawnBuilding(fractionData, barrackPosition, fractionData.BarrackBuildingData);
     }
 
     private IList<int> GetReservedSpawnPlaceIndexes()

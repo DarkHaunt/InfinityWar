@@ -6,15 +6,17 @@ using InfinityGame.Fractions;
 
 namespace InfinityGame.DataCaching
 {
-    public static class FractionCacher
+    using FractionType = FractionHandler.FractionType;
+
+    public static class FractionCacher // TODO: Большая зона ответственности
     {
-        public static event Action OnGameEnd;
+        public static event Action OnGameEnd; // TODO: По сути тут этому не место
 
-        private static readonly Dictionary<string, FractionCachedData> _cachedFractions = new Dictionary<string, FractionCachedData>();
+        private static readonly Dictionary<FractionType, CachedFraction> _cachedFractions = new Dictionary<FractionType, CachedFraction>();
 
 
 
-        public static IEnumerable<FractionEntity> GetEnemyEntitiesOfFraction(string fractionTag)
+        public static IEnumerable<GameEntity> GetEnemyEntitiesOfFraction(FractionType fractionTag)
         {
             foreach (var fractionData in _cachedFractions)
             {
@@ -28,21 +30,21 @@ namespace InfinityGame.DataCaching
 
         public static void CashFraction(Fraction fraction)
         {
-            if (IsFractionCached(fraction.Tag))
+            if (IsFractionCached(fraction.FractionType))
                 throw new UnityException($"{fraction} is already cashed, but you're trying to cash it again.");
 
-            var fractionCashedData = new FractionCachedData(fraction);
-            _cachedFractions.Add(fraction.Tag, fractionCashedData);
+            var fractionCashedData = new CachedFraction(fraction);
+            _cachedFractions.Add(fraction.FractionType, fractionCashedData);
 
             fractionCashedData.OnFractionLose += () => UncacheFractionData(fractionCashedData);
         }
 
-        private static void UncacheFractionData(FractionCachedData fractionCashedData)
+        private static void UncacheFractionData(CachedFraction fractionCashedData)
         {
-            if (!_cachedFractions.ContainsKey(fractionCashedData.FractionTag))
-                throw new UnityException($"{fractionCashedData.FractionTag} doesn't conatin in cashe, and you're trying uncash it");
+            if (!_cachedFractions.ContainsKey(fractionCashedData.Fraction))
+                throw new UnityException($"{fractionCashedData.Fraction} doesn't conatin in cashe, and you're trying uncash it");
 
-            _cachedFractions.Remove(fractionCashedData.FractionTag);
+            _cachedFractions.Remove(fractionCashedData.Fraction);
 
             if (_cachedFractions.Count <= 1)
                 OnGameEnd?.Invoke();
@@ -50,31 +52,31 @@ namespace InfinityGame.DataCaching
 
         public static void CacheBuilding(Building building)
         {
-            if (!IsFractionCached(building.FractionTag))
+            if (!IsFractionCached(building.Fraction))
                 return;
 
-            _cachedFractions[building.FractionTag].CacheBuilding(building);
+            _cachedFractions[building.Fraction].CacheBuilding(building);
         }
 
         public static void UncacheBuilding(Building building)
         {
-            _cachedFractions[building.FractionTag].UncacheBuilding(building);
+            _cachedFractions[building.Fraction].UncacheBuilding(building);
         }
 
         public static void CacheWarrior(Warrior warrior)
         {
-            if (!IsFractionCached(warrior.FractionTag))
+            if (!IsFractionCached(warrior.Fraction))
                 return;
 
-            _cachedFractions[warrior.FractionTag].CacheWarrior(warrior);
+            _cachedFractions[warrior.Fraction].CacheWarrior(warrior);
         }
 
         public static void UncacheWarrior(Warrior warrior)
         {
-            _cachedFractions[warrior.FractionTag].UncacheWarrior(warrior);
+            _cachedFractions[warrior.Fraction].UncacheWarrior(warrior);
         }
 
-        public static FractionCachedData TryToGetFractionCachedData(string fractionTag)
+        public static CachedFraction TryToGetFractionCachedData(FractionType fractionTag)
         {
             if (IsFractionCached(fractionTag))
                 return _cachedFractions[fractionTag];
@@ -82,11 +84,11 @@ namespace InfinityGame.DataCaching
             throw new UnityException($"Fraction Cahser doesn't contain fraction {fractionTag}");
         }
 
-        private static bool IsFractionCached(string fractionTag) => _cachedFractions.ContainsKey(fractionTag);
+        private static bool IsFractionCached(FractionType fractionTag) => _cachedFractions.ContainsKey(fractionTag);
 
 
 
-        public class FractionCachedData
+        public class CachedFraction
         {
             public event Action OnFractionLose;
             public event Action OnWarrioirLimitOverflow;
@@ -103,7 +105,7 @@ namespace InfinityGame.DataCaching
 
 
 
-            public IEnumerable<FractionEntity> GetEntitiesForTargeting
+            public IEnumerable<GameEntity> GetEntitiesForTargeting
             {
                 get
                 {
@@ -127,7 +129,7 @@ namespace InfinityGame.DataCaching
 
             }
 
-            public string FractionTag { get; }
+            public FractionType Fraction { get; }
 
             public TownHall TownHall
             {
@@ -141,10 +143,10 @@ namespace InfinityGame.DataCaching
 
 
 
-            public FractionCachedData(Fraction fraction)
+            public CachedFraction(Fraction fraction)
             {
                 WarrioirCountLimit = fraction.WarrioirMaxLimit;
-                FractionTag = fraction.Tag;
+                Fraction = fraction.FractionType;
 
                 _warriors = new HashSet<Warrior>();
             }
@@ -154,7 +156,7 @@ namespace InfinityGame.DataCaching
             public void CacheBuilding(Building building)
             {
                 if (_townHallIsDead)
-                    throw new UnityException($"Townhall fo fraction {FractionTag} has been destroyed, so you can't cache buildings of fraction anymore");
+                    throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't cache buildings of fraction anymore");
 
                 _townHall.AddBuilding(building);
             }

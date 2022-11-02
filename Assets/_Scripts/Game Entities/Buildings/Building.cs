@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 namespace InfinityGame.GameEntities
 {
     using BuildingData = Fractions.Fraction.BuildingData;
@@ -12,12 +11,12 @@ namespace InfinityGame.GameEntities
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public class Building : FractionEntity
+    public class Building : GameEntity
     {
-        public void Initialize(string fractionTag, BuildingData buildingData)
+        public void Initialize(FractionType fraction, BuildingData buildingData)
         {
             _health = buildingData.BuildingHealthPoints;
-            _fractionTag = fractionTag;
+            _fractionTag = fraction;
 
             var spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = buildingData.BuildingSprite;

@@ -135,8 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c015132b3fba844b87d0c455e26497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fractionTag: 1
   _health: 80
-  _fractionTag: Humans
   _attackCoolDown: 3
   _speedMult: 1.5
   _attackDistance: 0.5

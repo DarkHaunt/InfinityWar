@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a425d98806294ef47909289f7f8a69fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fractionTag: Humans
+  _fractionTag: 1
   _poolTag: Arrows
   _damage: 15
   _speedMult: 15

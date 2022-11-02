@@ -18,7 +18,7 @@ namespace InfinityGame.Factories.BuildingFactory
             var buildingGameObject = new GameObject(fractionBuildingData.Name);
             var building = buildingGameObject.AddComponent<Building>();
 
-            building.Initialize(fractionBuildingData.FractionTag, fractionBuildingData.BuildingData);
+            building.Initialize(fractionBuildingData.Fraction, fractionBuildingData.BuildingData);
             building.transform.position = position;
 
             FractionCacher.CacheBuilding(building);

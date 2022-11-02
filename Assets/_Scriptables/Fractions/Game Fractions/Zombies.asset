@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa2b06e8bacd7124d9cade123f01de03, type: 3}
   m_Name: Zombies
   m_EditorClassIdentifier: 
-  _tag: Zombies
-  _warrioirMaxCount: 1
+  _fraction: 2
+  _warrioirMaxCount: 15
   _townHallBuildingData:
     _name: Hive
     _buildingSprite: {fileID: 21300000, guid: a4bf3cc3f7b8996459d54e1ead4819f9, type: 3}

@@ -195,8 +195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d932ae1207a66440a733fa3eb273436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fractionTag: 2
   _health: 40
-  _fractionTag: Zombies
   _attackCoolDown: 0.9
   _speedMult: 2.5
   _attackDistance: 0.5

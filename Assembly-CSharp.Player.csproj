@@ -59,7 +59,6 @@
     <Compile Include="Assets\_Scripts\Projectiles\Object Disparcher\ObjectDispatcher.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\FractionSpawnBuilding.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Building.cs" />
-    <Compile Include="Assets\_Scripts\Static Data\FractionCacher.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Lineal Projectile.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooting\Shooter.cs" />
@@ -70,7 +69,6 @@
     <Compile Include="Assets\_Scripts\Factories\WarriorFactory.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IObjectRotateStrategy.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IShoot.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\FractionEntity.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\Single Shot\SingleShot.cs" />
     <Compile Include="Assets\_Scripts\Arena\GameInitializer.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Melee\MeleeWarrioir.cs" />
@@ -92,8 +90,10 @@
     <Compile Include="Assets\_Scripts\Projectiles\Object Disparcher\Lineal Dispetcher\LinealDispatcher.cs" />
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Arrow\Arrow.cs" />
-    <Compile Include="Assets\_Scripts\Interfaces\IFractionTagable.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\FractionHandler.cs" />
+    <Compile Include="Assets\_Scripts\Static Data\FractionCacher.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\GameEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

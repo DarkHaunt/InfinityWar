@@ -25,9 +25,9 @@ namespace InfinityGame.GameEntities.Humans
             DamageAllSurroundEnemies(detectedEnemies);
         }
 
-        private bool IsMainTarget(FractionEntity entity) => LocalTarget == entity;
+        private bool IsMainTarget(GameEntity entity) => LocalTarget == entity;
 
-        private void DamageAllSurroundEnemies(IEnumerable<FractionEntity> enemies)
+        private void DamageAllSurroundEnemies(IEnumerable<GameEntity> enemies)
         {
             // Non-main targets around get another damage value
             foreach (var enemy in enemies)
@@ -45,7 +45,7 @@ namespace InfinityGame.GameEntities.Humans
             base.Awake();
 
             _damageForSurroundedNonMainEntities = MeleeDamage * _nonMainTargetDamagePercent;
-            _enemyDetector = new FractionEntityDetector(_atackRadius, FractionTag);
+            _enemyDetector = new FractionEntityDetector(_atackRadius, Fraction);
         }
     }
 }

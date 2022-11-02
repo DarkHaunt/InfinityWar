@@ -4,7 +4,7 @@ namespace InfinityGame.Projectiles
 {
     public class Arrow : RotatableProjectile
     {
-        protected override void OnCollisionWith(FractionEntity target)
+        protected override void OnCollisionWith(GameEntity target)
         {
             target.GetDamage(Damage);
 
