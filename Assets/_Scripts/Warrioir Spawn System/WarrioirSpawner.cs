@@ -26,8 +26,6 @@ public class WarrioirSpawner : MonoBehaviour
 
 
 
-    public void Initialize(Fraction fraction) => Initialize(fraction.WarrioirSpawnSettings, fraction.WarrioirPickStrategy);
-
     public void Initialize(SpawnData spawnData, WarrioirsPickStrategy warriorPickStrategy)
     {
         _spawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;

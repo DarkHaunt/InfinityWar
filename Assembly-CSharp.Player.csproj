@@ -70,11 +70,13 @@
     <Compile Include="Assets\_Scripts\Interfaces\IObjectRotateStrategy.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IShoot.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\Single Shot\SingleShot.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\FractionHandler.cs" />
     <Compile Include="Assets\_Scripts\Arena\GameInitializer.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Melee\MeleeWarrioir.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\TownHall.cs" />
     <Compile Include="Assets\_Scripts\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Rotation Strategies\RotateToTargetOnce.cs" />
+    <Compile Include="Assets\_Scripts\Static Data\FractionCacher.cs" />
     <Compile Include="Assets\_Scriptables\Fractions\Fraction.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Zombies\MeleeZombie.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Single Pick\RandomSinglePickStrategy.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Infection Spit\SplashedSpit.cs" />
     <Compile Include="Assets\_Scripts\Fraction Entty Detector\Fraction Entity Detector.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Projectile.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\GameEntity.cs" />
     <Compile Include="Assets\_Scripts\Interfaces\IPoolable.cs" />
     <Compile Include="Assets\_Scripts\Factories\BuildingFactory.cs" />
     <Compile Include="Assets\_Scripts\Factories\ProjectileFactory.cs" />
@@ -91,9 +94,7 @@
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Arrow\Arrow.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\FractionHandler.cs" />
-    <Compile Include="Assets\_Scripts\Static Data\FractionCacher.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\GameEntity.cs" />
+    <Compile Include="Assets\_Scripts\Warrioir Spawn System\FractionSpawner.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

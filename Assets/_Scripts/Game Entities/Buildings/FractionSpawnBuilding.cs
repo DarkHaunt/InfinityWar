@@ -1,13 +1,13 @@
+using InfinityGame.DataCaching;
 using InfinityGame.Fractions;
 using UnityEngine;
-using InfinityGame.DataCaching;
 
 namespace InfinityGame.GameEntities
 {
     [RequireComponent(typeof(WarrioirSpawner))]
     public class FractionSpawnBuilding : Building
     {
-        private WarrioirSpawner _warriorSpawner;
+        private FractionSpawner _warriorSpawner;
 
         public void Initialize(Fraction fraction, Fraction.BuildingData fractionBuildingData)
         {
@@ -15,7 +15,8 @@ namespace InfinityGame.GameEntities
 
             _warriorSpawner.Initialize(fraction);
 
-            var fractionCachedData = FractionCacher.TryToGetFractionCachedData(Fraction);
+            // TODO: ”брать бы от сюда это
+            var fractionCachedData = FractionCacher.GetFractionCachedData(Fraction);
             fractionCachedData.OnWarrioirLimitRelease += _warriorSpawner.StartSpawning;
             fractionCachedData.OnWarrioirLimitOverflow += _warriorSpawner.StopSpawning;
 
@@ -30,7 +31,7 @@ namespace InfinityGame.GameEntities
 
         protected virtual void Awake()
         {
-            _warriorSpawner = GetComponent<WarrioirSpawner>();
+            _warriorSpawner = GetComponent<FractionSpawner>();
         }
     }
 }

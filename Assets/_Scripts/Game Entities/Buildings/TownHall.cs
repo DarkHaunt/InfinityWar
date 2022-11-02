@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using InfinityGame.Fractions;
 
 namespace InfinityGame.GameEntities
 {
@@ -18,13 +17,13 @@ namespace InfinityGame.GameEntities
         public void AddBuilding(Building building)
         {
             if (!_buildings.Add(building))
-                throw new UnityException($"Buildings {building} is already in {this}");
+                throw new UnityException($"Buildings {building} is already in {this} building collection");
         }
 
         public void RemoveBuilding(Building building)
         {
             if (!_buildings.Remove(building))
-                throw new UnityException($"Building {building} is not cashed, but you're trying to uncash it.");
+                throw new UnityException($"Building {building} is not in {this} bulding collection, but you're trying to uncash it.");
         }
 
         private void DestroyAllBuildings()

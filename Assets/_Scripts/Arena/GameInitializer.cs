@@ -27,8 +27,8 @@ internal class GameInitializer : MonoBehaviour
     {
         FractionCacher.CashFraction(fractionData);
         var townHall = _buildingFactory.CreateTownHall(fractionData, spawnPlace.TownHallSpawnPointPosition, fractionData.TownHallBuildingData);
-        var cachedFraction =  FractionCacher.TryToGetFractionCachedData(fractionData.FractionType);
-        cachedFraction.TownHall = townHall;
+        var cachedFraction =  FractionCacher.GetFractionCachedData(fractionData.FractionType);
+        cachedFraction.TownHall = townHall; // TODO: Не нравиться мне это
 
         // Spawn all sub barracks
         foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsTransforms)

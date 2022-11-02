@@ -8,40 +8,28 @@ namespace InfinityGame.DataCaching
 {
     using FractionType = FractionHandler.FractionType;
 
-    public static class FractionCacher // TODO: Большая зона ответственности
+    public static class FractionCacher
     {
         public static event Action OnGameEnd; // TODO: По сути тут этому не место
 
-        private static readonly Dictionary<FractionType, CachedFraction> _cachedFractions = new Dictionary<FractionType, CachedFraction>();
+        private static readonly Dictionary<FractionType, FractionGameData> _cachedFractions = new Dictionary<FractionType, FractionGameData>();
 
 
-
-        public static IEnumerable<GameEntity> GetEnemyEntitiesOfFraction(FractionType fractionTag)
-        {
-            foreach (var fractionData in _cachedFractions)
-            {
-                if (fractionData.Key == fractionTag)
-                    continue;
-
-                foreach (var entity in fractionData.Value.GetEntitiesForTargeting)
-                    yield return entity;
-            }
-        }
 
         public static void CashFraction(Fraction fraction)
         {
             if (IsFractionCached(fraction.FractionType))
                 throw new UnityException($"{fraction} is already cashed, but you're trying to cash it again.");
 
-            var fractionCashedData = new CachedFraction(fraction);
+            var fractionCashedData = new FractionGameData(fraction);
             _cachedFractions.Add(fraction.FractionType, fractionCashedData);
 
             fractionCashedData.OnFractionLose += () => UncacheFractionData(fractionCashedData);
         }
 
-        private static void UncacheFractionData(CachedFraction fractionCashedData)
+        private static void UncacheFractionData(FractionGameData fractionCashedData)
         {
-            if (!_cachedFractions.ContainsKey(fractionCashedData.Fraction))
+            if (!IsFractionCached(fractionCashedData.Fraction))
                 throw new UnityException($"{fractionCashedData.Fraction} doesn't conatin in cashe, and you're trying uncash it");
 
             _cachedFractions.Remove(fractionCashedData.Fraction);
@@ -53,42 +41,66 @@ namespace InfinityGame.DataCaching
         public static void CacheBuilding(Building building)
         {
             if (!IsFractionCached(building.Fraction))
-                return;
+                throw new UnityException($"Fraction {building.Fraction} doesn't exist in cache, so building {building} can be cached");
 
             _cachedFractions[building.Fraction].CacheBuilding(building);
         }
 
         public static void UncacheBuilding(Building building)
         {
+            if (!IsFractionCached(building.Fraction))
+                throw new UnityException($"Fraction {building.Fraction} doesn't exist in cache, so building {building} can't be uncached");
+
             _cachedFractions[building.Fraction].UncacheBuilding(building);
         }
 
         public static void CacheWarrior(Warrior warrior)
         {
             if (!IsFractionCached(warrior.Fraction))
-                return;
+                throw new UnityException($"Fraction {warrior.Fraction} doesn't exist in cache, so warrior {warrior} can't be cached");
 
             _cachedFractions[warrior.Fraction].CacheWarrior(warrior);
         }
 
         public static void UncacheWarrior(Warrior warrior)
         {
+            if (!IsFractionCached(warrior.Fraction))
+                throw new UnityException($"Fraction {warrior.Fraction} doesn't exist in cache, so warrior {warrior} can't be uncached");
+
             _cachedFractions[warrior.Fraction].UncacheWarrior(warrior);
         }
 
-        public static CachedFraction TryToGetFractionCachedData(FractionType fractionTag)
+        public static FractionGameData GetFractionCachedData(FractionType fractionTag)
         {
-            if (IsFractionCached(fractionTag))
-                return _cachedFractions[fractionTag];
+            if (!IsFractionCached(fractionTag))
+                throw new UnityException($"Fraction Cahser doesn't contain fraction {fractionTag}");
 
-            throw new UnityException($"Fraction Cahser doesn't contain fraction {fractionTag}");
+            return _cachedFractions[fractionTag];
+        }
+
+        public static IEnumerable<GameEntity> GetEnemyEntitiesOfFraction(FractionType fractionTag)
+        {
+            if (!IsFractionCached(fractionTag))
+                throw new UnityException($"Fraction {fractionTag} doesn't exist in cache, so cacher can't take it's entities");
+
+
+            foreach (var fractionData in _cachedFractions)
+            {
+                if (fractionData.Key == fractionTag)
+                    continue;
+
+                foreach (var entity in fractionData.Value.GetEntitiesForTargeting)
+                    yield return entity;
+            }
         }
 
         private static bool IsFractionCached(FractionType fractionTag) => _cachedFractions.ContainsKey(fractionTag);
 
 
-
-        public class CachedFraction
+        /// <summary>
+        /// Contains data abount fraction , which needed for game
+        /// </summary>
+        public class FractionGameData
         {
             public event Action OnFractionLose;
             public event Action OnWarrioirLimitOverflow;
@@ -100,7 +112,7 @@ namespace InfinityGame.DataCaching
             private TownHall _townHall;
             private readonly HashSet<Warrior> _warriors;
 
-            private bool _isWarrioirLimitOverflow = false;
+            private bool _isWarrioirLimitOverflowed = false;
             private bool _townHallIsDead = false;
 
 
@@ -112,11 +124,11 @@ namespace InfinityGame.DataCaching
                     if (_townHallIsDead)
                         return _warriors;
 
-                    return GetBuildings;
+                    return Buildings;
                 }
             }
 
-            public IEnumerable<Building> GetBuildings
+            private IEnumerable<Building> Buildings
             {
                 get
                 {
@@ -143,7 +155,7 @@ namespace InfinityGame.DataCaching
 
 
 
-            public CachedFraction(Fraction fraction)
+            public FractionGameData(Fraction fraction)
             {
                 WarrioirCountLimit = fraction.WarrioirMaxLimit;
                 Fraction = fraction.FractionType;
@@ -163,6 +175,9 @@ namespace InfinityGame.DataCaching
 
             public void UncacheBuilding(Building building)
             {
+                if (_townHallIsDead)
+                    throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't cache buildings of fraction anymore");
+
                 _townHall.RemoveBuilding(building);
             }
 
@@ -197,7 +212,7 @@ namespace InfinityGame.DataCaching
 
                 if (_warriorCount >= WarrioirCountLimit)
                 {
-                    _isWarrioirLimitOverflow = true;
+                    _isWarrioirLimitOverflowed = true;
                     OnWarrioirLimitOverflow?.Invoke();
                 }
             }
@@ -206,9 +221,9 @@ namespace InfinityGame.DataCaching
             {
                 _warriorCount--;
 
-                if (_isWarrioirLimitOverflow && _warriorCount < WarrioirCountLimit)
+                if (_isWarrioirLimitOverflowed && _warriorCount < WarrioirCountLimit)
                 {
-                    _isWarrioirLimitOverflow = false;
+                    _isWarrioirLimitOverflowed = false;
                     OnWarrioirLimitRelease?.Invoke();
                 }
             }
