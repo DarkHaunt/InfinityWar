@@ -1,5 +1,4 @@
 using InfinityGame.Spawning;
-using InfinityGame.Strategies.WarrioirPickStrategies;
 using UnityEngine;
 
 
@@ -9,8 +8,6 @@ namespace InfinityGame.GameEntities
     public class Demonologist : Shooter
     {
         [SerializeField] private WarrioirSpawner.SpawnData _spawnData;
-        [SerializeField] private WarrioirsPickStrategy _pickStrategy;
-
 
         private WarrioirSpawner _fractionSpawner;
 
@@ -21,9 +18,9 @@ namespace InfinityGame.GameEntities
             base.Awake();
 
             _fractionSpawner = GetComponent<WarrioirSpawner>();
-            _fractionSpawner.Initialize(Fraction, _spawnData, _pickStrategy);
+            _fractionSpawner.Initialize(Fraction, _spawnData);
 
-            OnZeroHealth += _fractionSpawner.OnSpawnerDeactivate;
+            OnZeroHealth += _fractionSpawner.DeactivateSpawning;
         }
     } 
 }

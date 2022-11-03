@@ -1,12 +1,14 @@
 using System.Collections.Generic;
+using System.Collections;
 using System;
 using UnityEngine;
 using InfinityGame.Strategies.WarrioirPickStrategies;
 using InfinityGame.Factories.WarriorFactory;
 using InfinityGame.GameEntities;
 using InfinityGame.DataCaching;
-using System.Collections;
 using InfinityGame.Fractions;
+
+
 
 namespace InfinityGame.Spawning
 {
@@ -15,6 +17,8 @@ namespace InfinityGame.Spawning
     /// </summary>
     public class WarrioirSpawner : MonoBehaviour
     {
+        public event Action OnSpawnerDeactivate;
+
         // A max scatter between spawn position and spawner position in units
         private static Vector2 MaxSpawnPositionScatter = new Vector2(1f, 1f);
 
@@ -27,17 +31,15 @@ namespace InfinityGame.Spawning
 
         private bool _isSpawning = true;
 
-        private FractionCacher.FractionGameData _cachedFractionData;
 
 
-
-        public FractionHandler.FractionType FractionType => _fractionType;
+        public FractionHandler.FractionType Fraction => _fractionType;
         
 
 
-        public void Initialize(Fraction fraction) => Initialize(fraction.FractionType, fraction.BarracksWarrioirSpawnSettings, fraction.BarracksWarrioirPickStrategy);
+        public void Initialize(Fraction fraction) => Initialize(fraction.FractionType, fraction.BarracksWarrioirSpawnSettings);
 
-        public void Initialize(FractionHandler.FractionType fractionType, SpawnData spawnData, WarrioirsPickStrategy warriorPickStrategy)
+        public void Initialize(FractionHandler.FractionType fractionType, SpawnData spawnData)
         {
             _spawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
             _spawnDelaySeconds = spawnData.TimeDeltaSeconds;
@@ -51,30 +53,26 @@ namespace InfinityGame.Spawning
                 throw new UnityException($"Spawn delay can't be equal or higher than cool down seconds!");
 
             _warriorsToSpawn = spawnData.WarriosToSpawn;
-            _warriorsPickStrategy = warriorPickStrategy;
+            _warriorsPickStrategy = spawnData.WarrioirsPickStrategy;
 
             FractionCacher.OnGameEnd += StopSpawning;
 
-            _cachedFractionData = FractionCacher.GetFractionCachedData(FractionType);
-            _cachedFractionData.OnWarrioirLimitRelease += StartSpawning;
-            _cachedFractionData.OnWarrioirLimitOverflow += StopSpawning;
-
+            FractionCacher.TieUpSpawnerToFraction(this);
             StartSpawning();
         }
 
-        public void OnSpawnerDeactivate()
+        public void DeactivateSpawning()
         {
-            _cachedFractionData.OnWarrioirLimitRelease -= StartSpawning;
-            _cachedFractionData.OnWarrioirLimitOverflow -= StopSpawning;
+            OnSpawnerDeactivate?.Invoke();
         }
 
-        private void StartSpawning()
+        public void StartSpawning()
         {
             _isSpawning = true;
             StartCoroutine(SpawnCoroutine());
         }
 
-        private void StopSpawning()
+        public void StopSpawning()
         {
             _isSpawning = false;
         }
@@ -82,7 +80,7 @@ namespace InfinityGame.Spawning
         private bool IsAllWarrioirsBelongsToSpawnerFraction(IEnumerable<Warrior> warriors)
         {
             foreach (var warrior in warriors)
-                if (!warrior.IsBelongsToFraction(FractionType))
+                if (!warrior.IsBelongsToFraction(Fraction))
                     return false;
 
             return true;
@@ -129,32 +127,38 @@ namespace InfinityGame.Spawning
 
         private void OnDestroy()
         {
-            FractionCacher.OnGameEnd -= StopSpawning;
+            FractionCacher.OnGameEnd -= DeactivateSpawning;
         }
 
 
 
         [Serializable]
-        public struct SpawnData // TODO: Может быть добавить сюда Spawn Strategy?
+        public struct SpawnData
         {
             [SerializeField] private float _spawnCoolDownSeconds;
             [SerializeField] private float _timeDeltaSeconds;
 
+            [SerializeField] private WarrioirsPickStrategy _warrioirsPickStrategy;
             [SerializeField] private List<Warrior> _warriosToSpawn;
+
 
 
             public float SpawnCoolDownSeconds => _spawnCoolDownSeconds;
 
             public float TimeDeltaSeconds => _timeDeltaSeconds;
 
-            public List<Warrior> WarriosToSpawn => _warriosToSpawn;
+            public IReadOnlyList<Warrior> WarriosToSpawn => _warriosToSpawn;
+
+            public WarrioirsPickStrategy WarrioirsPickStrategy => _warrioirsPickStrategy; 
 
 
-            public SpawnData(float spawnCoolDownSeconds, float timeDeltaSeconds, List<Warrior> warriorsToSpawn)
+
+            public SpawnData(float spawnCoolDownSeconds, float timeDeltaSeconds, List<Warrior> warriorsToSpawn, WarrioirsPickStrategy warrioirsPickStrategy)
             {
                 _spawnCoolDownSeconds = spawnCoolDownSeconds;
                 _timeDeltaSeconds = timeDeltaSeconds;
                 _warriosToSpawn = warriorsToSpawn;
+                _warrioirsPickStrategy = warrioirsPickStrategy;
             }
         }
     }

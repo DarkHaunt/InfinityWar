@@ -71,6 +71,14 @@ namespace InfinityGame.DataCaching
             _cachedFractions[warrior.Fraction].UncacheWarrior(warrior);
         }
 
+        public static void TieUpSpawnerToFraction(WarrioirSpawner spawner)
+        {
+            if (!IsFractionCached(spawner.Fraction))
+                throw new UnityException($"Fraction {spawner.Fraction} doesn't exist in cache, so spawner {spawner} can't be uncached");
+
+            _cachedFractions[spawner.Fraction].PutSpawnerOnWarriorRecord(spawner);
+        }
+
         public static FractionGameData GetFractionCachedData(FractionType fractionType)
         {
             if (!IsFractionCached(fractionType))
@@ -105,17 +113,13 @@ namespace InfinityGame.DataCaching
         public class FractionGameData
         {
             public event Action OnFractionLose;
-            public event Action OnWarrioirLimitOverflow;
-            public event Action OnWarrioirLimitRelease;
 
-            private readonly int WarrioirCountLimit;
-            private int _warriorCount = 0;
-
-            private TownHall _townHall;
+            private readonly TownHall _townHall;
             private readonly HashSet<Warrior> _warriors;
 
-            private bool _isWarrioirLimitOverflowed = false;
             private bool _townHallIsDead = false;
+
+            private readonly Counter _warrioirCounter;
 
 
 
@@ -149,13 +153,19 @@ namespace InfinityGame.DataCaching
 
             public FractionGameData(Fraction fraction, TownHall fractionTownHall)
             {
-                WarrioirCountLimit = fraction.WarrioirMaxLimit;
+                // WarrioirCountLimit = fraction.WarrioirMaxLimit;
+
+                _warrioirCounter = new Counter(fraction.WarrioirMaxLimit);
                 Fraction = fraction.FractionType;
 
                 _warriors = new HashSet<Warrior>();
 
                 _townHall = fractionTownHall;
-                _townHall.OnZeroHealth += OnTownHallDeath;
+                _townHall.OnZeroHealth += () =>
+                {
+                    _townHallIsDead = true;
+                    CheckForLose();
+                };
             }
 
 
@@ -170,10 +180,41 @@ namespace InfinityGame.DataCaching
 
             public void UncacheBuilding(Building building)
             {
-/*                if (_townHallIsDead)
-                    throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't uncache buildings of fraction anymore");*/
+                /*                if (_townHallIsDead)
+                                    throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't uncache buildings of fraction anymore");*/
 
                 _townHall.RemoveBuilding(building);
+            }
+
+            public void CacheWarrior(Warrior warrior)
+            {
+                if (!_warriors.Add(warrior))
+                    throw new UnityException($"{warrior} warrior is already cashed, but you're trying to cash it again.");
+
+                _warrioirCounter.Increase();
+            }
+
+            public void UncacheWarrior(Warrior warrior)
+            {
+                if (!_warriors.Remove(warrior))
+                    throw new UnityException($"{warrior} warrior is not cashed, but you're trying to uncash it.");
+
+                _warrioirCounter.Decrease();
+
+                if (_townHallIsDead)
+                    CheckForLose();
+            }
+
+            public void PutSpawnerOnWarriorRecord(WarrioirSpawner spawner)
+            {
+                _warrioirCounter.OnCounterLimitRelease+= spawner.StartSpawning;
+                _warrioirCounter.OnCounterLimitOverflow += spawner.StopSpawning;
+
+                spawner.OnSpawnerDeactivate += () =>
+                {
+                    _warrioirCounter.OnCounterLimitRelease -= spawner.StartSpawning;
+                    _warrioirCounter.OnCounterLimitOverflow -= spawner.StopSpawning;
+                };
             }
 
             private void CheckForLose()
@@ -182,52 +223,6 @@ namespace InfinityGame.DataCaching
                     OnFractionLose?.Invoke();
             }
 
-            public void CacheWarrior(Warrior warrior)
-            {
-                if (!_warriors.Add(warrior))
-                    throw new UnityException($"{warrior} warrior is already cashed, but you're trying to cash it again.");
-
-                IncreaseWarrioirCount();
-            }
-
-            public void UncacheWarrior(Warrior warrior)
-            {
-                if (!_warriors.Remove(warrior))
-                    throw new UnityException($"{warrior} warrior is not cashed, but you're trying to uncash it.");
-
-                DecreaseWarriorCount();
-
-                if (_townHallIsDead)
-                    CheckForLose();
-            }
-
-            private void IncreaseWarrioirCount()
-            {
-                _warriorCount++;
-
-                if (_warriorCount >= WarrioirCountLimit)
-                {
-                    _isWarrioirLimitOverflowed = true;
-                    OnWarrioirLimitOverflow?.Invoke();
-                }
-            }
-
-            private void DecreaseWarriorCount()
-            {
-                _warriorCount--;
-
-                if (_isWarrioirLimitOverflowed && _warriorCount < WarrioirCountLimit)
-                {
-                    _isWarrioirLimitOverflowed = false;
-                    OnWarrioirLimitRelease?.Invoke();
-                }
-            }
-
-            private void OnTownHallDeath()
-            {
-                _townHallIsDead = true;
-                CheckForLose();
-            }
         }
     }
 }

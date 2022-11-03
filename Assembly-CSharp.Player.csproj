@@ -95,6 +95,7 @@
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Arrow\Arrow.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
+    <Compile Include="Assets\_Scripts\Counter\Counter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

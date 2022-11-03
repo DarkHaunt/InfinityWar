@@ -22,9 +22,9 @@ MonoBehaviour:
     _name: Human Barrack
     _buildingSprite: {fileID: 21300000, guid: e6ed75d2ec92bc14e9afedf4fc7306ec, type: 3}
     _buildingHealthPoints: 600
-  _barracksWarrioirPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
   _barracksWarrioirSpawnSettings:
     _spawnCoolDownSeconds: 3
     _timeDeltaSeconds: 1
+    _warrioirsPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
     _warriosToSpawn:
     - {fileID: 3829235489145816803, guid: 7a72723681bca1440bcf1b10c4c65062, type: 3}
