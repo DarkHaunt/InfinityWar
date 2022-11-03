@@ -1,5 +1,6 @@
 using UnityEngine;
-using InfinityGame.Strategies.WarrioirSpawnStrategies;
+using InfinityGame.Strategies.WarrioirPickStrategies;
+using InfinityGame.Spawning;
 
 namespace InfinityGame.Fractions
 {
@@ -17,17 +18,17 @@ namespace InfinityGame.Fractions
 
         [Space(10f)]
         [SerializeField] private BuildingData _barrackBuildingData;
-        [SerializeField] private WarrioirsPickStrategy _warrioirPickStrategy;
+        [SerializeField] private WarrioirsPickStrategy _barracksWarrioirPickStrategy;
 
         [Space(10f)]
-        [SerializeField] private WarrioirSpawnSettings _warrioirSpawnSettings;
+        [SerializeField] private WarrioirSpawnSettings _barracksWarrioirSpawnSettings;
 
 
 
         public FractionType FractionType => _fraction;
         public int WarrioirMaxLimit => _warrioirMaxCount;
-        public WarrioirsPickStrategy WarrioirPickStrategy => _warrioirPickStrategy;
-        public WarrioirSpawnSettings WarrioirSpawnSettings => _warrioirSpawnSettings;
+        public WarrioirsPickStrategy BarracksWarrioirPickStrategy => _barracksWarrioirPickStrategy;
+        public WarrioirSpawnSettings BarracksWarrioirSpawnSettings => _barracksWarrioirSpawnSettings;
         public BuildingData BarrackBuildingData => _barrackBuildingData;
         public BuildingData TownHallBuildingData => _townHallBuildingData;
 

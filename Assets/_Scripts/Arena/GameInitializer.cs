@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System;
 using InfinityGame.Factories.BuildingFactory;
-using InfinityGame.GameEntities;
-using InfinityGame.DataCaching;
 using InfinityGame.Arena;
 using InfinityGame.Fractions;
 using UnityEngine;
@@ -25,10 +22,7 @@ internal class GameInitializer : MonoBehaviour
     /// <returns>List of all barracks of fraction</returns>
     private void AssembleFraction(Fraction fractionData, SpawnPlace spawnPlace)
     {
-        FractionCacher.CashFraction(fractionData);
-        var townHall = _buildingFactory.CreateTownHall(fractionData, spawnPlace.TownHallSpawnPointPosition, fractionData.TownHallBuildingData);
-        var cachedFraction =  FractionCacher.GetFractionCachedData(fractionData.FractionType);
-        cachedFraction.TownHall = townHall; // TODO: Не нравиться мне это
+        _buildingFactory.CreateTownHall(fractionData, spawnPlace.TownHallSpawnPointPosition, fractionData.TownHallBuildingData);
 
         // Spawn all sub barracks
         foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsTransforms)

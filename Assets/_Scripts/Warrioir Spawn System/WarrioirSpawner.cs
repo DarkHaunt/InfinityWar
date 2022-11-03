@@ -1,124 +1,161 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using InfinityGame.Strategies.WarrioirSpawnStrategies;
+using InfinityGame.Strategies.WarrioirPickStrategies;
 using InfinityGame.Factories.WarriorFactory;
 using InfinityGame.GameEntities;
-using InfinityGame.Fractions;
 using InfinityGame.DataCaching;
 using System.Collections;
+using InfinityGame.Fractions;
 
-/// <summary>
-/// Loop spawning certain count of warriors determied by spawn strategy
-/// </summary>
-public class WarrioirSpawner : MonoBehaviour
+namespace InfinityGame.Spawning
 {
-    // A max scatter between spawn position and spawner position in units
-    private static Vector2 MaxSpawnPositionScatter = new Vector2(1f, 1f);
-
-    private float _spawnCoolDownSeconds;
-    private float _spawnDelaySeconds;
-
-    private IReadOnlyList<Warrior> _warriorsToSpawn;
-    private WarrioirsPickStrategy _warriorsPickStrategy;
-
-    private bool _isSpawning = true;
-
-
-
-    public void Initialize(SpawnData spawnData, WarrioirsPickStrategy warriorPickStrategy)
+    /// <summary>
+    /// Loop spawning certain count of warriors determied by spawn strategy
+    /// </summary>
+    public class WarrioirSpawner : MonoBehaviour
     {
-        _spawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
-        _spawnDelaySeconds = spawnData.TimeDeltaSeconds;
+        // A max scatter between spawn position and spawner position in units
+        private static Vector2 MaxSpawnPositionScatter = new Vector2(1f, 1f);
 
-        if (_spawnDelaySeconds >= _spawnCoolDownSeconds)
-            throw new UnityException($"Spawn delay can't be equal or higher than cool down seconds!");
+        private float _spawnCoolDownSeconds;
+        private float _spawnDelaySeconds;
 
-        _warriorsToSpawn = spawnData.WarriosToSpawn;
-        _warriorsPickStrategy = warriorPickStrategy;
+        private IReadOnlyList<Warrior> _warriorsToSpawn;
+        private WarrioirsPickStrategy _warriorsPickStrategy;
+        private FractionHandler.FractionType _fractionType;
 
-        FractionCacher.OnGameEnd += StopSpawning;
+        private bool _isSpawning = true;
 
-        StartSpawning();
-    }
+        private FractionCacher.FractionGameData _cachedFractionData;
 
-    public void StartSpawning()
-    {
-        _isSpawning = true;
-        StartCoroutine(SpawnCoroutine());
-    }
 
-    public void StopSpawning()
-    {
-        _isSpawning = false;
-    }
 
-    private IEnumerator SpawnCoroutine()
-    {
-        while (_isSpawning)
+        public FractionHandler.FractionType FractionType => _fractionType;
+        
+
+
+        public void Initialize(Fraction fraction) => Initialize(fraction.FractionType, fraction.BarracksWarrioirSpawnSettings, fraction.BarracksWarrioirPickStrategy);
+
+        public void Initialize(FractionHandler.FractionType fractionType, SpawnData spawnData, WarrioirsPickStrategy warriorPickStrategy)
         {
-            yield return new WaitForSeconds(NewSpawnDelaySeconds());
+            _spawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
+            _spawnDelaySeconds = spawnData.TimeDeltaSeconds;
 
-            var pickedWarioirsPrefabs = _warriorsPickStrategy.ChoseWarrioirsToSawn(_warriorsToSpawn);
+            _fractionType = fractionType;
 
+            if (!IsAllWarrioirsBelongsToSpawnerFraction(spawnData.WarriosToSpawn))
+                throw new UnityException($"Not all warrioirs belongs to fraction {_fractionType} in spawner {gameObject.name}");
 
-            foreach (var warrioirPrefab in pickedWarioirsPrefabs) // TODO: —павнит войнов свыше предела, пока не пройдет цикл полностью
+            if (_spawnDelaySeconds >= _spawnCoolDownSeconds)
+                throw new UnityException($"Spawn delay can't be equal or higher than cool down seconds!");
+
+            _warriorsToSpawn = spawnData.WarriosToSpawn;
+            _warriorsPickStrategy = warriorPickStrategy;
+
+            FractionCacher.OnGameEnd += StopSpawning;
+
+            _cachedFractionData = FractionCacher.GetFractionCachedData(FractionType);
+            _cachedFractionData.OnWarrioirLimitRelease += StartSpawning;
+            _cachedFractionData.OnWarrioirLimitOverflow += StopSpawning;
+
+            StartSpawning();
+        }
+
+        public void OnSpawnerDeactivate()
+        {
+            _cachedFractionData.OnWarrioirLimitRelease -= StartSpawning;
+            _cachedFractionData.OnWarrioirLimitOverflow -= StopSpawning;
+        }
+
+        private void StartSpawning()
+        {
+            _isSpawning = true;
+            StartCoroutine(SpawnCoroutine());
+        }
+
+        private void StopSpawning()
+        {
+            _isSpawning = false;
+        }
+
+        private bool IsAllWarrioirsBelongsToSpawnerFraction(IEnumerable<Warrior> warriors)
+        {
+            foreach (var warrior in warriors)
+                if (!warrior.IsBelongsToFraction(FractionType))
+                    return false;
+
+            return true;
+        }
+
+        private IEnumerator SpawnCoroutine()
+        {
+            while (_isSpawning)
             {
-                if (!_isSpawning)
-                    break;
+                yield return new WaitForSeconds(NewSpawnDelaySeconds());
 
-                var warrioirPosition = transform.position + RandomPositionDeviation();
-                WarriorFactory.InstantiateWarrior(warrioirPrefab, warrioirPosition);
+                var pickedWarioirsPrefabs = _warriorsPickStrategy.ChoseWarrioirsToSawn(_warriorsToSpawn);
+
+
+                foreach (var warrioirPrefab in pickedWarioirsPrefabs)
+                {
+                    if (!_isSpawning)
+                        break;
+
+                    var warrioirPosition = transform.position + RandomPositionDeviation();
+                    WarriorFactory.InstantiateWarrior(warrioirPrefab, warrioirPosition);
+                }
             }
         }
-    }
 
-    private Vector3 RandomPositionDeviation()
-    {
-        var randomX = (float)(StaticRandomizer.GetRandomSign() * StaticRandomizer.Randomizer.NextDouble() * MaxSpawnPositionScatter.x);
-        var randomY = (float)(StaticRandomizer.GetRandomSign() * StaticRandomizer.Randomizer.NextDouble() * MaxSpawnPositionScatter.y);
-
-        return new Vector3(randomX, randomY);
-    }
-
-    private float NewSpawnDelaySeconds()
-    {
-        var randomPercentOfDeltaMiliseconds = StaticRandomizer.Randomizer.NextDouble();
-        var rawTime = (_spawnCoolDownSeconds + (StaticRandomizer.GetRandomSign() * _spawnDelaySeconds * randomPercentOfDeltaMiliseconds));
-
-        return (float)rawTime;
-    }
-
-
-
-    private void OnDestroy()
-    {
-        FractionCacher.OnGameEnd -= StopSpawning;
-    }
-
-
-
-    [Serializable]
-    public struct SpawnData
-    {
-        [SerializeField] private float _spawnCoolDownSeconds;
-        [SerializeField] private float _timeDeltaSeconds;
-
-        [SerializeField] private List<Warrior> _warriosToSpawn;
-
-
-        public float SpawnCoolDownSeconds => _spawnCoolDownSeconds;
-
-        public float TimeDeltaSeconds => _timeDeltaSeconds;
-
-        public List<Warrior> WarriosToSpawn => _warriosToSpawn;
-
-
-        public SpawnData(float spawnCoolDownSeconds, float timeDeltaSeconds, List<Warrior> warriorsToSpawn)
+        private Vector3 RandomPositionDeviation()
         {
-            _spawnCoolDownSeconds = spawnCoolDownSeconds;
-            _timeDeltaSeconds = timeDeltaSeconds;
-            _warriosToSpawn = warriorsToSpawn;
+            var randomX = (float)(StaticRandomizer.GetRandomSign() * StaticRandomizer.Randomizer.NextDouble() * MaxSpawnPositionScatter.x);
+            var randomY = (float)(StaticRandomizer.GetRandomSign() * StaticRandomizer.Randomizer.NextDouble() * MaxSpawnPositionScatter.y);
+
+            return new Vector3(randomX, randomY);
+        }
+
+        private float NewSpawnDelaySeconds()
+        {
+            var randomPercentOfDeltaMiliseconds = StaticRandomizer.Randomizer.NextDouble();
+            var rawTime = (_spawnCoolDownSeconds + (StaticRandomizer.GetRandomSign() * _spawnDelaySeconds * randomPercentOfDeltaMiliseconds));
+
+            return (float)rawTime;
+        }
+
+
+
+
+        private void OnDestroy()
+        {
+            FractionCacher.OnGameEnd -= StopSpawning;
+        }
+
+
+
+        [Serializable]
+        public struct SpawnData // TODO: ћожет быть добавить сюда Spawn Strategy?
+        {
+            [SerializeField] private float _spawnCoolDownSeconds;
+            [SerializeField] private float _timeDeltaSeconds;
+
+            [SerializeField] private List<Warrior> _warriosToSpawn;
+
+
+            public float SpawnCoolDownSeconds => _spawnCoolDownSeconds;
+
+            public float TimeDeltaSeconds => _timeDeltaSeconds;
+
+            public List<Warrior> WarriosToSpawn => _warriosToSpawn;
+
+
+            public SpawnData(float spawnCoolDownSeconds, float timeDeltaSeconds, List<Warrior> warriorsToSpawn)
+            {
+                _spawnCoolDownSeconds = spawnCoolDownSeconds;
+                _timeDeltaSeconds = timeDeltaSeconds;
+                _warriosToSpawn = warriorsToSpawn;
+            }
         }
     }
 }

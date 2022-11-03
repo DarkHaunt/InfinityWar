@@ -3,7 +3,7 @@ using InfinityGame.GameEntities;
 using UnityEngine;
 
 
-namespace InfinityGame.Strategies.WarrioirSpawnStrategies
+namespace InfinityGame.Strategies.WarrioirPickStrategies
 {
     public abstract class WarrioirsPickStrategy : ScriptableObject
     {

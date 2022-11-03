@@ -47,6 +47,8 @@ namespace InfinityGame.Factories.BuildingFactory
             var buildingGameObject = new GameObject(buildingData.Name);
             var townHall = buildingGameObject.AddComponent<TownHall>();
 
+            FractionCacher.CashFraction(fraction, townHall);
+
             townHall.Initialize(fraction, buildingData);
             townHall.transform.position = position;
 

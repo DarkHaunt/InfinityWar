@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using InfinityGame.GameEntities;
+using InfinityGame.Spawning;
 using InfinityGame.Fractions;
 
 namespace InfinityGame.DataCaching
@@ -16,12 +17,12 @@ namespace InfinityGame.DataCaching
 
 
 
-        public static void CashFraction(Fraction fraction)
+        public static void CashFraction(Fraction fraction, TownHall townHall)
         {
             if (IsFractionCached(fraction.FractionType))
                 throw new UnityException($"{fraction} is already cashed, but you're trying to cash it again.");
 
-            var fractionCashedData = new FractionGameData(fraction);
+            var fractionCashedData = new FractionGameData(fraction, townHall);
             _cachedFractions.Add(fraction.FractionType, fractionCashedData);
 
             fractionCashedData.OnFractionLose += () => UncacheFractionData(fractionCashedData);
@@ -70,23 +71,23 @@ namespace InfinityGame.DataCaching
             _cachedFractions[warrior.Fraction].UncacheWarrior(warrior);
         }
 
-        public static FractionGameData GetFractionCachedData(FractionType fractionTag)
+        public static FractionGameData GetFractionCachedData(FractionType fractionType)
         {
-            if (!IsFractionCached(fractionTag))
-                throw new UnityException($"Fraction Cahser doesn't contain fraction {fractionTag}");
+            if (!IsFractionCached(fractionType))
+                throw new UnityException($"Fraction Cahser doesn't contain fraction {fractionType}");
 
-            return _cachedFractions[fractionTag];
+            return _cachedFractions[fractionType];
         }
 
-        public static IEnumerable<GameEntity> GetEnemyEntitiesOfFraction(FractionType fractionTag)
+        public static IEnumerable<GameEntity> GetEnemyEntitiesOfFraction(FractionType fractionType)
         {
-            if (!IsFractionCached(fractionTag))
-                throw new UnityException($"Fraction {fractionTag} doesn't exist in cache, so cacher can't take it's entities");
+            if (!IsFractionCached(fractionType))
+                throw new UnityException($"Fraction {fractionType} doesn't exist in cache, so cacher can't take it's entities");
 
 
             foreach (var fractionData in _cachedFractions)
             {
-                if (fractionData.Key == fractionTag)
+                if (fractionData.Key == fractionType)
                     continue;
 
                 foreach (var entity in fractionData.Value.GetEntitiesForTargeting)
@@ -94,7 +95,8 @@ namespace InfinityGame.DataCaching
             }
         }
 
-        private static bool IsFractionCached(FractionType fractionTag) => _cachedFractions.ContainsKey(fractionTag);
+        private static bool IsFractionCached(FractionType fractionType) => _cachedFractions.ContainsKey(fractionType);
+
 
 
         /// <summary>
@@ -143,24 +145,17 @@ namespace InfinityGame.DataCaching
 
             public FractionType Fraction { get; }
 
-            public TownHall TownHall
-            {
-                set
-                {
-                    _townHall = value;
-
-                    _townHall.OnZeroHealth += OnTownHallDeath;
-                }
-            }
 
 
-
-            public FractionGameData(Fraction fraction)
+            public FractionGameData(Fraction fraction, TownHall fractionTownHall)
             {
                 WarrioirCountLimit = fraction.WarrioirMaxLimit;
                 Fraction = fraction.FractionType;
 
                 _warriors = new HashSet<Warrior>();
+
+                _townHall = fractionTownHall;
+                _townHall.OnZeroHealth += OnTownHallDeath;
             }
 
 
@@ -175,8 +170,8 @@ namespace InfinityGame.DataCaching
 
             public void UncacheBuilding(Building building)
             {
-                if (_townHallIsDead)
-                    throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't cache buildings of fraction anymore");
+/*                if (_townHallIsDead)
+                    throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't uncache buildings of fraction anymore");*/
 
                 _townHall.RemoveBuilding(building);
             }

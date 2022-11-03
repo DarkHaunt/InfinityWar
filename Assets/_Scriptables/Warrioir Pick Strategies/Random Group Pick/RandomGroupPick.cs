@@ -3,7 +3,7 @@ using InfinityGame.GameEntities;
 using UnityEngine;
 
 
-namespace InfinityGame.Strategies.WarrioirSpawnStrategies
+namespace InfinityGame.Strategies.WarrioirPickStrategies
 {
     [CreateAssetMenu(fileName = "SpawnStrategy", menuName = "Data/WarrioirChoseStrategies/RandomGroupPick", order = 52)]
     public class RandomGroupPick : WarrioirsPickStrategy

@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fractionTag: 2
-  _health: 40
+  _health: 1000
   _attackCoolDown: 0.9
   _speedMult: 2.5
   _attackDistance: 0.5
@@ -206,4 +206,4 @@ MonoBehaviour:
   _localTarget: {fileID: 0}
   _poolTag: Melee Zombie
   _currentState: 2
-  _meleeDamage: 15
+  _meleeDamage: 1000
