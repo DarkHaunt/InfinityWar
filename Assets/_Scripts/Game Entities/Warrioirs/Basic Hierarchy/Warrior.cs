@@ -50,7 +50,7 @@ namespace InfinityGame.GameEntities
         {
             _globalTarget.OnZeroHealth -= GetNewGlobalTarget;
 
-            FractionCacher.OnGameEnd -= BecomeNeutral;
+            GameInitializer.OnGameEnd -= BecomeNeutral;
             gameObject.SetActive(false);
         }
 
@@ -62,7 +62,7 @@ namespace InfinityGame.GameEntities
 
             GetNewGlobalTarget();
 
-            FractionCacher.OnGameEnd += BecomeNeutral;
+            GameInitializer.OnGameEnd += BecomeNeutral;
             gameObject.SetActive(true);
         }
 
@@ -230,7 +230,7 @@ namespace InfinityGame.GameEntities
                     TryToGetNewLocalTarget();
             };
 
-            FractionCacher.OnGameEnd += BecomeNeutral;
+            GameInitializer.OnGameEnd += BecomeNeutral;
             TryToGetNewLocalTarget();
         }
 

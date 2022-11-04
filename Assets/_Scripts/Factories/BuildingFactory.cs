@@ -26,10 +26,10 @@ namespace InfinityGame.Factories.BuildingFactory
             return building;
         }
 
-        public FractionSpawnBuilding CreateSpawnBuilding(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData)
+        public Barrack CreateSpawnBuilding(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData)
         {
             var buildingGameObject = new GameObject(buildingData.Name);
-            var spawnBuilding = buildingGameObject.AddComponent<FractionSpawnBuilding>();
+            var spawnBuilding = buildingGameObject.AddComponent<Barrack>();
 
             spawnBuilding.Initialize(fraction, buildingData);
             spawnBuilding.transform.position = position;

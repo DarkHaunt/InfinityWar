@@ -4,7 +4,7 @@ using System;
 
 namespace InfinityGame.GameEntities
 {
-    public class TownHall : FractionSpawnBuilding // TODO: Может вместо наследования попробовать композицию?
+    public class TownHall : Barrack // TODO: Может вместо наследования попробовать композицию?
     {
         private readonly HashSet<Building> _buildings = new HashSet<Building>();
 

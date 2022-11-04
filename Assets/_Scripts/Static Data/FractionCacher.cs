@@ -11,7 +11,7 @@ namespace InfinityGame.DataCaching
 
     public static class FractionCacher
     {
-        public static event Action OnGameEnd; // TODO: По сути тут этому не место
+        public static event Action OnOneFractionLeft;
 
         private static readonly Dictionary<FractionType, FractionGameData> _cachedFractions = new Dictionary<FractionType, FractionGameData>();
 
@@ -35,8 +35,8 @@ namespace InfinityGame.DataCaching
 
             _cachedFractions.Remove(fractionCashedData.Fraction);
 
-            if (_cachedFractions.Count <= 1)
-                OnGameEnd?.Invoke();
+            if (_cachedFractions.Count == 1)
+                OnOneFractionLeft?.Invoke();
         }
 
         public static void CacheBuilding(Building building)

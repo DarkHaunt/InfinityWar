@@ -18,7 +18,6 @@ namespace InfinityGame.Fractions
 
         [Space(10f)]
         [SerializeField] private BuildingData _barrackBuildingData;
-        //[SerializeField] private WarrioirsPickStrategy _barracksWarrioirPickStrategy;
 
         [Space(10f)]
         [SerializeField] private WarrioirSpawnSettings _barracksWarrioirSpawnSettings;
@@ -27,7 +26,6 @@ namespace InfinityGame.Fractions
 
         public FractionType FractionType => _fraction;
         public int WarrioirMaxLimit => _warrioirMaxCount;
-        //public WarrioirsPickStrategy BarracksWarrioirPickStrategy => _barracksWarrioirPickStrategy;
         public WarrioirSpawnSettings BarracksWarrioirSpawnSettings => _barracksWarrioirSpawnSettings;
         public BuildingData BarrackBuildingData => _barrackBuildingData;
         public BuildingData TownHallBuildingData => _townHallBuildingData;

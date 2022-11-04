@@ -55,7 +55,7 @@ namespace InfinityGame.Spawning
             _warriorsToSpawn = spawnData.WarriosToSpawn;
             _warriorsPickStrategy = spawnData.WarrioirsPickStrategy;
 
-            FractionCacher.OnGameEnd += StopSpawning;
+            GameInitializer.OnGameEnd += StopSpawning;
 
             FractionCacher.TieUpSpawnerToFraction(this);
             StartSpawning();
@@ -127,7 +127,7 @@ namespace InfinityGame.Spawning
 
         private void OnDestroy()
         {
-            FractionCacher.OnGameEnd -= DeactivateSpawning;
+            GameInitializer.OnGameEnd -= DeactivateSpawning;
         }
 
 

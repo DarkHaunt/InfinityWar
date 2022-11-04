@@ -1,11 +1,14 @@
 using System.Collections.Generic;
+using System;
 using InfinityGame.Factories.BuildingFactory;
 using InfinityGame.Arena;
 using InfinityGame.Fractions;
+using InfinityGame.DataCaching;
 using UnityEngine;
 
 internal class GameInitializer : MonoBehaviour
 {
+    public static Action OnGameEnd;
     private static GameInitializer _instance;
 
     [SerializeField] private List<SpawnPlace> _spawnPlaces = new List<SpawnPlace>(4);
@@ -59,6 +62,8 @@ internal class GameInitializer : MonoBehaviour
         }
     }
 
+    private void EndGame() => OnGameEnd?.Invoke();
+
 
 
     private void Awake()
@@ -71,6 +76,8 @@ internal class GameInitializer : MonoBehaviour
         _instance = this;
 
         #endregion
+
+        FractionCacher.OnOneFractionLeft += EndGame;
 
         AssembleArena();
     }

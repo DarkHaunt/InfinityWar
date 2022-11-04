@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Projectiles\Object Disparcher\ObjectDispatcher.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\Buildings\FractionSpawnBuilding.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\Buildings\Barrack.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Building.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Lineal Projectile.cs" />
@@ -93,9 +93,9 @@
     <Compile Include="Assets\_Scripts\Projectiles\Object Disparcher\Lineal Dispetcher\LinealDispatcher.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Demons\Demonologist.cs" />
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
+    <Compile Include="Assets\_Scripts\Counter\Counter.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Lineal\Arrow\Arrow.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
-    <Compile Include="Assets\_Scripts\Counter\Counter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
