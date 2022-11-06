@@ -26,7 +26,7 @@ namespace InfinityGame.Projectiles
         protected override void Awake()
         {
             InitializeDispatcher(new LinealDispatcher(Speed));
-            _enemyDetector = new FractionEntityDetector(_splashRadius, Fraction);
+            _enemyDetector = new FractionEntityDetector(_splashRadius, FractionType);
 
             base.Awake();
         }

@@ -10,7 +10,7 @@ namespace InfinityGame.GameEntities
         [SerializeField] private Projectile _projectilePrefab;
         [SerializeField] private ShootStrategy _shootStrategy;
 
-        protected override void Attack() => _shootStrategy.Shoot(transform, LocalTarget.transform, _projectilePrefab);
+        protected override void Attack() => _shootStrategy.Shoot(this, LocalTarget, _projectilePrefab);
     } 
 }
 
