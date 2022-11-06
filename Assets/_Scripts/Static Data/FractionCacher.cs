@@ -17,12 +17,12 @@ namespace InfinityGame.DataCaching
 
 
 
-        public static void CashFraction(Fraction fraction, TownHall townHall)
+        public static void CashFraction(Fraction fraction, TownHall fractionTownHall)
         {
             if (IsFractionCached(fraction.FractionType))
                 throw new UnityException($"{fraction} is already cashed, but you're trying to cash it again.");
 
-            var fractionCashedData = new FractionGameData(fraction, townHall);
+            var fractionCashedData = new FractionGameData(fraction, fractionTownHall);
             _cachedFractions.Add(fraction.FractionType, fractionCashedData);
 
             fractionCashedData.OnFractionLose += () => UncacheFractionData(fractionCashedData);
@@ -114,10 +114,10 @@ namespace InfinityGame.DataCaching
         {
             public event Action OnFractionLose;
 
-            private readonly TownHall _townHall;
             private readonly HashSet<Warrior> _warriors;
+            private readonly TownHall _townHall;
 
-            private bool _townHallIsDead = false;
+            private bool _fractionHaveTownHall = false;
 
             private readonly Counter _warrioirCounter;
 
@@ -127,7 +127,7 @@ namespace InfinityGame.DataCaching
             {
                 get
                 {
-                    if (_townHallIsDead)
+                    if (!_fractionHaveTownHall)
                         return _warriors;
 
                     return Buildings;
@@ -140,9 +140,6 @@ namespace InfinityGame.DataCaching
                 {
                     foreach (var building in _townHall.Buildings)
                         yield return building;
-
-
-                    yield return _townHall; // Because town hall is a fraction building too
                 }
 
             }
@@ -151,38 +148,34 @@ namespace InfinityGame.DataCaching
 
 
 
-            public FractionGameData(Fraction fraction, TownHall fractionTownHall)
+            public FractionGameData(Fraction fraction, TownHall townHall)
             {
-                // WarrioirCountLimit = fraction.WarrioirMaxLimit;
-
                 _warrioirCounter = new Counter(fraction.WarrioirMaxLimit);
                 Fraction = fraction.FractionType;
 
                 _warriors = new HashSet<Warrior>();
 
-                _townHall = fractionTownHall;
-                _townHall.OnZeroHealth += () =>
+                _townHall = townHall;
+                _fractionHaveTownHall = true;
+                _townHall.OnDestroy += () =>
                 {
-                    _townHallIsDead = true;
+                    _fractionHaveTownHall = false;
                     CheckForLose();
                 };
             }
 
 
 
-            public void CacheBuilding(Building building)
+            public void CacheBuilding<BuildingType>(BuildingType building) where BuildingType : Building
             {
-                if (_townHallIsDead)
+                if (!_fractionHaveTownHall)
                     throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't cache buildings of fraction anymore");
 
                 _townHall.AddBuilding(building);
             }
 
-            public void UncacheBuilding(Building building)
+            public void UncacheBuilding<BuildingType>(BuildingType building) where BuildingType : Building
             {
-                /*                if (_townHallIsDead)
-                                    throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't uncache buildings of fraction anymore");*/
-
                 _townHall.RemoveBuilding(building);
             }
 
@@ -201,13 +194,13 @@ namespace InfinityGame.DataCaching
 
                 _warrioirCounter.Decrease();
 
-                if (_townHallIsDead)
+                if (!_fractionHaveTownHall)
                     CheckForLose();
             }
 
             public void PutSpawnerOnWarriorRecord(WarrioirSpawner spawner)
             {
-                _warrioirCounter.OnCounterLimitRelease+= spawner.StartSpawning;
+                _warrioirCounter.OnCounterLimitRelease += spawner.StartSpawning;
                 _warrioirCounter.OnCounterLimitOverflow += spawner.StopSpawning;
 
                 spawner.OnSpawnerDeactivate += () =>
@@ -219,7 +212,7 @@ namespace InfinityGame.DataCaching
 
             private void CheckForLose()
             {
-                if (_townHallIsDead && _warriors.Count == 0)
+                if (_fractionHaveTownHall && _warriors.Count == 0)
                     OnFractionLose?.Invoke();
             }
 

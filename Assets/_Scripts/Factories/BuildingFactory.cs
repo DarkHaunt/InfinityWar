@@ -5,56 +5,27 @@ using UnityEngine;
 
 namespace InfinityGame.Factories.BuildingFactory
 {
-    using FractionBuildingData = Fraction.FractionBuildingData;
+    using BuildingData = Fraction.BuildingData;
 
     public class BuildingFactory
     {
         public BuildingFactory() { }
 
 
-
-        public Building CreateBuilding(FractionBuildingData fractionBuildingData, Vector2 position)
+        public BuildingType SpawnFractionBuilding<BuildingType>(Fraction fraction, BuildingData fractionBuildingData, Vector2 position) where BuildingType : Building
         {
             var buildingGameObject = new GameObject(fractionBuildingData.Name);
-            var building = buildingGameObject.AddComponent<Building>();
+            var building = buildingGameObject.AddComponent<BuildingType>();
 
-            building.Initialize(fractionBuildingData.Fraction, fractionBuildingData.BuildingData);
+            building.Initialize(fraction, fractionBuildingData);
             building.transform.position = position;
+
+            building.OnZeroHealth += () => Object.Destroy(building.gameObject);
+            building.OnZeroHealth += () => FractionCacher.UncacheBuilding(building);
 
             FractionCacher.CacheBuilding(building);
 
             return building;
-        }
-
-        public Barrack CreateSpawnBuilding(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData)
-        {
-            var buildingGameObject = new GameObject(buildingData.Name);
-            var spawnBuilding = buildingGameObject.AddComponent<Barrack>();
-
-            spawnBuilding.Initialize(fraction, buildingData);
-            spawnBuilding.transform.position = position;
-
-            FractionCacher.CacheBuilding(spawnBuilding);
-
-            spawnBuilding.OnZeroHealth += () => FractionCacher.UncacheBuilding(spawnBuilding);
-            spawnBuilding.OnZeroHealth += () => Object.Destroy(spawnBuilding.gameObject);
-
-            return spawnBuilding;
-        }
-
-        public TownHall CreateTownHall(Fraction fraction, Vector2 position, Fraction.BuildingData buildingData)
-        {
-            var buildingGameObject = new GameObject(buildingData.Name);
-            var townHall = buildingGameObject.AddComponent<TownHall>();
-
-            FractionCacher.CashFraction(fraction, townHall);
-
-            townHall.Initialize(fraction, buildingData);
-            townHall.transform.position = position;
-
-            townHall.OnZeroHealth += () => Object.Destroy(townHall.gameObject);
-
-            return townHall;
         }
     }
 }

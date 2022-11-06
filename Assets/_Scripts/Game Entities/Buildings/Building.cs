@@ -1,22 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using InfinityGame.Fractions;
 using UnityEngine;
 
 
 namespace InfinityGame.GameEntities
 {
-    using BuildingData = Fractions.Fraction.BuildingData;
+    using BuildingData = Fraction.BuildingData;
 
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
     public class Building : GameEntity
     {
-        public void Initialize(FractionType fraction, BuildingData buildingData)
+        public virtual void Initialize(Fraction fraction, BuildingData buildingData)
         {
             _health = buildingData.BuildingHealthPoints;
-            _fractionTag = fraction;
+            _fractionType = fraction.FractionType;
 
             var spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = buildingData.BuildingSprite;

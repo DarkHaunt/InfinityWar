@@ -6,12 +6,12 @@ namespace InfinityGame.Fractions
 {
     public abstract class FractionHandler : MonoBehaviour
     {
-        [SerializeField] protected FractionType _fractionTag;
+        [SerializeField] protected FractionType _fractionType;
 
 
-        public FractionType Fraction => _fractionTag;
+        public FractionType Fraction => _fractionType;
 
-        public bool IsBelongsToFraction(FractionType fraction) => (_fractionTag & fraction) != 0;
+        public bool IsBelongsToFraction(FractionType fraction) => (_fractionType & fraction) != 0;
 
 
 

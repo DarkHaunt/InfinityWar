@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System;
 using InfinityGame.Factories.BuildingFactory;
-using InfinityGame.Arena;
-using InfinityGame.Fractions;
+using InfinityGame.GameEntities;
 using InfinityGame.DataCaching;
+using InfinityGame.Fractions;
+using InfinityGame.Arena;
 using UnityEngine;
 
 internal class GameInitializer : MonoBehaviour
@@ -17,19 +18,26 @@ internal class GameInitializer : MonoBehaviour
     private BuildingFactory _buildingFactory;
 
 
+
     /// <summary>
     /// Asseblies all fraction settings for game
     /// </summary>
-    /// <param name="fractionData"></param>
+    /// <param name="fraction"></param>
     /// <param name="spawnPlace"></param>
     /// <returns>List of all barracks of fraction</returns>
-    private void AssembleFraction(Fraction fractionData, SpawnPlace spawnPlace)
+    private void AssembleFraction(Fraction fraction, SpawnPlace spawnPlace)
     {
-        _buildingFactory.CreateTownHall(fractionData, spawnPlace.TownHallSpawnPointPosition, fractionData.TownHallBuildingData);
+        var townHallObject = new GameObject(fraction.TownHallBuildingData.Name);
+        var townHall = townHallObject.AddComponent<TownHall>();
+
+        FractionCacher.CashFraction(fraction, townHall);
+
+        var townHallBarrack = _buildingFactory.SpawnFractionBuilding<Barrack>(fraction, fraction.TownHallBuildingData, spawnPlace.TownHallSpawnPointPosition);
+        townHall.SetBarrack(townHallBarrack);
 
         // Spawn all sub barracks
         foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsTransforms)
-            _buildingFactory.CreateSpawnBuilding(fractionData, barrackPosition, fractionData.BarrackBuildingData);
+            _buildingFactory.SpawnFractionBuilding<Barrack>(fraction, fraction.BarrackBuildingData, barrackPosition);
     }
 
     private IList<int> GetReservedSpawnPlaceIndexes()

@@ -1,5 +1,4 @@
 using UnityEngine;
-using InfinityGame.Strategies.WarrioirPickStrategies;
 using InfinityGame.Spawning;
 
 namespace InfinityGame.Fractions
@@ -43,22 +42,6 @@ namespace InfinityGame.Fractions
             public string Name => _name;
             public Sprite BuildingSprite => _buildingSprite;
             public float BuildingHealthPoints => _buildingHealthPoints;
-        }
-
-        public struct FractionBuildingData
-        {
-            public readonly FractionType Fraction;
-            public readonly string Name;
-            public readonly BuildingData BuildingData;
-
-
-            public FractionBuildingData(FractionType fraction, BuildingData buildingData)
-            {
-                Fraction = fraction;
-                BuildingData = buildingData;
-                Name = buildingData.Name;
-            }
-
         }
     }
 }

@@ -4,9 +4,12 @@ using System;
 
 namespace InfinityGame.GameEntities
 {
-    public class TownHall : Barrack // TODO: Может вместо наследования попробовать композицию?
+    public class TownHall : MonoBehaviour
     {
+        public event Action OnDestroy;
+
         private readonly HashSet<Building> _buildings = new HashSet<Building>();
+        private Barrack _barrack;
 
 
 
@@ -31,16 +34,27 @@ namespace InfinityGame.GameEntities
             Action onAllBuildingsIterationEnd = null;
 
             foreach (var aliveFractionBuilding in _buildings)
-                    onAllBuildingsIterationEnd += aliveFractionBuilding.Die;
+                onAllBuildingsIterationEnd += aliveFractionBuilding.Die;
 
             onAllBuildingsIterationEnd?.Invoke();
         }
+
+        public void SetBarrack(Barrack barrack)
+        {
+            if (_barrack != null)
+                throw new UnityException($"Townhall {this} already have Barrack component");
+
+            _barrack = barrack;
+            _barrack.OnZeroHealth += OnDestroy;
+        }
+
+        public override string ToString() => $"{name} {transform.position}";
 
 
 
         private void Start()
         {
-            OnZeroHealth += DestroyAllBuildings;
+            _barrack.OnZeroHealth += DestroyAllBuildings;
         }
-    } 
+    }
 }

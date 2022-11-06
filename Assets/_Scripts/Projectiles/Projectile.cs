@@ -30,6 +30,7 @@ namespace InfinityGame.Projectiles
         private bool _isExploitating = true;
 
 
+
         public string PoolTag => _poolTag;
         protected float Damage => _damage;
         protected float Speed => _speedMult;

@@ -12,6 +12,8 @@ using InfinityGame.Fractions;
 
 namespace InfinityGame.Spawning
 {
+    using FractionType = FractionHandler.FractionType;
+
     /// <summary>
     /// Loop spawning certain count of warriors determied by spawn strategy
     /// </summary>
@@ -27,19 +29,19 @@ namespace InfinityGame.Spawning
 
         private IReadOnlyList<Warrior> _warriorsToSpawn;
         private WarrioirsPickStrategy _warriorsPickStrategy;
-        private FractionHandler.FractionType _fractionType;
+        private FractionType _fractionType;
 
         private bool _isSpawning = true;
 
 
 
-        public FractionHandler.FractionType Fraction => _fractionType;
+        public FractionType Fraction => _fractionType;
         
 
 
         public void Initialize(Fraction fraction) => Initialize(fraction.FractionType, fraction.BarracksWarrioirSpawnSettings);
 
-        public void Initialize(FractionHandler.FractionType fractionType, SpawnData spawnData)
+        public void Initialize(FractionType fractionType, SpawnData spawnData)
         {
             _spawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
             _spawnDelaySeconds = spawnData.TimeDeltaSeconds;
@@ -121,7 +123,6 @@ namespace InfinityGame.Spawning
 
             return (float)rawTime;
         }
-
 
 
 
