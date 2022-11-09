@@ -12,8 +12,6 @@ using InfinityGame.Fractions;
 
 namespace InfinityGame.Spawning
 {
-    using FractionType = FractionHandler.FractionType;
-
     /// <summary>
     /// Loop spawning certain count of warriors determied by spawn strategy
     /// </summary>
@@ -29,27 +27,27 @@ namespace InfinityGame.Spawning
 
         private IReadOnlyList<Warrior> _warriorsToSpawn;
         private WarrioirsPickStrategy _warriorsPickStrategy;
-        private FractionType _fractionType;
+        private string _fractionTag;
 
         private bool _isSpawning = true;
 
 
 
-        public FractionType Fraction => _fractionType;
+        public string Fraction => _fractionTag;
         
 
 
-        public void Initialize(Fraction fraction) => Initialize(fraction.FractionType, fraction.BarracksWarrioirSpawnSettings);
+        public void Initialize(Fraction fraction) => Initialize(fraction.FractionTag, fraction.BarracksWarrioirSpawnSettings);
 
-        public void Initialize(FractionType fractionType, SpawnData spawnData)
+        public void Initialize(string fractionTag, SpawnData spawnData)
         {
             _spawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
             _spawnDelaySeconds = spawnData.TimeDeltaSeconds;
 
-            _fractionType = fractionType;
+            _fractionTag = fractionTag;
 
             if (!IsAllWarrioirsBelongsToSpawnerFraction(spawnData.WarriosToSpawn))
-                throw new UnityException($"Not all warrioirs belongs to fraction {_fractionType} in spawner {gameObject.name}");
+                throw new UnityException($"Not all warrioirs belongs to fraction {_fractionTag} in spawner {gameObject.name}");
 
             if (_spawnDelaySeconds >= _spawnCoolDownSeconds)
                 throw new UnityException($"Spawn delay can't be equal or higher than cool down seconds!");

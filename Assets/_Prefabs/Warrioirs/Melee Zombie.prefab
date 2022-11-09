@@ -195,10 +195,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d932ae1207a66440a733fa3eb273436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fractionType: 2
-  _health: 1000
+  _fractionTag: Zombies
+  _health: 40
   _attackCoolDown: 0.9
-  _speedMult: 2.5
+  _speedMult: 1
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 9134285203207437134}
   _entityDetector: {fileID: 1300813147675546496}
@@ -206,4 +206,4 @@ MonoBehaviour:
   _localTarget: {fileID: 0}
   _poolTag: Melee Zombie
   _currentState: 2
-  _meleeDamage: 1000
+  _meleeDamage: 15

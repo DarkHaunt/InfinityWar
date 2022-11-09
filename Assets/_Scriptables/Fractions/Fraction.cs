@@ -4,12 +4,11 @@ using InfinityGame.Spawning;
 namespace InfinityGame.Fractions
 {
     using WarrioirSpawnSettings = WarrioirSpawner.SpawnData;
-    using FractionType = FractionHandler.FractionType;
 
     [CreateAssetMenu(fileName = "Fraction", menuName = "Data/New Fraction", order = 52)]
     public class Fraction : ScriptableObject
     {
-        [SerializeField] private FractionType _fraction;
+        [SerializeField] private string _fractionTag;
         [SerializeField] private int _warrioirMaxCount;
 
         [Space(10f)]
@@ -23,7 +22,7 @@ namespace InfinityGame.Fractions
 
 
 
-        public FractionType FractionType => _fraction;
+        public string FractionTag => _fractionTag;
         public int WarrioirMaxLimit => _warrioirMaxCount;
         public WarrioirSpawnSettings BarracksWarrioirSpawnSettings => _barracksWarrioirSpawnSettings;
         public BuildingData BarrackBuildingData => _barrackBuildingData;

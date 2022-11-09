@@ -1,8 +1,9 @@
 using System.Collections;
 using System;
 using InfinityGame.GameEntities;
-using InfinityGame.Fractions;
 using UnityEngine;
+
+
 
 namespace InfinityGame.Projectiles
 {
@@ -11,7 +12,6 @@ namespace InfinityGame.Projectiles
     public abstract class Projectile : MonoBehaviour, IPoolable
     {
         public event Action OnExploitationEnd;
-        protected event Action<Transform> OnHeadingTowardsTarget;
 
         [SerializeField] private string _poolTag;
 
@@ -24,19 +24,17 @@ namespace InfinityGame.Projectiles
         [SerializeField] private float _lifeTime = 5f;
 
         private Coroutine _lifeTimeCoroutine;
-        private ObjectDispatcher _disptacher; // Implements fly trajectory
 
         private WaitForSeconds _cachedLifeTime;
         private bool _isExploitating = true;
 
-        private FractionHandler.FractionType _fractionType;
+        private string _fractionTag;
 
 
 
-        public FractionHandler.FractionType FractionType => _fractionType;
+        public string FractionTag => _fractionTag;
         public string PoolTag => _poolTag;
         protected float Damage => _damage;
-        protected float Speed => _speedMult;
         protected Rigidbody2D RigidBody2D => _rigidbody2D;
 
 
@@ -56,19 +54,12 @@ namespace InfinityGame.Projectiles
             _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
         }
 
-        public void HeadTowardsTarget(Transform target)
+        public virtual void SetFlyDirection(Vector2 direction)
         {
-            OnHeadingTowardsTarget?.Invoke(target);
-
-            _disptacher.DispatchProjectileToTarget(_rigidbody2D, target);
+            _rigidbody2D.velocity = direction * _speedMult;
         }
 
-        public void SetFraction(FractionHandler.FractionType fractionType) => _fractionType = fractionType;
-
-        protected void InitializeDispatcher(ObjectDispatcher dispatcher)
-        {
-            _disptacher = dispatcher;
-        }
+        public void SetFractionTag(string fractionTag) => _fractionTag = fractionTag;
 
         private IEnumerator LifeTimeCoroutine()
         {
@@ -88,7 +79,7 @@ namespace InfinityGame.Projectiles
             var isHitableEntity = collider2D.TryGetComponent(out GameEntity entity);
 
             enemy = entity;
-            return isHitableEntity && !entity.IsBelongsToFraction(FractionType);
+            return isHitableEntity && !entity.IsBelongsToFraction(FractionTag);
         }
 
 

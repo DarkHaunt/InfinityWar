@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aeb3a7706dd3dd4ca04503ed61a4d89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fractionType: 4
+  _fractionTag: Demons
   _health: 30
   _attackCoolDown: 1.2
   _speedMult: 3.5

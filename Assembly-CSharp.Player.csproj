@@ -56,46 +56,44 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\_Scripts\Projectiles\Object Disparcher\ObjectDispatcher.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Barrack.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Building.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
-    <Compile Include="Assets\_Scripts\Projectiles\Lineal\Lineal Projectile.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Rotatable Projectiles\RotatableProjectile.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooting\Shooter.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Warrior.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Demons\Demon.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\WarrioirsPickStrategy.cs" />
     <Compile Include="Assets\_Scripts\Static Data\StatiRandomizer.cs" />
     <Compile Include="Assets\_Scripts\Factories\WarriorFactory.cs" />
-    <Compile Include="Assets\_Scripts\Interfaces\IObjectRotateStrategy.cs" />
-    <Compile Include="Assets\_Scripts\Interfaces\IShoot.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooting\IShoot.cs" />
+    <Compile Include="Assets\_Scriptables\Shoot Strategiies\Shot Around\ShotAround.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\Single Shot\SingleShot.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\FractionHandler.cs" />
     <Compile Include="Assets\_Scripts\Arena\GameInitializer.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Melee\MeleeWarrioir.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\TownHall.cs" />
     <Compile Include="Assets\_Scripts\Object Pooler\ObjectPooler.cs" />
-    <Compile Include="Assets\_Scripts\Projectiles\Rotation Strategies\RotateToTargetOnce.cs" />
+    <Compile Include="Assets\_Scripts\Object Rotator\ObjectRotator.cs" />
     <Compile Include="Assets\_Scripts\Static Data\FractionCacher.cs" />
     <Compile Include="Assets\_Scriptables\Fractions\Fraction.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Zombies\MeleeZombie.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Single Pick\RandomSinglePickStrategy.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\EntityDetector.cs" />
-    <Compile Include="Assets\_Scripts\Projectiles\Lineal\Infection Spit\SplashedSpit.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Rotatable Projectiles\Infection Spit\SplashedSpit.cs" />
     <Compile Include="Assets\_Scripts\Fraction Entty Detector\Fraction Entity Detector.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Projectile.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\GameEntity.cs" />
-    <Compile Include="Assets\_Scripts\Interfaces\IPoolable.cs" />
+    <Compile Include="Assets\_Scripts\Object Pooler\IPoolable.cs" />
     <Compile Include="Assets\_Scripts\Factories\BuildingFactory.cs" />
     <Compile Include="Assets\_Scripts\Factories\ProjectileFactory.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Group Pick\RandomGroupPick.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Humans\Swordman.cs" />
-    <Compile Include="Assets\_Scripts\Projectiles\Object Disparcher\Lineal Dispetcher\LinealDispatcher.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Demons\Demonologist.cs" />
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Counter\Counter.cs" />
-    <Compile Include="Assets\_Scripts\Projectiles\Lineal\Arrow\Arrow.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Rotatable Projectiles\Arrow\Arrow.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
+    <Compile Include="Assets\_Scripts\Static Data\TrigonometryCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

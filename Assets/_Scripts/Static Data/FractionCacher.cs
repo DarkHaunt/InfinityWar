@@ -7,23 +7,21 @@ using InfinityGame.Fractions;
 
 namespace InfinityGame.DataCaching
 {
-    using FractionType = FractionHandler.FractionType;
-
     public static class FractionCacher
     {
         public static event Action OnOneFractionLeft;
 
-        private static readonly Dictionary<FractionType, FractionGameData> _cachedFractions = new Dictionary<FractionType, FractionGameData>();
+        private static readonly Dictionary<string, FractionGameData> _cachedFractions = new Dictionary<string, FractionGameData>();
 
 
 
         public static void CashFraction(Fraction fraction, TownHall fractionTownHall)
         {
-            if (IsFractionCached(fraction.FractionType))
+            if (IsFractionCached(fraction.FractionTag))
                 throw new UnityException($"{fraction} is already cashed, but you're trying to cash it again.");
 
             var fractionCashedData = new FractionGameData(fraction, fractionTownHall);
-            _cachedFractions.Add(fraction.FractionType, fractionCashedData);
+            _cachedFractions.Add(fraction.FractionTag, fractionCashedData);
 
             fractionCashedData.OnFractionLose += () => UncacheFractionData(fractionCashedData);
         }
@@ -79,15 +77,7 @@ namespace InfinityGame.DataCaching
             _cachedFractions[spawner.Fraction].PutSpawnerOnWarriorRecord(spawner);
         }
 
-        public static FractionGameData GetFractionCachedData(FractionType fractionType)
-        {
-            if (!IsFractionCached(fractionType))
-                throw new UnityException($"Fraction Cahser doesn't contain fraction {fractionType}");
-
-            return _cachedFractions[fractionType];
-        }
-
-        public static IEnumerable<GameEntity> GetEnemyEntitiesOfFraction(FractionType fractionType)
+        public static IEnumerable<GameEntity> GetEnemyEntitiesOfFraction(string fractionType)
         {
             if (!IsFractionCached(fractionType))
                 throw new UnityException($"Fraction {fractionType} doesn't exist in cache, so cacher can't take it's entities");
@@ -103,7 +93,7 @@ namespace InfinityGame.DataCaching
             }
         }
 
-        private static bool IsFractionCached(FractionType fractionType) => _cachedFractions.ContainsKey(fractionType);
+        private static bool IsFractionCached(string fractionTag) => _cachedFractions.ContainsKey(fractionTag);
 
 
 
@@ -144,19 +134,20 @@ namespace InfinityGame.DataCaching
 
             }
 
-            public FractionType Fraction { get; }
+            public string Fraction { get; }
 
 
 
             public FractionGameData(Fraction fraction, TownHall townHall)
             {
                 _warrioirCounter = new Counter(fraction.WarrioirMaxLimit);
-                Fraction = fraction.FractionType;
+                Fraction = fraction.FractionTag;
 
                 _warriors = new HashSet<Warrior>();
 
                 _townHall = townHall;
                 _fractionHaveTownHall = true;
+
                 _townHall.OnDestroy += () =>
                 {
                     _fractionHaveTownHall = false;
@@ -166,7 +157,7 @@ namespace InfinityGame.DataCaching
 
 
 
-            public void CacheBuilding<BuildingType>(BuildingType building) where BuildingType : Building
+            public void CacheBuilding(Building building)
             {
                 if (!_fractionHaveTownHall)
                     throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't cache buildings of fraction anymore");
@@ -174,7 +165,7 @@ namespace InfinityGame.DataCaching
                 _townHall.AddBuilding(building);
             }
 
-            public void UncacheBuilding<BuildingType>(BuildingType building) where BuildingType : Building
+            public void UncacheBuilding(Building building)
             {
                 _townHall.RemoveBuilding(building);
             }
@@ -212,7 +203,7 @@ namespace InfinityGame.DataCaching
 
             private void CheckForLose()
             {
-                if (_fractionHaveTownHall && _warriors.Count == 0)
+                if (!_fractionHaveTownHall && _warriors.Count == 0)
                     OnFractionLose?.Invoke();
             }
 

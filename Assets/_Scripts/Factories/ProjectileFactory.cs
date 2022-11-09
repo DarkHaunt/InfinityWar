@@ -1,6 +1,5 @@
 using InfinityGame.Projectiles;
 using InfinityGame.ObjectPooling;
-using InfinityGame.Fractions;
 using UnityEngine;
 
 
@@ -13,14 +12,16 @@ namespace InfinityGame.Factories.ProjectileFactory
 
 
 
-        public static Projectile Instantiate(Projectile prefab, FractionHandler.FractionType fractionType)
+        public static Projectile Instantiate(Projectile prefab, Vector2 position, string fractionTag)
         {
             if (!_projectilePool.TryGetFromPool(prefab.PoolTag, out Projectile projectile))
             {
                 projectile = MonoBehaviour.Instantiate(prefab);
-                projectile.SetFraction(fractionType);
+                projectile.SetFractionTag(fractionTag);
                 projectile.OnExploitationEnd += () => _projectilePool.AddToPool(projectile);
             }
+
+            projectile.transform.position = position;
 
             return projectile;
         }

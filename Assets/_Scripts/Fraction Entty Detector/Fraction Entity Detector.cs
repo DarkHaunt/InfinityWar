@@ -10,11 +10,12 @@ using UnityEngine;
 public class FractionEntityDetector
 {
     private readonly float _areaRadius;
-    private readonly FractionHandler.FractionType _ignoredFractions;
+    private readonly string[] _ignoredFractions;
 
 
 
-    public FractionEntityDetector(float raduis, FractionHandler.FractionType ignoreFractions)
+    public FractionEntityDetector(float raduis, params string[] ignoreFractions)
+
     {
         _areaRadius = raduis;
         _ignoredFractions = ignoreFractions;
@@ -31,5 +32,18 @@ public class FractionEntityDetector
 
     private IEnumerable<Collider2D> GetDetectedColliders(Vector2 areaCenter) => Physics2D.OverlapCircleAll(areaCenter, _areaRadius);
 
-    private bool IsColliderDetectableEntity(Collider2D collider, out GameEntity detectedEntity) => collider.TryGetComponent(out detectedEntity) && !detectedEntity.IsBelongsToFraction(_ignoredFractions);
+    private bool IsColliderDetectableEntity(Collider2D collider, out GameEntity detectedEntity)
+    {
+        if(collider.TryGetComponent(out detectedEntity))
+        {
+            foreach (var tag in _ignoredFractions)
+                if (detectedEntity.IsBelongsToFraction(tag))
+                    return false;
+
+            return true;
+        }
+
+        return false;
+    }
+
 }

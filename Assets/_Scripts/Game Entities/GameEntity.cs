@@ -8,13 +8,19 @@ namespace InfinityGame.GameEntities
     /// <summary>
     /// Object, that belong to fraction and will ignore same fraction enteties
     /// </summary>
-    public class GameEntity : FractionHandler
+    public class GameEntity : MonoBehaviour
     {
         public event Action OnZeroHealth;
 
+
+        [SerializeField] protected string _fractionTag;
         [SerializeField] protected float _health;
 
         protected bool _isDead = false; 
+
+
+
+        public string Fraction => _fractionTag;
 
 
 
@@ -35,6 +41,8 @@ namespace InfinityGame.GameEntities
             OnZeroHealth?.Invoke();
             Destroy(gameObject);
         }
+
+        public bool IsBelongsToFraction(string fraction) => _fractionTag.Contains(fraction);
 
         public override string ToString() => $"{name} {transform.position} {Fraction}";
     } 
