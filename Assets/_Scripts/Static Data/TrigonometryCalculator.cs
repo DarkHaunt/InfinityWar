@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+
 
 /// <summary>
 /// Gives several methods to do trigonometrical operations
@@ -8,6 +8,10 @@ using UnityEngine;
 /// </summary>
 public static class TrigonometryCalculator
 {
+    private static readonly Vector2 UnitCircleCenterPosition = Vector2.zero;
+
+
+
     /// <summary>
     /// Returns vector scalar length fo vector
     /// </summary>
@@ -32,13 +36,15 @@ public static class TrigonometryCalculator
         var currentQuater = paseedQuaters + 1;
 
         // Set projection on axis to form right triangle
-        var projectionEndCoordinate = ((currentQuater == 2) || (currentQuater == 4)) ? 
-            new Vector2(0, pointCoordinates.y) : // If point is on 2nd or 4th quater - projection is made on the X axis of unit circle
-            new Vector2(pointCoordinates.x, 0); // If point is on 1st or 3rd quater - projection is made on the Y axis of unit circle
+        Vector2 projectionEndCoordinate;
 
-        var unitCircleCenterCoordinates = Vector2.zero;
+        if (currentQuater % 2 == 0) // If point is on 2nd or 4th quater - projection is made on the X axis of unit circle
+            projectionEndCoordinate = new Vector2(UnitCircleCenterPosition.x, pointCoordinates.y);
+        else
+            projectionEndCoordinate = new Vector2(pointCoordinates.x, UnitCircleCenterPosition.y); ;
 
-        var hypotenuse = GetVectorLength(unitCircleCenterCoordinates, pointCoordinates);
+
+        var hypotenuse = GetVectorLength(UnitCircleCenterPosition, pointCoordinates);
         var oppositeCathetus = GetVectorLength(projectionEndCoordinate, pointCoordinates);
 
         var currentAngle = Mathf.Asin(oppositeCathetus / hypotenuse) * Mathf.Rad2Deg;
@@ -56,8 +62,8 @@ public static class TrigonometryCalculator
     private static int GetPassedUnitCirlceQuaters(Vector2 point)
     {
         var passedQuaters = 0; // Quaters on the unit circle
-        var isDirectionPointUnderTheYAxis = 0 > point.y;
-        var isOnRightHalfOfCircle = 0 > point.x;
+        var isDirectionPointUnderTheYAxis = UnitCircleCenterPosition.y > point.y;
+        var isOnRightHalfOfCircle = UnitCircleCenterPosition.x > point.x;
 
 
         if (isDirectionPointUnderTheYAxis)
