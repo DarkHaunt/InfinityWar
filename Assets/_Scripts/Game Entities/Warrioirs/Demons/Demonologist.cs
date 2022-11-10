@@ -7,6 +7,7 @@ namespace InfinityGame.GameEntities
     [RequireComponent(typeof(WarrioirSpawner))]
     public class Demonologist : Shooter
     {
+        [Header("--- Spawn Parameters ---")]
         [SerializeField] private WarrioirSpawner.SpawnData _spawnData;
 
         private WarrioirSpawner _fractionSpawner;

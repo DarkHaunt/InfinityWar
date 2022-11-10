@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using InfinityGame.DataCaching;
@@ -11,24 +10,29 @@ namespace InfinityGame.GameEntities
     [RequireComponent(typeof(SpriteRenderer))]
     public abstract class Warrior : GameEntity, IPoolable
     {
-        private const float MinimalDistanceToAttack = 0.5f;
+        private const float MinimalAttackDistance = 0.5f;
 
+        [Header("--- Attack Parameters ---")]
+        [Range(0f, 10f)]
         [SerializeField] private float _attackCoolDown;
 
+        [Range(0f, 10f)]
         [SerializeField] private float _speedMult;
 
-        [Range(MinimalDistanceToAttack, 30)]
+        [Range(MinimalAttackDistance, 30f)]
         [SerializeField] private float _attackDistance;
 
+        [Header("--- Other ---")]
         [SerializeField] private Rigidbody2D _rigidbody2D;
         [SerializeField] private EntityDetector _entityDetector;
 
-        [SerializeField] private GameEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
-        [SerializeField] private GameEntity _localTarget = null; // Target around, which was deceted by detector 
-
+        [Header("--- Pooling ---")]
         [SerializeField] private string _poolTag;
 
-        [SerializeField] private WarriorState _currentState = WarriorState.FollowGlobalTarget;
+        private GameEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
+        private GameEntity _localTarget = null; // Target around, which was deceted by detector 
+
+        private WarriorState _currentState = WarriorState.FollowGlobalTarget;
 
         private bool _isOnCoolDown = false;
         private bool _isOnArgue = true;

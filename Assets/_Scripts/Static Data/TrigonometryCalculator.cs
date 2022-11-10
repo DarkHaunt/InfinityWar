@@ -28,24 +28,24 @@ public static class TrigonometryCalculator
     /// <returns>Angle IN RADIANS</returns>
     public static float GetRotationAngleToPoint(Vector2 pointCoordinates)
     {
-        if (pointCoordinates.magnitude > 1)
-            throw new UnityException($"{pointCoordinates} vector have magnitude more than 1, so it's can't be used, as direction");
+        // Normilize point for unit circle manipulator
+        var normilizedPoint = pointCoordinates.normalized;
 
         // Quater in decart coordinate system
-        var paseedQuaters = GetPassedUnitCirlceQuaters(pointCoordinates);
+        var paseedQuaters = GetPassedUnitCirlceQuaters(normilizedPoint);
         var currentQuater = paseedQuaters + 1;
 
         // Set projection on axis to form right triangle
         Vector2 projectionEndCoordinate;
 
         if (currentQuater % 2 == 0) // If point is on 2nd or 4th quater - projection is made on the X axis of unit circle
-            projectionEndCoordinate = new Vector2(UnitCircleCenterPosition.x, pointCoordinates.y);
+            projectionEndCoordinate = new Vector2(UnitCircleCenterPosition.x, normilizedPoint.y);
         else
-            projectionEndCoordinate = new Vector2(pointCoordinates.x, UnitCircleCenterPosition.y); ;
+            projectionEndCoordinate = new Vector2(normilizedPoint.x, UnitCircleCenterPosition.y); ;
 
 
-        var hypotenuse = GetVectorLength(UnitCircleCenterPosition, pointCoordinates);
-        var oppositeCathetus = GetVectorLength(projectionEndCoordinate, pointCoordinates);
+        var hypotenuse = GetVectorLength(UnitCircleCenterPosition, normilizedPoint);
+        var oppositeCathetus = GetVectorLength(projectionEndCoordinate, normilizedPoint);
 
         var currentAngle = Mathf.Asin(oppositeCathetus / hypotenuse) * Mathf.Rad2Deg;
 

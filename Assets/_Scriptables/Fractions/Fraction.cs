@@ -9,6 +9,8 @@ namespace InfinityGame.Fractions
     public class Fraction : ScriptableObject
     {
         [SerializeField] private string _fractionTag;
+
+        [Range(1, 50)]
         [SerializeField] private int _warrioirMaxCount;
 
         [Space(10f)]

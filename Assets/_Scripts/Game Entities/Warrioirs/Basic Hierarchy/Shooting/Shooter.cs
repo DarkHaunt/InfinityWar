@@ -7,6 +7,7 @@ namespace InfinityGame.GameEntities
 {
     public class Shooter : Warrior
     {
+        [Header("--- Shooting Parameters ---")]
         [SerializeField] private Projectile _projectilePrefab;
         [SerializeField] private ShootStrategy _shootStrategy;
 
