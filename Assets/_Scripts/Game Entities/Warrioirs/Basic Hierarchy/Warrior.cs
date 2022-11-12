@@ -170,7 +170,7 @@ namespace InfinityGame.GameEntities
         private void GetNewGlobalTarget()
         {
             var minimalDistanceToTwonHall = float.MaxValue;
-            var enemies = FractionCacher.GetEnemyEntitiesOfFraction(Fraction);
+            var enemies = FractionCacher.GetEnemyEntitiesOfFraction(FractionTag);
 
             foreach (var enemyTarget in enemies)
             {
@@ -201,7 +201,7 @@ namespace InfinityGame.GameEntities
         private IEnumerable<GameEntity> GetEnemiesAround()
         {
             foreach (var entity in _entityDetector.DetecedEntities)
-                if (!entity.IsBelongsToFraction(Fraction))
+                if (!entity.IsBelongsToFraction(FractionTag))
                     yield return entity;
         }
 
@@ -224,7 +224,7 @@ namespace InfinityGame.GameEntities
 
             _entityDetector.OnEntityEnter += (GameEntity target) =>
             {
-                if (!_isOnArgue && !target.IsBelongsToFraction(Fraction))
+                if (!_isOnArgue && !target.IsBelongsToFraction(FractionTag))
                     SetLocalTarget(target);
             };
 

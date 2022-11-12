@@ -59,9 +59,8 @@
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Barrack.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Building.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
-    <Compile Include="Assets\_Scripts\Projectiles\SingleTouchProjectile.cs" />
-    <Compile Include="Assets\_Scripts\Projectiles\MultiTouchProjectile.cs" />
-    <Compile Include="Assets\_Scripts\Projectiles\Rotatable Projectiles\RotatableProjectile.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Single Touch Projectile\SingleTouchProjectile.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Multi Touch Projectile\MultiTouchProjectile.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooting\Shooter.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Warrior.cs" />
     <Compile Include="Assets\_Scripts\Static Data\TrigonometryCalculator.cs" />
@@ -96,6 +95,7 @@
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Counter\Counter.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Multi Touch Projectile\Ricochet\Ricochet.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

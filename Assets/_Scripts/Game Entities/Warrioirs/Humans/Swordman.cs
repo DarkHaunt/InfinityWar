@@ -45,7 +45,7 @@ namespace InfinityGame.GameEntities.Humans
             base.Awake();
 
             _damageForSurroundedNonMainEntities = MeleeDamage * _nonMainTargetDamagePercent;
-            _enemyDetector = new FractionEntityDetector(_atackRadius, Fraction);
+            _enemyDetector = new FractionEntityDetector(_atackRadius, FractionTag);
         }
     }
 }

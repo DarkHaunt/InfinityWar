@@ -14,7 +14,6 @@ public class FractionEntityDetector
 
 
     public FractionEntityDetector(float raduis, params string[] ignoreFractions)
-
     {
         _areaRadius = raduis;
         _ignoredFractions = ignoreFractions;

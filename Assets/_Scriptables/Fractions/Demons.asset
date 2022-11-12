@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Demons
   m_EditorClassIdentifier: 
   _fractionTag: Demons
-  _warrioirMaxCount: 10
+  _warrioirMaxCount: 1
   _townHallBuildingData:
     _name: Cult Church
     _buildingSprite: {fileID: 21300000, guid: c9e30ea40f1d5524f8145a8d94e20b93, type: 3}
@@ -23,8 +23,8 @@ MonoBehaviour:
     _buildingSprite: {fileID: 21300000, guid: c79e9db17fc1dad449d1b9470c6a039d, type: 3}
     _buildingHealthPoints: 750
   _barracksWarrioirSpawnSettings:
-    _spawnCoolDownSeconds: 10
-    _timeDeltaSeconds: 1
+    _spawnCoolDownSeconds: 1
+    _timeDeltaSeconds: 0
     _warrioirsPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
     _warriosToSpawn:
     - {fileID: 36225532451730545, guid: 848495315dbd4ef4f9b568c741ee4121, type: 3}

@@ -39,34 +39,34 @@ namespace InfinityGame.DataCaching
 
         public static void CacheBuilding(Building building)
         {
-            if (!IsFractionCached(building.Fraction))
-                throw new UnityException($"Fraction {building.Fraction} doesn't exist in cache, so building {building} can be cached");
+            if (!IsFractionCached(building.FractionTag))
+                throw new UnityException($"Fraction {building.FractionTag} doesn't exist in cache, so building {building} can be cached");
 
-            _cachedFractions[building.Fraction].CacheBuilding(building);
+            _cachedFractions[building.FractionTag].CacheBuilding(building);
         }
 
         public static void UncacheBuilding(Building building)
         {
-            if (!IsFractionCached(building.Fraction))
-                throw new UnityException($"Fraction {building.Fraction} doesn't exist in cache, so building {building} can't be uncached");
+            if (!IsFractionCached(building.FractionTag))
+                throw new UnityException($"Fraction {building.FractionTag} doesn't exist in cache, so building {building} can't be uncached");
 
-            _cachedFractions[building.Fraction].UncacheBuilding(building);
+            _cachedFractions[building.FractionTag].UncacheBuilding(building);
         }
 
         public static void CacheWarrior(Warrior warrior)
         {
-            if (!IsFractionCached(warrior.Fraction))
-                throw new UnityException($"Fraction {warrior.Fraction} doesn't exist in cache, so warrior {warrior} can't be cached");
+            if (!IsFractionCached(warrior.FractionTag))
+                throw new UnityException($"Fraction {warrior.FractionTag} doesn't exist in cache, so warrior {warrior} can't be cached");
 
-            _cachedFractions[warrior.Fraction].CacheWarrior(warrior);
+            _cachedFractions[warrior.FractionTag].CacheWarrior(warrior);
         }
 
         public static void UncacheWarrior(Warrior warrior)
         {
-            if (!IsFractionCached(warrior.Fraction))
-                throw new UnityException($"Fraction {warrior.Fraction} doesn't exist in cache, so warrior {warrior} can't be uncached");
+            if (!IsFractionCached(warrior.FractionTag))
+                throw new UnityException($"Fraction {warrior.FractionTag} doesn't exist in cache, so warrior {warrior} can't be uncached");
 
-            _cachedFractions[warrior.Fraction].UncacheWarrior(warrior);
+            _cachedFractions[warrior.FractionTag].UncacheWarrior(warrior);
         }
 
         public static void TieUpSpawnerToFraction(WarrioirSpawner spawner)

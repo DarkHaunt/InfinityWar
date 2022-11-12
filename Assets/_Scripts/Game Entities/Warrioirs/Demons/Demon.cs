@@ -34,7 +34,7 @@ namespace InfinityGame.GameEntities.Demons
         {
             base.Awake();
 
-            _enemyDetector = new FractionEntityDetector(_explodeRadius, Fraction);
+            _enemyDetector = new FractionEntityDetector(_explodeRadius, FractionTag);
             OnDie += Explode;
         }
     }

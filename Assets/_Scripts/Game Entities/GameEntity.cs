@@ -1,5 +1,4 @@
 using System;
-using InfinityGame.Fractions;
 using UnityEngine;
 
 
@@ -20,7 +19,7 @@ namespace InfinityGame.GameEntities
 
 
 
-        public string Fraction => _fractionTag;
+        public string FractionTag => _fractionTag;
 
 
 
@@ -47,6 +46,6 @@ namespace InfinityGame.GameEntities
 
         public bool IsBelongsToFraction(string fraction) => _fractionTag.Contains(fraction);
 
-        public override string ToString() => $"{name} {transform.position} {Fraction}";
+        public override string ToString() => $"{name} {transform.position} {FractionTag}";
     } 
 }

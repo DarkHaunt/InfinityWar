@@ -13,7 +13,7 @@ namespace InfinityGame.GameEntities
 
 
 
-        protected override void Attack() => _shootStrategy.Shoot(transform.position, GetDirectionToLocalTarget(), Fraction, _projectilePrefab);
+        protected override void Attack() => _shootStrategy.Shoot(transform.position, GetDirectionToLocalTarget(), FractionTag, _projectilePrefab);
 
         private Vector2 GetDirectionToLocalTarget() => (LocalTarget.transform.position - transform.position).normalized;
     }

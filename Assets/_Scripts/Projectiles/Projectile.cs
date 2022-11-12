@@ -13,7 +13,9 @@ namespace InfinityGame.Projectiles
     public abstract class Projectile : MonoBehaviour, IPoolable
     {
         public event Action OnExploitationEnd;
+        protected event Action<string> OnTagChange;
 
+        [Header("--- Projectile Settings ---")]
         [SerializeField] private string _poolTag;
 
         [SerializeField] private float _damage = 10f;
@@ -26,19 +28,21 @@ namespace InfinityGame.Projectiles
 
         [SerializeField] private List<ProjectileEntityCollisionAction> _behaviors;
 
+        private readonly ObjectRotator _objectRotator = new ObjectRotator();
+
+        // Cached data
         private Coroutine _lifeTimeCoroutine;
-
         private WaitForSeconds _cachedLifeTime;
-        private bool _isExploitating = true;
-
         private string _fractionTag;
+
+        private bool _isExploitating = true;
 
 
 
         public string FractionTag => _fractionTag;
         public string PoolTag => _poolTag;
         public float Damage => _damage;
-
+        protected bool IsExploitating => _isExploitating;
 
 
 
@@ -57,6 +61,8 @@ namespace InfinityGame.Projectiles
 
         protected virtual void OnCollisionWith(GameEntity target)
         {
+            target.GetDamage(Damage);
+
             foreach (var behavior in _behaviors)
                 behavior.OnCollisionBehave(this, target);
         }
@@ -64,9 +70,15 @@ namespace InfinityGame.Projectiles
         public void SetFlyDirection(Vector2 direction)
         {
             _rigidbody2D.velocity = direction * _speedMult;
+
+            _objectRotator.RoteteObjectToTarget(_rigidbody2D, direction);
         }
 
-        public void SetFractionTag(string fractionTag) => _fractionTag = fractionTag;
+        public void SetFractionTag(string fractionTag)
+        {
+            _fractionTag = fractionTag;
+            OnTagChange?.Invoke(_fractionTag);
+        }
 
         private IEnumerator LifeTimeCoroutine()
         {
@@ -79,6 +91,12 @@ namespace InfinityGame.Projectiles
         {
             _isExploitating = false;
             OnExploitationEnd?.Invoke();
+        }
+
+        protected void RestartLifeTime()
+        {
+            StopCoroutine(_lifeTimeCoroutine);
+            _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
         }
 
         private bool IsColliderEnemyEntity(Collider2D collider2D, out GameEntity enemy)
