@@ -9,7 +9,7 @@ namespace InfinityGame.Projectiles
     /// </summary>
     public abstract class RotatableProjectile : Projectile
     {
-        private readonly ObjectRotator _objectRotator = new ObjectRotator();
+/*        private readonly ObjectRotator _objectRotator = new ObjectRotator();
 
 
 
@@ -20,6 +20,6 @@ namespace InfinityGame.Projectiles
             RotateToTarget(direction);
 
             base.SetFlyDirection(direction);
-        }
+        }*/
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 819447614314087417}
   - component: {fileID: 819447614314087416}
   - component: {fileID: 819447614314087423}
-  - component: {fileID: 819447614314087422}
+  - component: {fileID: 3761057854174154672}
   m_Layer: 11
   m_Name: Splash Spit
   m_TagString: Untagged
@@ -122,7 +122,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.125
---- !u!114 &819447614314087422
+--- !u!114 &3761057854174154672
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,13 +131,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 819447614314087420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b8d436fa0a2f11418ed616572d5a8d4, type: 3}
+  m_Script: {fileID: 11500000, guid: d3a10ad146225f741ad309bab5d2cfd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fractionType: 2
-  _poolTag: Infected Spit
+  _poolTag: Spash Spit
   _damage: 10
-  _speedMult: 8
+  _speedMult: 2
   _rigidbody2D: {fileID: 819447614314087416}
-  _lifeTime: 4
-  _splashRadius: 1
+  _lifeTime: 5
+  _behaviors:
+  - {fileID: 11400000, guid: a0ccd2af432727e40a31a342b0104d6b, type: 2}

@@ -10,7 +10,7 @@ namespace InfinityGame.GameEntities
     /// </summary>
     public class GameEntity : MonoBehaviour
     {
-        public event Action OnZeroHealth;
+        public event Action OnDie;
 
 
         [SerializeField] protected string _fractionTag;
@@ -26,19 +26,22 @@ namespace InfinityGame.GameEntities
 
         public void GetDamage(float damage)
         {
+            if (_isDead)
+                return;
+
             _health -= damage;
 
-            if (_health <= 0 && !_isDead)
+            if (_health <= 0)
             {
                 _isDead = true;
-                OnZeroHealth?.Invoke();
+                OnDie?.Invoke();
                 return;
             }
         }
 
         public void Die()
         {
-            OnZeroHealth?.Invoke();
+            OnDie?.Invoke();
             Destroy(gameObject);
         }
 

@@ -131,11 +131,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4929942294725067014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a425d98806294ef47909289f7f8a69fc, type: 3}
+  m_Script: {fileID: 11500000, guid: d3a10ad146225f741ad309bab5d2cfd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _poolTag: FireBall
-  _damage: 20
-  _speedMult: 4
+  _poolTag: Fireball
+  _damage: 10
+  _speedMult: 2
   _rigidbody2D: {fileID: 2734075000481854375}
-  _lifeTime: 3
+  _lifeTime: 5
+  _behaviors:
+  - {fileID: 11400000, guid: a0ccd2af432727e40a31a342b0104d6b, type: 2}

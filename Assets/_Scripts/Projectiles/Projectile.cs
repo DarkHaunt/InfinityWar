@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using InfinityGame.GameEntities;
 using UnityEngine;
@@ -23,6 +24,8 @@ namespace InfinityGame.Projectiles
         [Range(1f, 10f)]
         [SerializeField] private float _lifeTime = 5f;
 
+        [SerializeField] private List<ProjectileEntityCollisionAction> _behaviors;
+
         private Coroutine _lifeTimeCoroutine;
 
         private WaitForSeconds _cachedLifeTime;
@@ -34,12 +37,10 @@ namespace InfinityGame.Projectiles
 
         public string FractionTag => _fractionTag;
         public string PoolTag => _poolTag;
-        protected float Damage => _damage;
-        protected Rigidbody2D RigidBody2D => _rigidbody2D;
+        public float Damage => _damage;
 
 
 
-        protected abstract void OnCollisionWith(GameEntity target);
 
         public void PullInPreparations()
         {
@@ -54,7 +55,13 @@ namespace InfinityGame.Projectiles
             _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
         }
 
-        public virtual void SetFlyDirection(Vector2 direction)
+        protected virtual void OnCollisionWith(GameEntity target)
+        {
+            foreach (var behavior in _behaviors)
+                behavior.OnCollisionBehave(this, target);
+        }
+
+        public void SetFlyDirection(Vector2 direction)
         {
             _rigidbody2D.velocity = direction * _speedMult;
         }

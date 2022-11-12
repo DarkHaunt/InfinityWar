@@ -35,7 +35,7 @@ namespace InfinityGame.GameEntities.Demons
             base.Awake();
 
             _enemyDetector = new FractionEntityDetector(_explodeRadius, Fraction);
-            OnZeroHealth += Explode;
+            OnDie += Explode;
         }
     }
 }

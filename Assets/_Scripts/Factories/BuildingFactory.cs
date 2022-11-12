@@ -20,8 +20,8 @@ namespace InfinityGame.Factories.BuildingFactory
             building.Initialize(fraction, fractionBuildingData);
             building.transform.position = position;
 
-            building.OnZeroHealth += () => Object.Destroy(building.gameObject);
-            building.OnZeroHealth += () => FractionCacher.UncacheBuilding(building);
+            building.OnDie += () => Object.Destroy(building.gameObject);
+            building.OnDie += () => FractionCacher.UncacheBuilding(building);
 
             FractionCacher.CacheBuilding(building);
 

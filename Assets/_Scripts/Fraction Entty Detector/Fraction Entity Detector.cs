@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using InfinityGame.GameEntities;
-using InfinityGame.Fractions;
 using UnityEngine;
 
 

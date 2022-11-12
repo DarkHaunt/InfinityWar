@@ -52,7 +52,7 @@ namespace InfinityGame.GameEntities
 
         public void PullInPreparations()
         {
-            _globalTarget.OnZeroHealth -= GetNewGlobalTarget;
+            _globalTarget.OnDie -= GetNewGlobalTarget;
 
             GameInitializer.OnGameEnd -= BecomeNeutral;
             gameObject.SetActive(false);
@@ -183,7 +183,7 @@ namespace InfinityGame.GameEntities
                 }
             }
 
-            _globalTarget.OnZeroHealth += GetNewGlobalTarget;
+            _globalTarget.OnDie += GetNewGlobalTarget;
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace InfinityGame.GameEntities
         /// </summary>
         private void BecomeNeutral()
         {
-            _globalTarget.OnZeroHealth -= GetNewGlobalTarget;
+            _globalTarget.OnDie -= GetNewGlobalTarget;
 
             _entityDetector.gameObject.SetActive(false);
             _currentState = WarriorState.Unactive;

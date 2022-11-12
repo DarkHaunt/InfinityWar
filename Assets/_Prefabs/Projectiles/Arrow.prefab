@@ -141,12 +141,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4623219380320850022}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a425d98806294ef47909289f7f8a69fc, type: 3}
+  m_Script: {fileID: 11500000, guid: d3a10ad146225f741ad309bab5d2cfd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fractionType: 1
-  _poolTag: Arrows
+  _poolTag: Arrow
   _damage: 15
-  _speedMult: 15
+  _speedMult: 2
   _rigidbody2D: {fileID: 4623219380320850043}
-  _lifeTime: 4
+  _lifeTime: 5
+  _behaviors:
+  - {fileID: 11400000, guid: a0ccd2af432727e40a31a342b0104d6b, type: 2}

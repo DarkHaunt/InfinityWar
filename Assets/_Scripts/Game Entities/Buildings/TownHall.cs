@@ -45,7 +45,7 @@ namespace InfinityGame.GameEntities
                 throw new UnityException($"Townhall {this} already have Barrack component");
 
             _barrack = barrack;
-            _barrack.OnZeroHealth += OnDestroy;
+            _barrack.OnDie += OnDestroy;
         }
 
         public override string ToString() => $"{name} {transform.position}";
@@ -54,7 +54,7 @@ namespace InfinityGame.GameEntities
 
         private void Start()
         {
-            _barrack.OnZeroHealth += DestroyAllBuildings;
+            _barrack.OnDie += DestroyAllBuildings;
         }
     }
 }

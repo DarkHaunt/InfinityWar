@@ -16,8 +16,8 @@ namespace InfinityGame.Factories.WarriorFactory
             if (!_warrioirPool.TryGetFromPool(prefab.PoolTag, out Warrior warrior))
             {
                 warrior = MonoBehaviour.Instantiate(prefab);
-                warrior.OnZeroHealth += () => _warrioirPool.AddToPool(warrior);
-                warrior.OnZeroHealth += () => FractionCacher.UncacheWarrior(warrior);
+                warrior.OnDie += () => _warrioirPool.AddToPool(warrior);
+                warrior.OnDie += () => FractionCacher.UncacheWarrior(warrior);
             }
 
             warrior.transform.position = position;
