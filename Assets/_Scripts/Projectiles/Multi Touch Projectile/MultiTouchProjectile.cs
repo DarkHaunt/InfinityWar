@@ -1,3 +1,4 @@
+using InfinityGame.Strategies.ProjectileCollisionAction;
 using InfinityGame.GameEntities;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +10,12 @@ namespace InfinityGame.Projectiles
     public class MultiTouchProjectile : Projectile
     {
         [Header("--- Multi Touch Projectile Settings ---")]
+
         [SerializeField] private int _maxCollisionsCount = 1;
         [SerializeField] private List<ProjectileEntityCollisionAction> _lastCollisionActions;
 
-        private int _collisionsCount = 0;
+
+        private LimitCounter _collisionCounter;
 
 
 
@@ -20,32 +23,31 @@ namespace InfinityGame.Projectiles
         {
             base.OnCollisionWith(target);
 
-            _collisionsCount++;
+            _collisionCounter.Increase();
 
-            if (IsCollitionsOverflow())
-            {
-                OnLastCollition(target);
-                EndExploitation();
-                return;
-            }
-
-            RestartLifeTime();
+            if (_collisionCounter.IsOverflowed)
+                OnLastCollision(target);
+            else
+                RestartLifeTime();
         }
 
-        private void OnLastCollition(GameEntity target)
+        private void OnLastCollision(GameEntity target)
         {
             foreach (var projectileBehavior in _lastCollisionActions)
                 projectileBehavior.OnCollisionBehave(this, target);
         }
 
-        private bool IsCollitionsOverflow() => _collisionsCount >= _maxCollisionsCount;
+
 
 
         protected override void Awake()
         {
             base.Awake();
 
-            OnExploitationEnd += () => _collisionsCount = 0;
+            _collisionCounter = new LimitCounter(_maxCollisionsCount);
+            _collisionCounter.OnCounterLimitOverflow += EndExploitation;
+
+            OnExploitationEnd += _collisionCounter.ResetCounter;
         }
     }
 }

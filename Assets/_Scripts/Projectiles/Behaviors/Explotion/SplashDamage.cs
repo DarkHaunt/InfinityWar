@@ -4,23 +4,26 @@ using UnityEngine;
 
 
 
-/// <summary>
-/// Doing splash damage around the radius of collided target
-/// </summary>
-[CreateAssetMenu(fileName = "ProjectileBehavior", menuName = "Data/Projectile Collision Action/SplashDamage", order = 52)]
-public class SplashDamage : ProjectileEntityCollisionAction
+namespace InfinityGame.Strategies.ProjectileCollisionAction
 {
-    [Range(0f, 10f)]
-    [SerializeField] private float _splashRadius = 1f;
-
-
-
-    public override void OnCollisionBehave(Projectile projectile, GameEntity target)
+    /// <summary>
+    /// Doing splash damage around the radius of collided target
+    /// </summary>
+    [CreateAssetMenu(fileName = "ProjectileBehavior", menuName = "Data/Projectile Collision Action/SplashDamage", order = 52)]
+    public class SplashDamage : ProjectileEntityCollisionAction
     {
-        var enemyDetector = new FractionEntityDetector(_splashRadius, projectile.FractionTag); // TODO: Сделать его статическим?
-        var detectedEnemies = enemyDetector.GetDetectedFractionEntities(target.transform.position);
+        [Range(0f, 10f)]
+        [SerializeField] private float _splashRadius = 1f;
 
-        foreach (var enemy in detectedEnemies)
-            enemy.GetDamage(projectile.Damage);
+
+
+        public override void OnCollisionBehave(Projectile projectile, GameEntity target)
+        {
+            var detectedEnemies = GameEntitiesDetector.GetEntitiesInArea(target.transform.position, _splashRadius, projectile.FractionTag);
+
+            foreach (var enemy in detectedEnemies)
+                enemy.GetDamage(projectile.Damage);
+        }
     }
+
 }

@@ -135,7 +135,7 @@ namespace InfinityGame.GameEntities
                 return;
             }
 
-            GameEntity newLocaltarget = enumenatorOfEnemies.Current;
+            GameEntity newLocaltarget = enumenatorOfEnemies.Current; // TODO: Возможно вынести логику поиска ближайшей цели в отдельный класс,чтобы не дублировать ей еще и в GetGlobalTarget и Ricochet
             var minimalDiscoveredDistance = float.MaxValue;
 
             foreach (var enemy in enemiesAround)

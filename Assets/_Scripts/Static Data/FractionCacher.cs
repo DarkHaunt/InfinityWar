@@ -109,7 +109,7 @@ namespace InfinityGame.DataCaching
 
             private bool _fractionHaveTownHall = false;
 
-            private readonly Counter _warrioirCounter;
+            private readonly LimitCounter _warrioirCounter;
 
 
 
@@ -140,7 +140,7 @@ namespace InfinityGame.DataCaching
 
             public FractionGameData(Fraction fraction, TownHall townHall)
             {
-                _warrioirCounter = new Counter(fraction.WarrioirMaxLimit);
+                _warrioirCounter = new LimitCounter(fraction.WarrioirMaxLimit);
                 Fraction = fraction.FractionTag;
 
                 _warriors = new HashSet<Warrior>();

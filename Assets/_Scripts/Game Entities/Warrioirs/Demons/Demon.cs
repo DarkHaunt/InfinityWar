@@ -1,17 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using InfinityGame.GameEntities;
 using UnityEngine;
+
+
 
 namespace InfinityGame.GameEntities.Demons
 {
-
-    public class Demon : MeleeWarrioir
+    public class Demon : MeleeWarrior
     {
         [SerializeField] private float _explodeDamage;
         [SerializeField] private float _explodeRadius;
-
-        private FractionEntityDetector _enemyDetector;
 
 
 
@@ -22,7 +18,7 @@ namespace InfinityGame.GameEntities.Demons
 
         private void Explode()
         {
-            var enemies = _enemyDetector.GetDetectedFractionEntities(transform.position);
+            var enemies = GameEntitiesDetector.GetEntitiesInArea(transform.position, _explodeRadius, FractionTag);
 
             foreach (var enemy in enemies)
                 enemy.GetDamage(_explodeDamage);
@@ -34,7 +30,6 @@ namespace InfinityGame.GameEntities.Demons
         {
             base.Awake();
 
-            _enemyDetector = new FractionEntityDetector(_explodeRadius, FractionTag);
             OnDie += Explode;
         }
     }

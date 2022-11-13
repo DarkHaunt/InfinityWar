@@ -1,11 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
+
 namespace InfinityGame.GameEntities.Humans
 {
-    public class Swordman : MeleeWarrioir
+    public class Swordman : MeleeWarrior
     {
         [Range(0f, 1f)]
         [SerializeField] private float _nonMainTargetDamagePercent;
@@ -14,13 +14,12 @@ namespace InfinityGame.GameEntities.Humans
         [SerializeField] private float _atackRadius;
 
         private float _damageForSurroundedNonMainEntities;
-        private FractionEntityDetector _enemyDetector;
 
 
 
         protected override void Attack()
         {
-            var detectedEnemies =  _enemyDetector.GetDetectedFractionEntities(transform.position);
+            var detectedEnemies =  GameEntitiesDetector.GetEntitiesInArea(transform.position, _atackRadius, FractionTag);
 
             DamageAllSurroundEnemies(detectedEnemies);
         }
@@ -39,13 +38,11 @@ namespace InfinityGame.GameEntities.Humans
 
 
 
-
         protected override void Awake()
         {
             base.Awake();
 
             _damageForSurroundedNonMainEntities = MeleeDamage * _nonMainTargetDamagePercent;
-            _enemyDetector = new FractionEntityDetector(_atackRadius, FractionTag);
         }
     }
 }

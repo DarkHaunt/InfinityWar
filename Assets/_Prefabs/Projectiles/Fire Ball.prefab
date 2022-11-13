@@ -143,4 +143,3 @@ MonoBehaviour:
   _maxCollisionsCount: 3
   _lastCollisionActions: []
   _ricochetRadius: 5
-  _hittedEnemies: []

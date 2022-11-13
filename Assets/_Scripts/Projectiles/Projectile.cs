@@ -1,6 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using System;
+using InfinityGame.Strategies.ProjectileCollisionAction;
 using InfinityGame.GameEntities;
 using UnityEngine;
 
@@ -13,7 +14,6 @@ namespace InfinityGame.Projectiles
     public abstract class Projectile : MonoBehaviour, IPoolable
     {
         public event Action OnExploitationEnd;
-        protected event Action<string> OnTagChange;
 
         [Header("--- Projectile Settings ---")]
         [SerializeField] private string _poolTag;
@@ -77,7 +77,6 @@ namespace InfinityGame.Projectiles
         public void SetFractionTag(string fractionTag)
         {
             _fractionTag = fractionTag;
-            OnTagChange?.Invoke(_fractionTag);
         }
 
         private IEnumerator LifeTimeCoroutine()

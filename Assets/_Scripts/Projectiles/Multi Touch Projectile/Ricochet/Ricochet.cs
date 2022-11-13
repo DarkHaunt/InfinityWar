@@ -13,12 +13,12 @@ namespace InfinityGame.Projectiles
     public class Ricochet : MultiTouchProjectile
     {
         [Header("--- Ricochet Parameters ---")]
+
         [Range(0f, 20f)]
+        [Tooltip("Radius of checking new target. If no targets around - destroy bullet")]
         [SerializeField] private float _ricochetRadius = 1f;
 
-        private FractionEntityDetector _entityDetector;
-
-        [SerializeField] private List<GameEntity> _hittedEnemies = new List<GameEntity>();
+        private readonly List<GameEntity> _hittedEnemies = new List<GameEntity>(); // Enemies, which were already hitted in current lyfe cycle of projectile
 
 
 
@@ -30,11 +30,18 @@ namespace InfinityGame.Projectiles
                 return;
 
             _hittedEnemies.Add(target);
+            TryToBounce();
+        }
 
+        /// <summary>
+        /// Tries to dispatch projectile to nearlies existing enemy
+        /// </summary>
+        private void TryToBounce()
+        {
             if (TryToGetClosestEnemyEntity(out GameEntity newTarget))
             {
-                var newFlyDirection = (newTarget.transform.position - transform.position).normalized;
-                SetFlyDirection(newFlyDirection);
+                var directionToNewTarget = (newTarget.transform.position - transform.position).normalized;
+                SetFlyDirection(directionToNewTarget);
             }
             else
                 EndExploitation();
@@ -42,10 +49,10 @@ namespace InfinityGame.Projectiles
 
         private bool TryToGetClosestEnemyEntity(out GameEntity closestEnemy)
         {
-            var enemies = _entityDetector.GetDetectedFractionEntities(transform.position);
+            var enemies = GameEntitiesDetector.GetEntitiesInArea(transform.position, _ricochetRadius, FractionTag);
+
             var minimalDistance = float.MaxValue;
             closestEnemy = null;
-
 
             foreach (var enemy in enemies)
             {
@@ -70,11 +77,6 @@ namespace InfinityGame.Projectiles
         protected override void Awake()
         {
             base.Awake();
-
-            OnTagChange += (string newTag) =>
-            {
-                _entityDetector = new FractionEntityDetector(_ricochetRadius, newTag);
-            };
 
             OnExploitationEnd += _hittedEnemies.Clear;
         }

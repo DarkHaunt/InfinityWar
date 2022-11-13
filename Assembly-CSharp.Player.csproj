@@ -72,7 +72,6 @@
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\Shot Around\ShotAround.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\Single Shot\SingleShot.cs" />
     <Compile Include="Assets\_Scripts\Arena\GameInitializer.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Melee\MeleeWarrioir.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\TownHall.cs" />
     <Compile Include="Assets\_Scripts\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\_Scripts\Object Rotator\ObjectRotator.cs" />
@@ -90,12 +89,13 @@
     <Compile Include="Assets\_Scripts\Factories\BuildingFactory.cs" />
     <Compile Include="Assets\_Scripts\Factories\ProjectileFactory.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Group Pick\RandomGroupPick.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Multi Touch Projectile\Ricochet\Ricochet.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Humans\Swordman.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Demons\Demonologist.cs" />
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
-    <Compile Include="Assets\_Scripts\Counter\Counter.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
-    <Compile Include="Assets\_Scripts\Projectiles\Multi Touch Projectile\Ricochet\Ricochet.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Melee\MeleeWarrior.cs" />
+    <Compile Include="Assets\_Scripts\Counter\LimitCounter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

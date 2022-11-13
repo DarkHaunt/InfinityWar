@@ -4,10 +4,13 @@ using UnityEngine;
 
 
 
-/// <summary>
-/// Action, which will execute when projectile collides with entity
-/// </summary>
-public abstract class ProjectileEntityCollisionAction : ScriptableObject
+namespace InfinityGame.Strategies.ProjectileCollisionAction
 {
-    public abstract void OnCollisionBehave(Projectile projectile, GameEntity collitionEntity);
+    /// <summary>
+    /// Action, which will execute when projectile collides with entity
+    /// </summary>
+    public abstract class ProjectileEntityCollisionAction : ScriptableObject
+    {
+        public abstract void OnCollisionBehave(Projectile projectile, GameEntity collitionEntity);
+    } 
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace InfinityGame.GameEntities.Zombies
 {
-    public class MeleeZombie : MeleeWarrioir
+    public class MeleeZombie : MeleeWarrior
     {
         protected override void Attack()
         {
