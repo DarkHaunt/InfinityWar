@@ -56,6 +56,7 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Melee\MeleeWarrior.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Barrack.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Building.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
@@ -72,11 +73,12 @@
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\Shot Around\ShotAround.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\Single Shot\SingleShot.cs" />
     <Compile Include="Assets\_Scripts\Arena\GameInitializer.cs" />
+    <Compile Include="Assets\_Scripts\Counter\LimitCounter.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\TownHall.cs" />
     <Compile Include="Assets\_Scripts\Object Pooler\ObjectPooler.cs" />
     <Compile Include="Assets\_Scripts\Object Rotator\ObjectRotator.cs" />
     <Compile Include="Assets\_Scripts\Static Data\FractionCacher.cs" />
-    <Compile Include="Assets\_Scriptables\Fractions\Fraction.cs" />
+    <Compile Include="Assets\_Scriptables\Fraction\Fraction.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Zombies\MeleeZombie.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Single Pick\RandomSinglePickStrategy.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\EntityDetector.cs" />
@@ -94,8 +96,7 @@
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Demons\Demonologist.cs" />
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Melee\MeleeWarrior.cs" />
-    <Compile Include="Assets\_Scripts\Counter\LimitCounter.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Behaviors\Kinetic Energy Losing\KineticEnergyLosing.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

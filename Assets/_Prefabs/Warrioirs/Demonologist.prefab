@@ -156,7 +156,7 @@ MonoBehaviour:
   _rigidbody2D: {fileID: 36225532451730509}
   _entityDetector: {fileID: 36225532546376789}
   _poolTag: Demonologist
-  _projectilePrefab: {fileID: -2931566493690515361, guid: 58b30e6af4f3e5a4c82627ed0404517d, type: 3}
+  _projectilePrefab: {fileID: -5918154149595280812, guid: 58b30e6af4f3e5a4c82627ed0404517d, type: 3}
   _shootStrategy: {fileID: 11400000, guid: 4ef7cdfdedbe9b140a4e1dadac17a6e4, type: 2}
   _spawnData:
     _spawnCoolDownSeconds: 5

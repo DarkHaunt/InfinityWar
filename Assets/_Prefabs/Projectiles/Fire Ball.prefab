@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4281909816078048016}
   - component: {fileID: 2734075000481854375}
   - component: {fileID: 3848323959285546362}
-  - component: {fileID: -2931566493690515361}
+  - component: {fileID: -5918154149595280812}
   m_Layer: 0
   m_Name: Fire Ball
   m_TagString: Untagged
@@ -122,7 +122,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.125
---- !u!114 &-2931566493690515361
+--- !u!114 &-5918154149595280812
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,15 +131,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4929942294725067014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ab94b922e106594ab313656960f9b9d, type: 3}
+  m_Script: {fileID: 11500000, guid: d3a10ad146225f741ad309bab5d2cfd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _poolTag: FireBall
-  _damage: 15
+  _damage: 20
   _speedMult: 2
   _rigidbody2D: {fileID: 2734075000481854375}
   _lifeTime: 5
   _behaviors: []
-  _maxCollisionsCount: 3
-  _lastCollisionActions: []
-  _ricochetRadius: 5

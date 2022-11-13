@@ -79,6 +79,8 @@ namespace InfinityGame.Projectiles
             _fractionTag = fractionTag;
         }
 
+        public void SetDamage(float damage) => _damage = damage;
+
         private IEnumerator LifeTimeCoroutine()
         {
             yield return _cachedLifeTime;
@@ -111,7 +113,6 @@ namespace InfinityGame.Projectiles
         protected virtual void Awake()
         {
             _cachedLifeTime = new WaitForSeconds(_lifeTime);
-
             _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
         }
 

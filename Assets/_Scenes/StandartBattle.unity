@@ -160,6 +160,8 @@ MonoBehaviour:
   _fractions:
   - {fileID: 11400000, guid: 737c80d3f8c92de47959cce5ef68e7b9, type: 2}
   - {fileID: 11400000, guid: 29f29cb075fb97e4c9c91e34cf242d35, type: 2}
+  - {fileID: 11400000, guid: c997cf203856f3044992dc309d3ea02f, type: 2}
+  - {fileID: 11400000, guid: 587b371751ebf3a489da2acba17fcca7, type: 2}
 --- !u!4 &277150748
 Transform:
   m_ObjectHideFlags: 0
