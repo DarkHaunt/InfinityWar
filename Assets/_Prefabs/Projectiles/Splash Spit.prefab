@@ -135,8 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _poolTag: Spash Spit
-  _damage: 10
-  _speedMult: 2
+  _speedMult: 5
   _rigidbody2D: {fileID: 819447614314087416}
   _lifeTime: 5
   _behaviors:

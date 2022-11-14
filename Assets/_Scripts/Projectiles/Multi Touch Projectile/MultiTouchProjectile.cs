@@ -1,4 +1,4 @@
-using InfinityGame.Strategies.ProjectileCollisionAction;
+using InfinityGame.Strategies.ProjectileCollisionBehaviors;
 using InfinityGame.GameEntities;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +12,7 @@ namespace InfinityGame.Projectiles
         [Header("--- Multi Touch Projectile Settings ---")]
 
         [SerializeField] private int _maxCollisionsCount = 1;
-        [SerializeField] private List<ProjectileEntityCollisionAction> _lastCollisionActions;
+        [SerializeField] private List<ProjectileColliisionBehavior> _lastCollisionBehaviors;
 
 
         private LimitCounter _collisionCounter;
@@ -33,8 +33,8 @@ namespace InfinityGame.Projectiles
 
         private void OnLastCollision(GameEntity target)
         {
-            foreach (var projectileBehavior in _lastCollisionActions)
-                projectileBehavior.OnCollisionBehave(this, target);
+            foreach (var projectileBehavior in _lastCollisionBehaviors)
+                projectileBehavior.OnCollisionBehave(target, this);
         }
 
 

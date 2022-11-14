@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using System;
-using InfinityGame.Strategies.ProjectileCollisionAction;
+using InfinityGame.Strategies.ProjectileCollisionBehaviors;
 using InfinityGame.GameEntities;
 using UnityEngine;
 
@@ -18,7 +18,6 @@ namespace InfinityGame.Projectiles
         [Header("--- Projectile Settings ---")]
         [SerializeField] private string _poolTag;
 
-        [SerializeField] private float _damage = 10f;
         [SerializeField] private float _speedMult = 2f;
 
         [SerializeField] private Rigidbody2D _rigidbody2D;
@@ -26,7 +25,7 @@ namespace InfinityGame.Projectiles
         [Range(1f, 10f)]
         [SerializeField] private float _lifeTime = 5f;
 
-        [SerializeField] private List<ProjectileEntityCollisionAction> _behaviors;
+        [SerializeField] private List<ProjectileColliisionBehavior> _behaviors;
 
         private readonly ObjectRotator _objectRotator = new ObjectRotator();
 
@@ -41,7 +40,6 @@ namespace InfinityGame.Projectiles
 
         public string FractionTag => _fractionTag;
         public string PoolTag => _poolTag;
-        public float Damage => _damage;
         protected bool IsExploitating => _isExploitating;
 
 
@@ -61,10 +59,8 @@ namespace InfinityGame.Projectiles
 
         protected virtual void OnCollisionWith(GameEntity target)
         {
-            target.GetDamage(Damage);
-
             foreach (var behavior in _behaviors)
-                behavior.OnCollisionBehave(this, target);
+                behavior.OnCollisionBehave(target, this);
         }
 
         public void SetFlyDirection(Vector2 direction)
@@ -78,8 +74,6 @@ namespace InfinityGame.Projectiles
         {
             _fractionTag = fractionTag;
         }
-
-        public void SetDamage(float damage) => _damage = damage;
 
         private IEnumerator LifeTimeCoroutine()
         {

@@ -145,8 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _poolTag: Fast Arrow
-  _damage: 10
-  _speedMult: 8
+  _speedMult: 16
   _rigidbody2D: {fileID: 5757366810847229686}
   _lifeTime: 5
   _behaviors: []
