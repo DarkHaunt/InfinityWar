@@ -108,8 +108,8 @@
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@1.15.4\Editor\PlasticSCM\UI\Avatar\AvatarImages.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@1.15.4\Editor\PlasticSCM\AssetMenu\AssetMenuRoutingOperations.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@1.15.4\Editor\PlasticSCM\PlasticWindow.cs" />
-    <Compile Include="Library\PackageCache\com.unity.collab-proxy@1.15.4\Editor\PlasticSCM\SwitchModeConfirmationDialog.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@1.15.4\Editor\PlasticSCM\UI\UnityEvents.cs" />
+    <Compile Include="Library\PackageCache\com.unity.collab-proxy@1.15.4\Editor\PlasticSCM\SwitchModeConfirmationDialog.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@1.15.4\Editor\PlasticSCM\AssetMenu\Dialogs\CheckinDialogOperations.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@1.15.4\Editor\PlasticSCM\Developer\UpdateReport\UpdateReportListHeaderState.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@1.15.4\Editor\PlasticSCM\UI\Progress\DrawProgressForViews.cs" />

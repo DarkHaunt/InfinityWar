@@ -64,6 +64,7 @@
     <Compile Include="Assets\_Scripts\Projectiles\Multi Touch Projectile\MultiTouchProjectile.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooting\Shooter.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Warrior.cs" />
+    <Compile Include="Assets\_Scripts\Camera\CameraMover.cs" />
     <Compile Include="Assets\_Scripts\Static Data\TrigonometryCalculator.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Demons\Demon.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\WarrioirsPickStrategy.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Assets\_Scriptables\Fraction\Fraction.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Zombies\MeleeZombie.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Single Pick\RandomSinglePickStrategy.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Behaviors\Kinetic Energy Losing\KineticEnergyLosing.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\EntityDetector.cs" />
     <Compile Include="Assets\_Scripts\Fraction Entty Detector\Fraction Entity Detector.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Behaviors\Explotion\SplashDamage.cs" />
@@ -93,10 +95,14 @@
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Group Pick\RandomGroupPick.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Multi Touch Projectile\Ricochet\Ricochet.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Humans\Swordman.cs" />
+    <Compile Include="Assets\_Scripts\Camera\CameraBorders.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Demons\Demonologist.cs" />
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
-    <Compile Include="Assets\_Scripts\Projectiles\Behaviors\Kinetic Energy Losing\KineticEnergyLosing.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\_Scripts\Lean\READ ME.txt" />
+    <None Include="Assets\_Scripts\Lean\Third-Party Notices.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -682,6 +688,10 @@
       <Project>{44FC9C95-5567-BEB6-A172-09E583AFD164}</Project>
       <Name>Unity.2D.Tilemap.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="LeanTouch.csproj">
+      <Project>{9DEFC325-9AD6-D058-3A72-D0735D229DC0}</Project>
+      <Name>LeanTouch</Name>
+    </ProjectReference>
     <ProjectReference Include="PsdPlugin.csproj">
       <Project>{D22C9630-2038-EF95-E9EB-CE904335C278}</Project>
       <Name>PsdPlugin</Name>
@@ -773,6 +783,10 @@
     <ProjectReference Include="Unity.2D.SpriteShape.Editor.csproj">
       <Project>{910FFABB-C5E8-615E-E402-24B623382F8D}</Project>
       <Name>Unity.2D.SpriteShape.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="LeanCommon.csproj">
+      <Project>{3425CCD7-2526-5EE6-CACE-828855B036FB}</Project>
+      <Name>LeanCommon</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.2D.Common.Editor.csproj">
       <Project>{4AC1637D-EB53-D971-FC9A-31651B8B0203}</Project>
