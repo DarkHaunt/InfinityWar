@@ -64,7 +64,7 @@
     <Compile Include="Assets\_Scripts\Projectiles\Multi Touch Projectile\MultiTouchProjectile.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooting\Shooter.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Warrior.cs" />
-    <Compile Include="Assets\_Scripts\Camera\CameraMover.cs" />
+    <Compile Include="Assets\_Scripts\Camera\ArenaCameraMover.cs" />
     <Compile Include="Assets\_Scripts\Static Data\TrigonometryCalculator.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Demons\Demon.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\WarrioirsPickStrategy.cs" />
