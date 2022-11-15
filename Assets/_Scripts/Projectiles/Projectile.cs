@@ -23,7 +23,7 @@ namespace InfinityGame.Projectiles
         [SerializeField] private Rigidbody2D _rigidbody2D;
 
         [Range(1f, 10f)]
-        [SerializeField] private float _lifeTime = 5f;
+        [SerializeField] private float _maxLifeTime = 5f;
 
         [SerializeField] private List<ProjectileColliisionBehavior> _behaviors;
 
@@ -31,8 +31,10 @@ namespace InfinityGame.Projectiles
 
         // Cached data
         private Coroutine _lifeTimeCoroutine;
-        private WaitForSeconds _cachedLifeTime;
+        private WaitForEndOfFrame _cachedWaitForFrame;
         private string _fractionTag;
+
+        private float _currentLifeTime = 0f;
 
         private bool _isExploitating = true;
 
@@ -40,13 +42,15 @@ namespace InfinityGame.Projectiles
 
         public string FractionTag => _fractionTag;
         public string PoolTag => _poolTag;
+        public float Speed => _speedMult;
+        public float LifeTime => _currentLifeTime;
         protected bool IsExploitating => _isExploitating;
 
 
 
         public void PullInPreparations()
         {
-            StopCoroutine(_lifeTimeCoroutine);
+            StopLifeTime();
             gameObject.SetActive(false);
         }
 
@@ -54,7 +58,7 @@ namespace InfinityGame.Projectiles
         {
             _isExploitating = true;
             gameObject.SetActive(true);
-            _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
+            StartLifeTimeCounting();
         }
 
         protected virtual void OnCollisionWith(GameEntity target)
@@ -65,7 +69,7 @@ namespace InfinityGame.Projectiles
 
         public void SetFlyDirection(Vector2 direction)
         {
-            _rigidbody2D.velocity = direction * _speedMult;
+            _rigidbody2D.velocity = direction * Speed;
 
             _objectRotator.RoteteObjectToTarget(_rigidbody2D, direction);
         }
@@ -77,7 +81,12 @@ namespace InfinityGame.Projectiles
 
         private IEnumerator LifeTimeCoroutine()
         {
-            yield return _cachedLifeTime;
+            while(_currentLifeTime < _maxLifeTime)
+            {
+                yield return _cachedWaitForFrame;
+
+                _currentLifeTime += Time.deltaTime;
+            }
 
             EndExploitation();
         }
@@ -88,12 +97,6 @@ namespace InfinityGame.Projectiles
             OnExploitationEnd?.Invoke();
         }
 
-        protected void RestartLifeTime()
-        {
-            StopCoroutine(_lifeTimeCoroutine);
-            _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
-        }
-
         private bool IsColliderEnemyEntity(Collider2D collider2D, out GameEntity enemy)
         {
             var isHitableEntity = collider2D.TryGetComponent(out GameEntity entity);
@@ -102,15 +105,30 @@ namespace InfinityGame.Projectiles
             return isHitableEntity && !entity.IsBelongsToFraction(FractionTag);
         }
 
+        protected void RestartLifeTime()
+        {
+            StopLifeTime();
+            StartLifeTimeCounting();
+        }
+
+        private void StopLifeTime()
+        {
+            _currentLifeTime = 0f;
+            StopCoroutine(_lifeTimeCoroutine);
+        }
+
+        private void StartLifeTimeCounting()
+        {
+            _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
+        }
+
 
 
         protected virtual void Awake()
         {
-            _cachedLifeTime = new WaitForSeconds(_lifeTime);
-            _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
+            _cachedWaitForFrame = new WaitForEndOfFrame();
+            StartLifeTimeCounting();
         }
-
-        protected virtual void OnDestroy() { }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
