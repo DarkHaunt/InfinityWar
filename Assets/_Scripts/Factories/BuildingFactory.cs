@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace InfinityGame.Factories.BuildingFactory
 {
-    using BuildingData = Fraction.BuildingData;
+    using BuildingInitData = FractionInitData.BuildingInitData;
 
     public class BuildingFactory
     {
         public BuildingFactory() { }
 
 
-        public BuildingType SpawnFractionBuilding<BuildingType>(Fraction fraction, BuildingData fractionBuildingData, Vector2 position) where BuildingType : Building
+        public BuildingType SpawnFractionBuilding<BuildingType>(FractionInitData fraction, BuildingInitData fractionBuildingData, Vector2 position) where BuildingType : Building
         {
             var buildingGameObject = new GameObject(fractionBuildingData.Name);
             var building = buildingGameObject.AddComponent<BuildingType>();

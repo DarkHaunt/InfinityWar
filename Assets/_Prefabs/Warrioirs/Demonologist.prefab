@@ -148,8 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a87f3088267eb48bfec666b52a5590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fractionTag: Demons
-  _health: 10000
+  _fraction: Demons
+  _health: 50
   _attackCoolDown: 3
   _speedMult: 2
   _attackDistance: 5
@@ -157,11 +157,11 @@ MonoBehaviour:
   _entityDetector: {fileID: 36225532546376789}
   _poolTag: Demonologist
   _projectilePrefab: {fileID: -5918154149595280812, guid: 58b30e6af4f3e5a4c82627ed0404517d, type: 3}
-  _shootStrategy: {fileID: 11400000, guid: 4ef7cdfdedbe9b140a4e1dadac17a6e4, type: 2}
+  _shootStrategy: {fileID: 11400000, guid: ba0a00dbefb0a5341b48d575ec87547c, type: 2}
   _spawnData:
     _spawnCoolDownSeconds: 5
     _timeDeltaSeconds: 1
-    _warrioirsPickStrategy: {fileID: 11400000, guid: 38eab597208c9e248b5fda635f8095b4, type: 2}
+    _warrioirsPickStrategy: {fileID: 11400000, guid: 780f7ac64eae1474cb4f46bb856216d5, type: 2}
     _warriosToSpawn:
     - {fileID: 4305212060841415620, guid: db83acac97cb41e4e80c4f09ba8dfd86, type: 3}
 --- !u!1 &36225532546376788

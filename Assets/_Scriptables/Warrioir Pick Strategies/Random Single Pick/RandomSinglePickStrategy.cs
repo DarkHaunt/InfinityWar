@@ -8,7 +8,7 @@ namespace InfinityGame.Strategies.WarrioirPickStrategies
     [CreateAssetMenu(fileName = "SpawnStrategy", menuName = "Data/WarrioirChoseStrategies/RandomSinglePick", order = 52)]
     public class RandomSinglePickStrategy : WarrioirsPickStrategy
     {
-        public override IEnumerable<Warrior> ChoseWarrioirsToSawn(IReadOnlyList<Warrior> warrioirs)
+        public override IEnumerable<Warrior> ChoseWarrioirsToSpawn(IReadOnlyList<Warrior> warrioirs)
         {
             var chosenIndex = StaticRandomizer.Randomizer.Next(0, warrioirs.Count);
 

@@ -19,7 +19,7 @@ namespace InfinityGame.GameEntities
             base.Awake();
 
             _fractionSpawner = GetComponent<WarrioirSpawner>();
-            _fractionSpawner.Initialize(FractionTag, _spawnData);
+            _fractionSpawner.Initialize(Fraction, _spawnData);
 
             OnDie += _fractionSpawner.DeactivateSpawning;
         }

@@ -12,14 +12,14 @@ namespace InfinityGame.GameEntities
         public event Action OnDie;
 
 
-        [SerializeField] protected string _fractionTag;
+        [SerializeField] protected string _fraction;
         [SerializeField] protected float _health;
 
         protected bool _isDead = false; 
 
 
 
-        public string FractionTag => _fractionTag;
+        public string Fraction => _fraction;
 
 
 
@@ -44,8 +44,8 @@ namespace InfinityGame.GameEntities
             Destroy(gameObject);
         }
 
-        public bool IsBelongsToFraction(string fraction) => _fractionTag.Contains(fraction);
+        public bool IsBelongsToFraction(string fraction) => _fraction.Contains(fraction);
 
-        public override string ToString() => $"{name} {transform.position} {FractionTag}";
+        public override string ToString() => $"{name} {transform.position} {Fraction}";
     } 
 }

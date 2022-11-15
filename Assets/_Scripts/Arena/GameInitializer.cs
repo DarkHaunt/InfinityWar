@@ -13,7 +13,7 @@ internal class GameInitializer : MonoBehaviour
     private static GameInitializer _instance;
 
     [SerializeField] private List<SpawnPlace> _spawnPlaces = new List<SpawnPlace>(4);
-    [SerializeField] private List<Fraction> _fractions = new List<Fraction>(2);
+    [SerializeField] private List<FractionInitData> _fractions = new List<FractionInitData>(2);
 
     private BuildingFactory _buildingFactory;
 
@@ -22,22 +22,22 @@ internal class GameInitializer : MonoBehaviour
     /// <summary>
     /// Asseblies all fraction settings for game
     /// </summary>
-    /// <param name="fraction"></param>
+    /// <param name="fractionData"></param>
     /// <param name="spawnPlace"></param>
     /// <returns>List of all barracks of fraction</returns>
-    private void AssembleFraction(Fraction fraction, SpawnPlace spawnPlace)
+    private void AssembleFraction(FractionInitData fractionData, SpawnPlace spawnPlace)
     {
-        var townHallObject = new GameObject(fraction.TownHallBuildingData.Name);
+        var townHallObject = new GameObject(fractionData.TownHallBuildingData.Name);
         var townHall = townHallObject.AddComponent<TownHall>();
 
-        FractionCacher.CashFraction(fraction, townHall);
+        FractionCacher.CashFraction(fractionData, townHall);
 
-        var townHallBarrack = _buildingFactory.SpawnFractionBuilding<Barrack>(fraction, fraction.TownHallBuildingData, spawnPlace.TownHallSpawnPointPosition);
+        var townHallBarrack = _buildingFactory.SpawnFractionBuilding<Barrack>(fractionData, fractionData.TownHallBuildingData, spawnPlace.TownHallSpawnPointPosition);
         townHall.SetBarrack(townHallBarrack);
 
         // Spawn all sub barracks
         foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsTransforms)
-            _buildingFactory.SpawnFractionBuilding<Barrack>(fraction, fraction.BarrackBuildingData, barrackPosition);
+            _buildingFactory.SpawnFractionBuilding<Barrack>(fractionData, fractionData.BarrackBuildingData, barrackPosition);
     }
 
     private IList<int> GetReservedSpawnPlaceIndexes()
@@ -55,7 +55,7 @@ internal class GameInitializer : MonoBehaviour
         _buildingFactory = new BuildingFactory();
 
         var emptySpawnPlaceIndexes = GetReservedSpawnPlaceIndexes();
-        var possibleToGenerateFractions = new List<Fraction>(_fractions);
+        var possibleToGenerateFractions = new List<FractionInitData>(_fractions);
 
         while (possibleToGenerateFractions.Count != 0 && emptySpawnPlaceIndexes.Count != 0)
         {

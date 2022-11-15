@@ -7,6 +7,6 @@ namespace InfinityGame.Strategies.WarrioirPickStrategies
 {
     public abstract class WarrioirsPickStrategy : ScriptableObject
     {
-        public abstract IEnumerable<Warrior> ChoseWarrioirsToSawn(IReadOnlyList<Warrior> warrioirs);
+        public abstract IEnumerable<Warrior> ChoseWarrioirsToSpawn(IReadOnlyList<Warrior> warrioirs);
     } 
 }

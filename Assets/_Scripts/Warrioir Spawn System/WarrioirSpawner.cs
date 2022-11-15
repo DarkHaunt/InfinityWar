@@ -37,7 +37,7 @@ namespace InfinityGame.Spawning
         
 
 
-        public void Initialize(Fraction fraction) => Initialize(fraction.FractionTag, fraction.BarracksWarrioirSpawnSettings);
+        public void Initialize(FractionInitData fractionData) => Initialize(fractionData.FractionTag, fractionData.BarracksWarrioirSpawnSettings);
 
         public void Initialize(string fractionTag, SpawnData spawnData)
         {
@@ -92,7 +92,7 @@ namespace InfinityGame.Spawning
             {
                 yield return new WaitForSeconds(NewSpawnDelaySeconds());
 
-                var pickedWarioirsPrefabs = _warriorsPickStrategy.ChoseWarrioirsToSawn(_warriorsToSpawn);
+                var pickedWarioirsPrefabs = _warriorsPickStrategy.ChoseWarrioirsToSpawn(_warriorsToSpawn);
 
 
                 foreach (var warrioirPrefab in pickedWarioirsPrefabs)

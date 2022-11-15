@@ -56,26 +56,26 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanSelectableBehaviour.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Scripts\LeanHelper.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Scripts\LeanEditor.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanSpawn.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanPath.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanSelect.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Scripts\LeanInspector.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Documentation\LeanGuide.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanFormatString.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanSelectableGraphicColor.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanPlane.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanSelectableRendererColor.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanRoll.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanDestroy.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanSelectable.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Extras\LeanSelectableSpriteRendererColor.cs" />
-    <Compile Include="Assets\_Scripts\Lean\Common\Scripts\LeanInput.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanSelectableBehaviour.cs" />
+    <Compile Include="Assets\Lean\Common\Scripts\LeanHelper.cs" />
+    <Compile Include="Assets\Lean\Common\Scripts\LeanEditor.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanSpawn.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanPath.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanSelect.cs" />
+    <Compile Include="Assets\Lean\Common\Scripts\LeanInspector.cs" />
+    <Compile Include="Assets\Lean\Common\Documentation\LeanGuide.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanFormatString.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanSelectableGraphicColor.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanPlane.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanSelectableRendererColor.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanRoll.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanDestroy.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanSelectable.cs" />
+    <Compile Include="Assets\Lean\Common\Extras\LeanSelectableSpriteRendererColor.cs" />
+    <Compile Include="Assets\Lean\Common\Scripts\LeanInput.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\_Scripts\Lean\Common\LeanCommon.asmdef" />
+    <None Include="Assets\Lean\Common\LeanCommon.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

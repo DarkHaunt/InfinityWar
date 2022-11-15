@@ -137,9 +137,9 @@ MonoBehaviour:
   _poolTag: Chucrum
   _speedMult: 3
   _rigidbody2D: {fileID: 8187448437545612532}
-  _lifeTime: 5
+  _maxLifeTime: 3
   _behaviors:
   - {fileID: 11400000, guid: fafd249df342c0e468899964c49d37df, type: 2}
   _maxCollisionsCount: 3
   _lastCollisionBehaviors: []
-  _ricochetRadius: 1.5
+  _ricochetRadius: 2

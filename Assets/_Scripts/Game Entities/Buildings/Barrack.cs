@@ -9,12 +9,12 @@ namespace InfinityGame.GameEntities
 
 
 
-        public override void Initialize(Fraction fraction, Fraction.BuildingData fractionBuildingData)
+        public override void Initialize(FractionInitData fractionData, FractionInitData.BuildingInitData fractionBuildingData)
         {
-            base.Initialize(fraction, fractionBuildingData);
+            base.Initialize(fractionData, fractionBuildingData);
 
             _warriorSpawner = gameObject.AddComponent<WarrioirSpawner>();
-            _warriorSpawner.Initialize(fraction);
+            _warriorSpawner.Initialize(fractionData);
 
             OnDie += _warriorSpawner.DeactivateSpawning;
         }

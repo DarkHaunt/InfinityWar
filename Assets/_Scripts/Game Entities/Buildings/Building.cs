@@ -7,17 +7,17 @@ using UnityEngine;
 
 namespace InfinityGame.GameEntities
 {
-    using BuildingData = Fraction.BuildingData;
+    using BuildingInitData = FractionInitData.BuildingInitData;
 
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
     public class Building : GameEntity
     {
-        public virtual void Initialize(Fraction fraction, BuildingData buildingData)
+        public virtual void Initialize(FractionInitData fraction, BuildingInitData buildingData)
         {
             _health = buildingData.BuildingHealthPoints;
-            _fractionTag = fraction.FractionTag;
+            _fraction = fraction.FractionTag;
 
             var spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = buildingData.BuildingSprite;

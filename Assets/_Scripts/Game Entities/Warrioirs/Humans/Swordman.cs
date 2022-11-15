@@ -19,7 +19,7 @@ namespace InfinityGame.GameEntities.Humans
 
         protected override void Attack()
         {
-            var detectedEnemies =  GameEntitiesDetector.GetEntitiesInArea(transform.position, _atackRadius, FractionTag);
+            var detectedEnemies =  GameEntitiesDetector.GetEntitiesInArea(transform.position, _atackRadius, Fraction);
 
             DamageAllSurroundEnemies(detectedEnemies);
         }

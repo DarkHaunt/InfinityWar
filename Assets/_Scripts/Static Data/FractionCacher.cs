@@ -15,13 +15,13 @@ namespace InfinityGame.DataCaching
 
 
 
-        public static void CashFraction(Fraction fraction, TownHall fractionTownHall)
+        public static void CashFraction(FractionInitData fractionData, TownHall fractionTownHall)
         {
-            if (IsFractionCached(fraction.FractionTag))
-                throw new UnityException($"{fraction} is already cashed, but you're trying to cash it again.");
+            if (IsFractionCached(fractionData.FractionTag))
+                throw new UnityException($"{fractionData} is already cashed, but you're trying to cash it again.");
 
-            var fractionCashedData = new FractionGameData(fraction, fractionTownHall);
-            _cachedFractions.Add(fraction.FractionTag, fractionCashedData);
+            var fractionCashedData = new FractionGameData(fractionData, fractionTownHall);
+            _cachedFractions.Add(fractionData.FractionTag, fractionCashedData);
 
             fractionCashedData.OnFractionLose += () => UncacheFractionData(fractionCashedData);
         }
@@ -39,34 +39,34 @@ namespace InfinityGame.DataCaching
 
         public static void CacheBuilding(Building building)
         {
-            if (!IsFractionCached(building.FractionTag))
-                throw new UnityException($"Fraction {building.FractionTag} doesn't exist in cache, so building {building} can be cached");
+            if (!IsFractionCached(building.Fraction))
+                throw new UnityException($"Fraction {building.Fraction} doesn't exist in cache, so building {building} can be cached");
 
-            _cachedFractions[building.FractionTag].CacheBuilding(building);
+            _cachedFractions[building.Fraction].CacheBuilding(building);
         }
 
         public static void UncacheBuilding(Building building)
         {
-            if (!IsFractionCached(building.FractionTag))
-                throw new UnityException($"Fraction {building.FractionTag} doesn't exist in cache, so building {building} can't be uncached");
+            if (!IsFractionCached(building.Fraction))
+                throw new UnityException($"Fraction {building.Fraction} doesn't exist in cache, so building {building} can't be uncached");
 
-            _cachedFractions[building.FractionTag].UncacheBuilding(building);
+            _cachedFractions[building.Fraction].UncacheBuilding(building);
         }
 
         public static void CacheWarrior(Warrior warrior)
         {
-            if (!IsFractionCached(warrior.FractionTag))
-                throw new UnityException($"Fraction {warrior.FractionTag} doesn't exist in cache, so warrior {warrior} can't be cached");
+            if (!IsFractionCached(warrior.Fraction))
+                throw new UnityException($"Fraction {warrior.Fraction} doesn't exist in cache, so warrior {warrior} can't be cached");
 
-            _cachedFractions[warrior.FractionTag].CacheWarrior(warrior);
+            _cachedFractions[warrior.Fraction].CacheWarrior(warrior);
         }
 
         public static void UncacheWarrior(Warrior warrior)
         {
-            if (!IsFractionCached(warrior.FractionTag))
-                throw new UnityException($"Fraction {warrior.FractionTag} doesn't exist in cache, so warrior {warrior} can't be uncached");
+            if (!IsFractionCached(warrior.Fraction))
+                throw new UnityException($"Fraction {warrior.Fraction} doesn't exist in cache, so warrior {warrior} can't be uncached");
 
-            _cachedFractions[warrior.FractionTag].UncacheWarrior(warrior);
+            _cachedFractions[warrior.Fraction].UncacheWarrior(warrior);
         }
 
         public static void TieUpSpawnerToFraction(WarrioirSpawner spawner)
@@ -138,10 +138,10 @@ namespace InfinityGame.DataCaching
 
 
 
-            public FractionGameData(Fraction fraction, TownHall townHall)
+            public FractionGameData(FractionInitData fractionData, TownHall townHall)
             {
-                _warrioirCounter = new LimitCounter(fraction.WarrioirMaxLimit);
-                Fraction = fraction.FractionTag;
+                _warrioirCounter = new LimitCounter(fractionData.WarrioirMaxLimit);
+                Fraction = fractionData.FractionTag;
 
                 _warriors = new HashSet<Warrior>();
 
