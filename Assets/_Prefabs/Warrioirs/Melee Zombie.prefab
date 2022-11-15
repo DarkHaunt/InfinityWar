@@ -196,9 +196,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fraction: Zombies
-  _health: 40
-  _attackCoolDown: 0.9
-  _speedMult: 1
+  _health: 30
+  _attackCoolDown: 1.5
+  _speedMult: 2
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 9134285203207437134}
   _entityDetector: {fileID: 1300813147675546496}

@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: Humans
   m_EditorClassIdentifier: 
   _fractionTag: Humans
-  _warrioirMaxCount: 15
+  _warrioirMaxCount: 20
   _townHallBuildingData:
     _name: UN Assembly
     _buildingSprite: {fileID: 21300000, guid: 960b705970ebc1e449634dc7d11d9131, type: 3}
-    _buildingHealthPoints: 1500
+    _buildingHealthPoints: 2000
   _barrackBuildingData:
     _name: Human Barrack
     _buildingSprite: {fileID: 21300000, guid: e6ed75d2ec92bc14e9afedf4fc7306ec, type: 3}
-    _buildingHealthPoints: 600
+    _buildingHealthPoints: 850
   _barracksWarrioirSpawnSettings:
-    _spawnCoolDownSeconds: 2
-    _timeDeltaSeconds: 0.5
-    _warrioirsPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
+    _spawnCoolDownSeconds: 4
+    _timeDeltaSeconds: 1
+    _warrioirsPickStrategy: {fileID: 11400000, guid: 38eab597208c9e248b5fda635f8095b4, type: 2}
     _warriosToSpawn:
     - {fileID: 3829235489145816803, guid: 7a72723681bca1440bcf1b10c4c65062, type: 3}
     - {fileID: 1965941402268142816, guid: b7ffb1e5c6ce04c428227526b6add752, type: 3}

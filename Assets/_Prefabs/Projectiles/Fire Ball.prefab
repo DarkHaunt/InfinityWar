@@ -137,6 +137,6 @@ MonoBehaviour:
   _poolTag: FireBall
   _speedMult: 3
   _rigidbody2D: {fileID: 2734075000481854375}
-  _maxLifeTime: 3
+  _maxLifeTime: 2
   _behaviors:
   - {fileID: 11400000, guid: ee32ba5c297c1f541ba3517c5f6e4441, type: 2}

@@ -136,8 +136,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fraction: Elfs
-  _health: 40
-  _attackCoolDown: 5
+  _health: 30
+  _attackCoolDown: 3
   _speedMult: 2
   _attackDistance: 15
   _rigidbody2D: {fileID: 5639960878494141486}

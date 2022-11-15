@@ -196,13 +196,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fraction: Demons
-  _health: 30
-  _attackCoolDown: 1.2
+  _health: 20
+  _attackCoolDown: 1.5
   _speedMult: 3.5
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 1767208972257514891}
   _entityDetector: {fileID: 1347812342983975178}
   _poolTag: Demon
   _meleeDamage: 10
-  _explodeDamage: 20
+  _explodeDamage: 15
   _explodeRadius: 2

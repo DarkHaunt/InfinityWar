@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Melee\MeleeWarrior.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Barrack.cs" />
+    <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\First In List Pick\FistInListPickStrategy.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Building.cs" />
     <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Single Touch Projectile\SingleTouchProjectile.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Assets\_Scripts\Projectiles\Projectile.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Collision Behaviors\Damage Deal Behaviors\DamageDealBehavior.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\GameEntity.cs" />
+    <Compile Include="Assets\_Scriptables\Fraction Data\FractionInitData.cs" />
     <Compile Include="Assets\_Scripts\Pool System\IPoolable.cs" />
     <Compile Include="Assets\_Scripts\Factories\BuildingFactory.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Collision Behaviors\ProjectileColliisionBehavior.cs" />
@@ -100,8 +102,6 @@
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Demons\Demonologist.cs" />
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
     <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
-    <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\First In List Pick\FistInListPickStrategy.cs" />
-    <Compile Include="Assets\_Scriptables\Fraction Data\FractionInitData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Lean\READ ME.txt" />
@@ -691,6 +691,10 @@
       <Project>{44FC9C95-5567-BEB6-A172-09E583AFD164}</Project>
       <Name>Unity.2D.Tilemap.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="LeanTouch.csproj">
+      <Project>{9DEFC325-9AD6-D058-3A72-D0735D229DC0}</Project>
+      <Name>LeanTouch</Name>
+    </ProjectReference>
     <ProjectReference Include="PsdPlugin.csproj">
       <Project>{D22C9630-2038-EF95-E9EB-CE904335C278}</Project>
       <Name>PsdPlugin</Name>
@@ -783,6 +787,10 @@
       <Project>{910FFABB-C5E8-615E-E402-24B623382F8D}</Project>
       <Name>Unity.2D.SpriteShape.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="LeanCommon.csproj">
+      <Project>{3425CCD7-2526-5EE6-CACE-828855B036FB}</Project>
+      <Name>LeanCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.2D.Common.Editor.csproj">
       <Project>{4AC1637D-EB53-D971-FC9A-31651B8B0203}</Project>
       <Name>Unity.2D.Common.Editor</Name>
@@ -790,14 +798,6 @@
     <ProjectReference Include="Unity.2D.SpriteShape.Runtime.csproj">
       <Project>{DF77F9AF-9656-5C9E-66FF-FB4A40399772}</Project>
       <Name>Unity.2D.SpriteShape.Runtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="LeanCommon.csproj">
-      <Project>{3425CCD7-2526-5EE6-CACE-828855B036FB}</Project>
-      <Name>LeanCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="LeanTouch.csproj">
-      <Project>{9DEFC325-9AD6-D058-3A72-D0735D229DC0}</Project>
-      <Name>LeanTouch</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

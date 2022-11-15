@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: Elfs
   m_EditorClassIdentifier: 
   _fractionTag: Elfs
-  _warrioirMaxCount: 15
+  _warrioirMaxCount: 20
   _townHallBuildingData:
     _name: Pathfinder Headquarters
     _buildingSprite: {fileID: 21300000, guid: a8345b3033dc38643826e34b99b7104b, type: 3}
-    _buildingHealthPoints: 2000
+    _buildingHealthPoints: 1900
   _barrackBuildingData:
     _name: Thicket
     _buildingSprite: {fileID: 21300000, guid: 8d83ce6b5e268d9478638471cdbd5202, type: 3}
-    _buildingHealthPoints: 1000
+    _buildingHealthPoints: 800
   _barracksWarrioirSpawnSettings:
-    _spawnCoolDownSeconds: 5
-    _timeDeltaSeconds: 2.5
-    _warrioirsPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
+    _spawnCoolDownSeconds: 7
+    _timeDeltaSeconds: 3
+    _warrioirsPickStrategy: {fileID: 11400000, guid: 863ad0c85901f044ea586fc143075170, type: 2}
     _warriosToSpawn:
     - {fileID: 1317810716584628997, guid: 4b8dfffb9a4002f47bc0ddd3d8e45d79, type: 3}
     - {fileID: 5639960878494141483, guid: d8b09959ad45cc74c9e35a3aeed19810, type: 3}
