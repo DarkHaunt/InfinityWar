@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Lean.Touch;
+
 
 
 namespace InfinityGame.Camera
@@ -19,7 +17,10 @@ namespace InfinityGame.Camera
 
 
 
-        private void ExecuteBorder()
+        /// <summary>
+        /// Checks if camera out of borders and makes to fit in them, if so
+        /// </summary>
+        private void ToFitInBorders()
         {
             Vector3 currentCameraLeftBottomCornerPosition =
                         _camera.ScreenToWorldPoint(_screenFirstPixelPosition);
@@ -44,7 +45,7 @@ namespace InfinityGame.Camera
 
         private void Update()
         {
-            ExecuteBorder();
+            ToFitInBorders();
         }
     }
 }

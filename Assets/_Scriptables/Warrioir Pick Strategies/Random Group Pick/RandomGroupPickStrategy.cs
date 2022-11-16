@@ -12,6 +12,7 @@ namespace InfinityGame.Strategies.WarrioirPickStrategies
         [SerializeField] private int _groupMembersCount;
 
 
+
         public override IEnumerable<Warrior> ChoseWarrioirsToSpawn(IReadOnlyList<Warrior> warrioirs)
         {
             for (int i = 0; i < _groupMembersCount; i++)

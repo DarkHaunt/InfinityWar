@@ -11,6 +11,8 @@ namespace InfinityGame.Strategies.WarrioirPickStrategies
     {
         [SerializeField] private int _countOfPicks = 1;
 
+
+
         public override IEnumerable<Warrior> ChoseWarrioirsToSpawn(IReadOnlyList<Warrior> warrioirs)
         {
             for (int i = 0; i < _countOfPicks; i++)

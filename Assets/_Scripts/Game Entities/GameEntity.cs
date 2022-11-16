@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 
 
+
 namespace InfinityGame.GameEntities
 {
     /// <summary>

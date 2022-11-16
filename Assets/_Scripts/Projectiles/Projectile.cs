@@ -67,42 +67,17 @@ namespace InfinityGame.Projectiles
                 behavior.OnCollisionBehave(target, this);
         }
 
-        public void SetFlyDirection(Vector2 direction)
-        {
-            _rigidbody2D.velocity = direction * Speed;
-
-            _objectRotator.RoteteObjectToTarget(_rigidbody2D, direction);
-        }
-
-        public void SetFractionTag(string fractionTag)
-        {
-            _fractionTag = fractionTag;
-        }
-
-        private IEnumerator LifeTimeCoroutine()
-        {
-            while(_currentLifeTime < _maxLifeTime)
-            {
-                yield return _cachedWaitForFrame;
-
-                _currentLifeTime += Time.deltaTime;
-            }
-
-            EndExploitation();
-        }
-
         protected void EndExploitation()
         {
             _isExploitating = false;
             OnExploitationEnd?.Invoke();
         }
 
-        private bool IsColliderEnemyEntity(Collider2D collider2D, out GameEntity enemy)
+        public void SetFlyDirection(Vector2 direction)
         {
-            var isHitableEntity = collider2D.TryGetComponent(out GameEntity entity);
+            _rigidbody2D.velocity = direction * Speed;
 
-            enemy = entity;
-            return isHitableEntity && !entity.IsBelongsToFraction(FractionTag);
+            _objectRotator.RoteteObjectToTarget(_rigidbody2D, direction);
         }
 
         protected void RestartLifeTime()
@@ -122,6 +97,31 @@ namespace InfinityGame.Projectiles
             _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
         }
 
+        private IEnumerator LifeTimeCoroutine()
+        {
+            while(_currentLifeTime < _maxLifeTime)
+            {
+                yield return _cachedWaitForFrame;
+
+                _currentLifeTime += Time.deltaTime;
+            }
+
+            EndExploitation();
+        }
+
+        public void SetFractionTag(string fractionTag)
+        {
+            _fractionTag = fractionTag;
+        }
+
+        private bool IsColliderHasEnemyEntity(Collider2D collider2D, out GameEntity enemyEntity)
+        {
+            var isHitableEntity = collider2D.TryGetComponent(out GameEntity entity);
+
+            enemyEntity = entity;
+            return isHitableEntity && !entity.IsBelongsToFraction(FractionTag);
+        }
+
 
 
         protected virtual void Awake()
@@ -132,8 +132,8 @@ namespace InfinityGame.Projectiles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (IsColliderEnemyEntity(collision, out GameEntity enemy) && _isExploitating)
-                OnCollisionWith(enemy);
+            if (IsColliderHasEnemyEntity(collision, out GameEntity enemyEntity) && _isExploitating)
+                OnCollisionWith(enemyEntity);
         }
     }
 }
