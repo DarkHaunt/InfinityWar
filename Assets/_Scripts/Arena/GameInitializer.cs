@@ -7,6 +7,8 @@ using InfinityGame.Fractions;
 using InfinityGame.Arena;
 using UnityEngine;
 
+
+
 internal class GameInitializer : MonoBehaviour
 {
     public static Action OnGameEnd;

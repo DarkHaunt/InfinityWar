@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using InfinityGame.GameEntities;
 using UnityEngine;
@@ -49,24 +48,7 @@ namespace InfinityGame.Projectiles
 
         private bool TryToGetClosestEnemyEntity(out GameEntity closestEnemy)
         {
-            var enemies = GameEntitiesDetector.GetEntitiesInArea(transform.position, _ricochetRadius, FractionTag);
-
-            var minimalDistance = float.MaxValue;
-            closestEnemy = null;
-
-            foreach (var enemy in enemies)
-            {
-                if (_hittedEnemies.Contains(enemy))
-                    continue;
-
-                var distanceToEnemy = Vector2.Distance(enemy.transform.position, transform.position);
-
-                if (distanceToEnemy < minimalDistance)
-                {
-                    closestEnemy = enemy;
-                    minimalDistance = distanceToEnemy;
-                }
-            }
+            closestEnemy = GameEntitiesDetector.GetClosestEntity(transform.position, _ricochetRadius, (GameEntity entity) => _hittedEnemies.Contains(entity), FractionTag);
 
             // If not found target
             return closestEnemy != null;

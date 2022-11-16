@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace InfinityGame.Strategies.WarrioirPickStrategies
 {
+    /// <summary>
+    /// Picks only 1st warrior in collection several times
+    /// </summary>
     [CreateAssetMenu(fileName = "FistInListPickStrategy", menuName = "Data/WarrioirChoseStrategies/FistInListPickStrategy", order = 52)]
     public class FistInListPickStrategy : WarrioirsPickStrategy
     {

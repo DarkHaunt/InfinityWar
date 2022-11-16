@@ -4,6 +4,7 @@ using InfinityGame.DataCaching;
 using UnityEngine;
 
 
+
 namespace InfinityGame.Factories.WarriorFactory
 {
     public static class WarriorFactory
@@ -20,7 +21,7 @@ namespace InfinityGame.Factories.WarriorFactory
                 warrior.OnDie += () => FractionCacher.UncacheWarrior(warrior);
             }
 
-            warrior.transform.position = position;
+            warrior.transform.position = position; // TODO: Получает цель, возле которой умер, тк присвоение происходит после вытаскивания из пула
             FractionCacher.CacheWarrior(warrior);
 
             return warrior;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using InfinityGame.DataCaching;
 using UnityEngine;
 
+
+
 namespace InfinityGame.GameEntities
 {
     [RequireComponent(typeof(Rigidbody2D))]
@@ -29,8 +31,8 @@ namespace InfinityGame.GameEntities
         [Header("--- Pooling ---")]
         [SerializeField] private string _poolTag;
 
-        private GameEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
-        private GameEntity _localTarget = null; // Target around, which was deceted by detector 
+        [SerializeField] private GameEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
+        [SerializeField] private GameEntity _localTarget = null; // Target around, which was deceted by detector 
 
         private WarriorState _currentState = WarriorState.FollowGlobalTarget;
 
@@ -61,8 +63,8 @@ namespace InfinityGame.GameEntities
         public void PullOutPreparation()
         {
             _health = _maxHealthPoints;
-            _isDead = false;
             _isOnCoolDown = false;
+            _isDead = false;
 
             GetNewGlobalTarget();
 
@@ -125,31 +127,9 @@ namespace InfinityGame.GameEntities
 
         private void TryToGetNewLocalTarget()
         {
-            var enemiesAround = GetEnemiesAround();
-            var enumenatorOfEnemies = enemiesAround.GetEnumerator();
+            var newLocalTarget = GameEntitiesDetector.GetClosestEntity(transform.position, GetEnemiesAround());
 
-            // No need to allocate memory for variables below, if there is no any enemies
-            if (!enumenatorOfEnemies.MoveNext())
-            {
-                SetLocalTarget(null);
-                return;
-            }
-
-            GameEntity newLocaltarget = enumenatorOfEnemies.Current; // TODO: Возможно вынести логику поиска ближайшей цели в отдельный класс,чтобы не дублировать ей еще и в GetGlobalTarget и Ricochet
-            var minimalDiscoveredDistance = float.MaxValue;
-
-            foreach (var enemy in enemiesAround)
-            {
-                var distanceToCurrentTarget = Vector3.Distance(enemy.transform.position, transform.position);
-
-                if (distanceToCurrentTarget < minimalDiscoveredDistance)
-                {
-                    newLocaltarget = enemy;
-                    minimalDiscoveredDistance = distanceToCurrentTarget;
-                }
-            }
-
-            SetLocalTarget(newLocaltarget);
+            SetLocalTarget(newLocalTarget);
         }
 
         private void SetLocalTarget(GameEntity newLocalTarget)
@@ -169,19 +149,7 @@ namespace InfinityGame.GameEntities
 
         private void GetNewGlobalTarget()
         {
-            var minimalDistanceToTwonHall = float.MaxValue;
-            var enemies = FractionCacher.GetEnemyEntitiesOfFraction(Fraction);
-
-            foreach (var enemyTarget in enemies)
-            {
-                var distanceToCurrentTownhall = Vector3.Distance(enemyTarget.transform.position, transform.position);
-
-                if (distanceToCurrentTownhall < minimalDistanceToTwonHall)
-                {
-                    _globalTarget = enemyTarget;
-                    minimalDistanceToTwonHall = distanceToCurrentTownhall;
-                }
-            }
+            _globalTarget = GameEntitiesDetector.GetClosestEntity(transform.position, FractionCacher.GetEnemyEntitiesOfFraction(Fraction));
 
             _globalTarget.OnDie += GetNewGlobalTarget;
         }

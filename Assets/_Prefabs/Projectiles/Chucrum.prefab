@@ -138,8 +138,8 @@ MonoBehaviour:
   _speedMult: 3
   _rigidbody2D: {fileID: 8187448437545612532}
   _maxLifeTime: 3
-  _behaviors:
+  _collisionBehaviors:
   - {fileID: 11400000, guid: fafd249df342c0e468899964c49d37df, type: 2}
   _maxCollisionsCount: 3
   _lastCollisionBehaviors: []
-  _ricochetRadius: 2
+  _ricochetRadius: 3

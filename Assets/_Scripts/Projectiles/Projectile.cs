@@ -25,18 +25,15 @@ namespace InfinityGame.Projectiles
         [Range(1f, 10f)]
         [SerializeField] private float _maxLifeTime = 5f;
 
-        [SerializeField] private List<ProjectileColliisionBehavior> _behaviors;
+        [SerializeField] private List<ProjectileColliisionBehavior> _collisionBehaviors;
 
-        private readonly ObjectRotator _objectRotator = new ObjectRotator();
+        private float _currentLifeTime = 0f;
+        private bool _isExploitating = true;
 
         // Cached data
         private Coroutine _lifeTimeCoroutine;
         private WaitForEndOfFrame _cachedWaitForFrame;
         private string _fractionTag;
-
-        private float _currentLifeTime = 0f;
-
-        private bool _isExploitating = true;
 
 
 
@@ -50,7 +47,7 @@ namespace InfinityGame.Projectiles
 
         public void PullInPreparations()
         {
-            StopLifeTime();
+            EndLifeTime();
             gameObject.SetActive(false);
         }
 
@@ -58,12 +55,12 @@ namespace InfinityGame.Projectiles
         {
             _isExploitating = true;
             gameObject.SetActive(true);
-            StartLifeTimeCounting();
+            StartLifeTime();
         }
 
         protected virtual void OnCollisionWith(GameEntity target)
         {
-            foreach (var behavior in _behaviors)
+            foreach (var behavior in _collisionBehaviors)
                 behavior.OnCollisionBehave(target, this);
         }
 
@@ -77,22 +74,22 @@ namespace InfinityGame.Projectiles
         {
             _rigidbody2D.velocity = direction * Speed;
 
-            _objectRotator.RoteteObjectToTarget(_rigidbody2D, direction);
+            ObjectRotator.RoteteYLocalAxisOnDirection(_rigidbody2D, direction);
         }
 
         protected void RestartLifeTime()
         {
-            StopLifeTime();
-            StartLifeTimeCounting();
+            EndLifeTime();
+            StartLifeTime();
         }
 
-        private void StopLifeTime()
+        private void EndLifeTime()
         {
-            _currentLifeTime = 0f;
             StopCoroutine(_lifeTimeCoroutine);
+            _currentLifeTime = 0f;
         }
 
-        private void StartLifeTimeCounting()
+        private void StartLifeTime()
         {
             _lifeTimeCoroutine = StartCoroutine(LifeTimeCoroutine());
         }
@@ -127,7 +124,7 @@ namespace InfinityGame.Projectiles
         protected virtual void Awake()
         {
             _cachedWaitForFrame = new WaitForEndOfFrame();
-            StartLifeTimeCounting();
+            StartLifeTime();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

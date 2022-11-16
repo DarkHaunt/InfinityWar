@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace InfinityGame.Strategies.WarrioirPickStrategies
 {
+    /// <summary>
+    /// Pick group of random warrioirs from collection
+    /// </summary>
     [CreateAssetMenu(fileName = "RandomGroupPickStrategy", menuName = "Data/WarrioirChoseStrategies/RandomGroupPick", order = 52)]
     public class RandomGroupPickStrategy : WarrioirsPickStrategy
     {

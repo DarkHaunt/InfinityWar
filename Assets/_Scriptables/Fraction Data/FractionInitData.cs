@@ -3,7 +3,7 @@ using InfinityGame.Spawning;
 
 namespace InfinityGame.Fractions
 {
-    using WarrioirSpawnSettings = WarrioirSpawner.SpawnData;
+    using WarrioirSpawnSettings = WarrioirSpawner.SpawnerInitData;
 
     [CreateAssetMenu(fileName = "Fraction", menuName = "Data/New Fraction", order = 52)]
     public class FractionInitData : ScriptableObject

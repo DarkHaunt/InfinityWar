@@ -39,7 +39,7 @@ namespace InfinityGame.Spawning
 
         public void Initialize(FractionInitData fractionData) => Initialize(fractionData.FractionTag, fractionData.BarracksWarrioirSpawnSettings);
 
-        public void Initialize(string fractionTag, SpawnData spawnData)
+        public void Initialize(string fractionTag, SpawnerInitData spawnData)
         {
             _spawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
             _spawnDelaySeconds = spawnData.TimeDeltaSeconds;
@@ -63,7 +63,7 @@ namespace InfinityGame.Spawning
 
         public void DeactivateSpawning()
         {
-            OnSpawnerDeactivate?.Invoke();
+            OnSpawnerDeactivate?.Invoke(); // TODO: Не нравится что в этом по сути нет необходимости 
         }
 
         public void StartSpawning()
@@ -106,6 +106,10 @@ namespace InfinityGame.Spawning
             }
         }
 
+        /// <summary>
+        /// Coordinates in {-MaxSpawnPositionScatter, MaxSpawnPositionScatter} diapason
+        /// </summary>
+        /// <returns></returns>
         private Vector3 RandomPositionDeviation()
         {
             var randomX = (float)(StaticRandomizer.GetRandomSign() * StaticRandomizer.Randomizer.NextDouble() * MaxSpawnPositionScatter.x);
@@ -132,7 +136,7 @@ namespace InfinityGame.Spawning
 
 
         [Serializable]
-        public struct SpawnData
+        public struct SpawnerInitData
         {
             [SerializeField] private float _spawnCoolDownSeconds;
             [SerializeField] private float _timeDeltaSeconds;
@@ -152,7 +156,7 @@ namespace InfinityGame.Spawning
 
 
 
-            public SpawnData(float spawnCoolDownSeconds, float timeDeltaSeconds, List<Warrior> warriorsToSpawn, WarrioirsPickStrategy warrioirsPickStrategy)
+            public SpawnerInitData(float spawnCoolDownSeconds, float timeDeltaSeconds, List<Warrior> warriorsToSpawn, WarrioirsPickStrategy warrioirsPickStrategy)
             {
                 _spawnCoolDownSeconds = spawnCoolDownSeconds;
                 _timeDeltaSeconds = timeDeltaSeconds;

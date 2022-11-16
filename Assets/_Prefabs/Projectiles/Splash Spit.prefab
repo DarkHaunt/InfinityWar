@@ -138,5 +138,5 @@ MonoBehaviour:
   _speedMult: 5
   _rigidbody2D: {fileID: 819447614314087416}
   _maxLifeTime: 3
-  _behaviors:
+  _collisionBehaviors:
   - {fileID: 11400000, guid: a0ccd2af432727e40a31a342b0104d6b, type: 2}
