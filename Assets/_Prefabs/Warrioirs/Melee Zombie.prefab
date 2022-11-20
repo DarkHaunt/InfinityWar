@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1ed2248d65e1443a6bb31b8a057ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _entities: []
 --- !u!58 &4124313768366383762
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -196,11 +197,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fraction: Zombies
-  _health: 30
-  _attackCoolDown: 1.5
-  _speedMult: 2
+  _health: 40
+  _attackCoolDown: 0.8
+  _speedMult: 3
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 9134285203207437134}
   _entityDetector: {fileID: 1300813147675546496}
   _poolTag: Melee Zombie
-  _meleeDamage: 15
+  _globalTarget: {fileID: 0}
+  _localTarget: {fileID: 0}
+  _meleeDamage: 7

@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: Zombies
   m_EditorClassIdentifier: 
   _fractionTag: Zombies
-  _warrioirMaxCount: 30
+  _warrioirMaxCount: 20
   _townHallBuildingData:
     _name: Hive
     _buildingSprite: {fileID: 21300000, guid: a4bf3cc3f7b8996459d54e1ead4819f9, type: 3}
-    _buildingHealthPoints: 1800
+    _buildingHealthPoints: 4750
   _barrackBuildingData:
     _name: Zombie's Den
     _buildingSprite: {fileID: 21300000, guid: 61cb1663120740543988d62e3ac402ca, type: 3}
-    _buildingHealthPoints: 750
+    _buildingHealthPoints: 1950
   _barracksWarrioirSpawnSettings:
     _spawnCoolDownSeconds: 2
-    _timeDeltaSeconds: 0.5
+    _timeDeltaSeconds: 0.8
     _warrioirsPickStrategy: {fileID: 11400000, guid: 668c79478b2c961409664d8221c6b294, type: 2}
     _warriosToSpawn:
     - {fileID: 6678378742720138629, guid: 78da0dd2673b161418315f36d1caa9e9, type: 3}

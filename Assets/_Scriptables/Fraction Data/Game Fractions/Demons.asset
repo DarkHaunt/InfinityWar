@@ -17,14 +17,14 @@ MonoBehaviour:
   _townHallBuildingData:
     _name: Cult Church
     _buildingSprite: {fileID: 21300000, guid: c9e30ea40f1d5524f8145a8d94e20b93, type: 3}
-    _buildingHealthPoints: 2100
+    _buildingHealthPoints: 5250
   _barrackBuildingData:
     _name: Demon Portal
     _buildingSprite: {fileID: 21300000, guid: c79e9db17fc1dad449d1b9470c6a039d, type: 3}
-    _buildingHealthPoints: 1000
+    _buildingHealthPoints: 1550
   _barracksWarrioirSpawnSettings:
     _spawnCoolDownSeconds: 6
-    _timeDeltaSeconds: 2
+    _timeDeltaSeconds: 2.5
     _warrioirsPickStrategy: {fileID: 11400000, guid: ae2162fee67d0c14a87206dbbfafcab4, type: 2}
     _warriosToSpawn:
     - {fileID: 36225532451730545, guid: 848495315dbd4ef4f9b568c741ee4121, type: 3}
