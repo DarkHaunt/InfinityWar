@@ -21,7 +21,7 @@ namespace InfinityGame.Factories.WarriorFactory
                 warrior.OnDie += () => FractionCacher.UncacheWarrior(warrior);
             }
 
-            warrior.transform.position = position; // TODO: Получает цель, возле которой умер, тк присвоение происходит после вытаскивания из пула
+            warrior.Init(prefab, position);
             FractionCacher.CacheWarrior(warrior);
 
             return warrior;

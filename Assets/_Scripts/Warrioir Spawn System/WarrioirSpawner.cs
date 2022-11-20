@@ -17,8 +17,6 @@ namespace InfinityGame.Spawning
     /// </summary>
     public class WarrioirSpawner : MonoBehaviour
     {
-        public event Action OnSpawnerDeactivate;
-
         // A max scatter between spawn position and spawner position in units
         private static Vector2 MaxSpawnPositionScatter = new Vector2(1f, 1f);
 
@@ -31,10 +29,12 @@ namespace InfinityGame.Spawning
 
         private bool _isSpawning = true;
 
+        private Coroutine _spawnCoroutine;
+
 
 
         public string Fraction => _fractionTag;
-        
+
 
 
         public void Initialize(FractionInitData fractionData) => Initialize(fractionData.FractionTag, fractionData.BarracksWarrioirSpawnSettings);
@@ -55,26 +55,31 @@ namespace InfinityGame.Spawning
             _warriorsToSpawn = spawnData.WarriosToSpawn;
             _warriorsPickStrategy = spawnData.WarrioirsPickStrategy;
 
-            GameInitializer.OnGameEnd += StopSpawning;
 
             FractionCacher.TieUpSpawnerToFraction(this);
             StartSpawning();
         }
 
-        public void DeactivateSpawning()
+        public void DeactivateSpawner()
         {
-            OnSpawnerDeactivate?.Invoke(); // TODO: Не нравится что в этом по сути нет необходимости 
+            //print("DEATIVATE SPAWNER - ");
+            //print("Deactivate - " + Fraction);
+            FractionCacher.UntieUpSpawnerToFraction(this);
+            StopSpawning();
         }
 
         public void StartSpawning()
         {
             _isSpawning = true;
-            StartCoroutine(SpawnCoroutine());
+            GameInitializer.OnGameEnd += DeactivateSpawner;
+            _spawnCoroutine = StartCoroutine(SpawnCoroutine());
         }
 
         public void StopSpawning()
         {
             _isSpawning = false;
+            GameInitializer.OnGameEnd -= DeactivateSpawner;
+            StopCoroutine(_spawnCoroutine);
         }
 
         private bool IsAllWarrioirsBelongsToSpawnerFraction(IEnumerable<Warrior> warriors)
@@ -88,7 +93,7 @@ namespace InfinityGame.Spawning
 
         private IEnumerator SpawnCoroutine()
         {
-            while (_isSpawning)
+            while (true)
             {
                 yield return new WaitForSeconds(NewSpawnDelaySeconds());
 
@@ -130,7 +135,7 @@ namespace InfinityGame.Spawning
 
         private void OnDestroy()
         {
-            GameInitializer.OnGameEnd -= DeactivateSpawning;
+            GameInitializer.OnGameEnd -= DeactivateSpawner;
         }
 
 
@@ -152,7 +157,7 @@ namespace InfinityGame.Spawning
 
             public IReadOnlyList<Warrior> WarriosToSpawn => _warriosToSpawn;
 
-            public WarrioirsPickStrategy WarrioirsPickStrategy => _warrioirsPickStrategy; 
+            public WarrioirsPickStrategy WarrioirsPickStrategy => _warrioirsPickStrategy;
 
 
 

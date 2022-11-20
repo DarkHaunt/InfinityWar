@@ -11,7 +11,7 @@ using UnityEngine;
 
 internal class GameInitializer : MonoBehaviour
 {
-    public static Action OnGameEnd;
+    public static event Action OnGameEnd;
     private static GameInitializer _instance;
 
     [SerializeField] private List<SpawnPlace> _spawnPlaces = new List<SpawnPlace>(4);
@@ -34,7 +34,7 @@ internal class GameInitializer : MonoBehaviour
 
         FractionCacher.CashFraction(fractionData, townHall);
 
-        var townHallBarrack = _buildingFactory.SpawnFractionBuilding<Barrack>(fractionData, fractionData.TownHallBuildingData, spawnPlace.TownHallSpawnPointPosition);
+        var townHallBarrack = _buildingFactory.AddAndInitFractionBuildingComponentOn<Barrack>(townHallObject, fractionData, fractionData.TownHallBuildingData, spawnPlace.TownHallSpawnPointPosition);
         townHall.SetBarrack(townHallBarrack);
 
         // Spawn all sub barracks
@@ -72,7 +72,11 @@ internal class GameInitializer : MonoBehaviour
         }
     }
 
-    private void EndGame() => OnGameEnd?.Invoke();
+    private void EndGame()
+    {
+        //print("END GAME");
+        OnGameEnd?.Invoke();
+    }
 
 
 

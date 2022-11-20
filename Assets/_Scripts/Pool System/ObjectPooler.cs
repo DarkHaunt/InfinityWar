@@ -1,6 +1,6 @@
-using System;
 using UnityEngine;
 using System.Collections.Generic;
+
 
 
 namespace InfinityGame.ObjectPooling
@@ -8,6 +8,7 @@ namespace InfinityGame.ObjectPooling
     public class ObjectPooler<PooledType> where PooledType : IPoolable
     {
         private Dictionary<string, Stack<PooledType>> _pool = new Dictionary<string, Stack<PooledType>>();
+
 
 
         public void AddToPool(PooledType poolObject)

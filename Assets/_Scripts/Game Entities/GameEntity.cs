@@ -13,16 +13,26 @@ namespace InfinityGame.GameEntities
         public event Action OnDie;
 
 
-        [SerializeField] protected string _fraction;
-        [SerializeField] protected float _health;
+        [SerializeField] private string _fraction;
+        [SerializeField] private float _health;
 
-        protected bool _isDead = false; 
+        private bool _isDead = false;
 
 
 
         public string Fraction => _fraction;
+        public float Health => _health;
 
 
+
+        public void Init(string fraction, float health)
+        {
+            _fraction = fraction;
+            _health = health;
+
+            if (_isDead)
+                _isDead = false;
+        }
 
         public void GetDamage(float damage)
         {
@@ -48,5 +58,5 @@ namespace InfinityGame.GameEntities
         public bool IsBelongsToFraction(string fraction) => _fraction.Contains(fraction);
 
         public override string ToString() => $"{name} {transform.position} {Fraction}";
-    } 
+    }
 }

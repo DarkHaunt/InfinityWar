@@ -41,7 +41,6 @@ namespace InfinityGame.GameEntities
 
         // Baked variables
         private WaitForSeconds _waitForSecondsAttackCooldown;
-        private float _maxHealthPoints;
 
 
 
@@ -52,24 +51,33 @@ namespace InfinityGame.GameEntities
 
         protected abstract void Attack();
 
-        public void PullInPreparations()
+        public virtual void PullInPreparations()
         {
             _globalTarget.OnDie -= GetNewGlobalTarget;
 
-            GameInitializer.OnGameEnd -= BecomeNeutral;
+            _entityDetector.OnEntityEnter -= OnEntityDetected;
+            _entityDetector.OnEntityExit -= OnEntityLose;
+
+            SetLocalTarget(null);
+            _globalTarget = null;
+
             gameObject.SetActive(false);
         }
 
-        public void PullOutPreparation()
+        public virtual void PullOutPreparation()
         {
-            _health = _maxHealthPoints;
             _isOnCoolDown = false;
-            _isDead = false;
+
+            gameObject.SetActive(true);
+            StartCoroutine(SubscribeForDetector());
+        }
+
+        public void Init(Warrior prefab, Vector2 position)
+        {
+            Init(prefab.Fraction, prefab.Health);
+            transform.position = position;
 
             GetNewGlobalTarget();
-
-            GameInitializer.OnGameEnd += BecomeNeutral;
-            gameObject.SetActive(true);
         }
 
         private void OnStateUpdate()
@@ -127,7 +135,8 @@ namespace InfinityGame.GameEntities
 
         private void TryToGetNewLocalTarget()
         {
-            var newLocalTarget = GameEntitiesDetector.GetClosestEntity(transform.position, GetEnemiesAround());
+            var enemiesAround = GetEnemiesAround();
+            var newLocalTarget = GameEntitiesDetector.GetClosestEntityToPosition(transform.position, enemiesAround);
 
             SetLocalTarget(newLocalTarget);
         }
@@ -149,9 +158,13 @@ namespace InfinityGame.GameEntities
 
         private void GetNewGlobalTarget()
         {
-            _globalTarget = GameEntitiesDetector.GetClosestEntity(transform.position, FractionCacher.GetEnemyEntitiesOfFraction(Fraction));
+            var enemyEntities = FractionCacher.GetEnemyEntitiesOfFraction(Fraction);
+            _globalTarget = GameEntitiesDetector.GetClosestEntityToPosition(transform.position, enemyEntities);
 
-            _globalTarget.OnDie += GetNewGlobalTarget;
+            if (_globalTarget != null)
+                _globalTarget.OnDie += GetNewGlobalTarget;
+            else
+                BecomeNeutral();
         }
 
         /// <summary>
@@ -159,8 +172,6 @@ namespace InfinityGame.GameEntities
         /// </summary>
         private void BecomeNeutral()
         {
-            _globalTarget.OnDie -= GetNewGlobalTarget;
-
             _entityDetector.gameObject.SetActive(false);
             _currentState = WarriorState.Unactive;
             _rigidbody2D.velocity = Vector2.zero;
@@ -168,7 +179,7 @@ namespace InfinityGame.GameEntities
 
         private IEnumerable<GameEntity> GetEnemiesAround()
         {
-            foreach (var entity in _entityDetector.DetecedEntities)
+            foreach (var entity in _entityDetector.DetectedEntities)
                 if (!entity.IsBelongsToFraction(Fraction))
                     yield return entity;
         }
@@ -190,22 +201,23 @@ namespace InfinityGame.GameEntities
         {
             yield return new WaitForFixedUpdate();
 
-            _entityDetector.OnEntityEnter += (GameEntity target) =>
-            {
-                if (!_isOnArgue && !target.IsBelongsToFraction(Fraction))
-                    SetLocalTarget(target);
-            };
+            _entityDetector.OnEntityEnter += OnEntityDetected;
+            _entityDetector.OnEntityExit += OnEntityLose;
 
-            _entityDetector.OnEntityExit += (GameEntity target) =>
-            {
-                if (_localTarget == target)
-                    TryToGetNewLocalTarget();
-            };
-
-            GameInitializer.OnGameEnd += BecomeNeutral;
             TryToGetNewLocalTarget();
         }
 
+        private void OnEntityDetected(GameEntity target)
+        {
+            if (!_isOnArgue && !target.IsBelongsToFraction(Fraction))
+                SetLocalTarget(target);
+        }
+
+        private void OnEntityLose(GameEntity target)
+        {
+            if (_localTarget == target)
+                TryToGetNewLocalTarget();
+        }
 
 
 
@@ -213,13 +225,7 @@ namespace InfinityGame.GameEntities
         {
             _waitForSecondsAttackCooldown = new WaitForSeconds(_attackCoolDown);
 
-            _maxHealthPoints = _health;
-        }
-
-        private void Start()
-        {
             StartCoroutine(SubscribeForDetector());
-            GetNewGlobalTarget();
         }
 
         protected virtual void Update() => OnStateUpdate();

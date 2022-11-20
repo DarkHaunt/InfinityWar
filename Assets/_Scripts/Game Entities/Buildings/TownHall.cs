@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
+
+
 namespace InfinityGame.GameEntities
 {
     public class TownHall : MonoBehaviour
@@ -46,15 +48,9 @@ namespace InfinityGame.GameEntities
 
             _barrack = barrack;
             _barrack.OnDie += OnDestroy;
+            _barrack.OnDie += DestroyAllBuildings;
         }
 
         public override string ToString() => $"{name} {transform.position}";
-
-
-
-        private void Start()
-        {
-            _barrack.OnDie += DestroyAllBuildings;
-        }
     }
 }

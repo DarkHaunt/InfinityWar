@@ -10,18 +10,18 @@ using UnityEngine;
 /// </summary>
 public static class GameEntitiesDetector
 {
-    public static GameEntity GetClosestEntity(Vector2 position,IEnumerable<GameEntity> entities)
+    public static GameEntity GetClosestEntityToPosition(Vector2 position, IEnumerable<GameEntity> entities)
     {
         GameEntity closestEntity = null;
         var minimalDiscoveredDistance = float.MaxValue;
 
-        foreach (var enemy in entities)
+        foreach (var entity in entities)
         {
-            var distanceToCurrentTarget = Vector3.Distance(enemy.transform.position, position);
+            var distanceToCurrentTarget = Vector3.Distance(entity.transform.position, position);
 
             if (distanceToCurrentTarget < minimalDiscoveredDistance)
             {
-                closestEntity = enemy;
+                closestEntity = entity;
                 minimalDiscoveredDistance = distanceToCurrentTarget;
             }
         }

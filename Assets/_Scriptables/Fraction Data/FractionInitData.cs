@@ -1,6 +1,8 @@
 using UnityEngine;
 using InfinityGame.Spawning;
 
+
+
 namespace InfinityGame.Fractions
 {
     using WarrioirSpawnSettings = WarrioirSpawner.SpawnerInitData;

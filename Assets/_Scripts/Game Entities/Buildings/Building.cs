@@ -14,8 +14,7 @@ namespace InfinityGame.GameEntities
     {
         public virtual void Initialize(FractionInitData fraction, BuildingInitData buildingData)
         {
-            _health = buildingData.BuildingHealthPoints;
-            _fraction = fraction.FractionTag;
+            Init(fraction.FractionTag, buildingData.BuildingHealthPoints);
 
             var spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = buildingData.BuildingSprite;

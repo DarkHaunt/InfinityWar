@@ -149,13 +149,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fraction: Demons
-  _health: 50
+  _health: 75
   _attackCoolDown: 3
   _speedMult: 2
   _attackDistance: 5
   _rigidbody2D: {fileID: 36225532451730509}
   _entityDetector: {fileID: 36225532546376789}
   _poolTag: Demonologist
+  _globalTarget: {fileID: 0}
+  _localTarget: {fileID: 0}
   _projectilePrefab: {fileID: -5918154149595280812, guid: 58b30e6af4f3e5a4c82627ed0404517d, type: 3}
   _shootStrategy: {fileID: 11400000, guid: ba0a00dbefb0a5341b48d575ec87547c, type: 2}
   _spawnData:

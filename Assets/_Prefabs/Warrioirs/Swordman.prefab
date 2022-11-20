@@ -137,12 +137,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fraction: Humans
   _health: 100
-  _attackCoolDown: 3
-  _speedMult: 1.5
+  _attackCoolDown: 2
+  _speedMult: 2
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 1965941402268142818}
   _entityDetector: {fileID: 6460703564526533429}
   _poolTag: Swordman
+  _globalTarget: {fileID: 0}
+  _localTarget: {fileID: 0}
   _meleeDamage: 25
   _nonMainTargetDamagePercent: 0.5
   _atackRadius: 1.2
@@ -190,6 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1ed2248d65e1443a6bb31b8a057ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _entities: []
 --- !u!58 &3802083332534601291
 CircleCollider2D:
   m_ObjectHideFlags: 0

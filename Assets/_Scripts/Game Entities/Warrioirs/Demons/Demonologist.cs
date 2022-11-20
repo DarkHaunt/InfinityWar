@@ -1,5 +1,7 @@
 using InfinityGame.Spawning;
+using InfinityGame.DataCaching;
 using UnityEngine;
+
 
 
 namespace InfinityGame.GameEntities
@@ -14,6 +16,16 @@ namespace InfinityGame.GameEntities
 
 
 
+        public override void PullOutPreparation()
+        {
+            base.PullOutPreparation();
+
+            _fractionSpawner.StartSpawning();
+            FractionCacher.TieUpSpawnerToFraction(_fractionSpawner);
+        }
+
+
+
         protected override void Awake()
         {
             base.Awake();
@@ -21,7 +33,7 @@ namespace InfinityGame.GameEntities
             _fractionSpawner = GetComponent<WarrioirSpawner>();
             _fractionSpawner.Initialize(Fraction, _spawnData);
 
-            OnDie += _fractionSpawner.DeactivateSpawning;
+            OnDie += _fractionSpawner.DeactivateSpawner;
         }
     } 
 }

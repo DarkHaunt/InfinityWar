@@ -1,6 +1,8 @@
 using InfinityGame.Fractions;
 using InfinityGame.Spawning;
 
+
+
 namespace InfinityGame.GameEntities
 {
     public class Barrack : Building
@@ -16,7 +18,11 @@ namespace InfinityGame.GameEntities
             _warriorSpawner = gameObject.AddComponent<WarrioirSpawner>();
             _warriorSpawner.Initialize(fractionData);
 
-            OnDie += _warriorSpawner.DeactivateSpawning;
+            OnDie += () =>
+            {
+                //print("Barracks stop spawning");
+                _warriorSpawner.DeactivateSpawner();
+            };
         }
     }
 }

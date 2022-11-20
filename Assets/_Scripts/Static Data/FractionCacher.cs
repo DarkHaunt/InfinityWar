@@ -5,6 +5,8 @@ using InfinityGame.GameEntities;
 using InfinityGame.Spawning;
 using InfinityGame.Fractions;
 
+
+
 namespace InfinityGame.DataCaching
 {
     public static class FractionCacher
@@ -18,7 +20,7 @@ namespace InfinityGame.DataCaching
         public static void CashFraction(FractionInitData fractionData, TownHall fractionTownHall)
         {
             if (IsFractionCached(fractionData.FractionTag))
-                throw new UnityException($"{fractionData} is already cashed, but you're trying to cash it again.");
+                throw new UnityException($"{fractionData} is already cached, but you're trying to cash it again.");
 
             var fractionCashedData = new FractionGameData(fractionData, fractionTownHall);
             _cachedFractions.Add(fractionData.FractionTag, fractionCashedData);
@@ -29,7 +31,7 @@ namespace InfinityGame.DataCaching
         private static void UncacheFractionData(FractionGameData fractionCashedData)
         {
             if (!IsFractionCached(fractionCashedData.Fraction))
-                throw new UnityException($"{fractionCashedData.Fraction} doesn't conatin in cashe, and you're trying uncash it");
+                throw new UnityException($"{fractionCashedData.Fraction} doesn't contain in cache, and you're trying uncash it");
 
             _cachedFractions.Remove(fractionCashedData.Fraction);
 
@@ -72,9 +74,17 @@ namespace InfinityGame.DataCaching
         public static void TieUpSpawnerToFraction(WarrioirSpawner spawner)
         {
             if (!IsFractionCached(spawner.Fraction))
-                throw new UnityException($"Fraction {spawner.Fraction} doesn't exist in cache, so spawner {spawner} can't be uncached");
+                throw new UnityException($"Fraction {spawner.Fraction} doesn't exist in cache, so spawner {spawner} can't be cached");
 
             _cachedFractions[spawner.Fraction].PutSpawnerOnWarriorRecord(spawner);
+        }
+
+        public static void UntieUpSpawnerToFraction(WarrioirSpawner spawner)
+        {
+            if (!IsFractionCached(spawner.Fraction))
+                throw new UnityException($"Fraction {spawner.Fraction} doesn't exist in cache, so spawner {spawner} can't be uncached");
+
+            _cachedFractions[spawner.Fraction].OutSpawnerFromWarriorRecord(spawner);
         }
 
         public static IEnumerable<GameEntity> GetEnemyEntitiesOfFraction(string fractionType)
@@ -107,7 +117,7 @@ namespace InfinityGame.DataCaching
             private readonly HashSet<Warrior> _warriors;
             private readonly TownHall _townHall;
 
-            private bool _fractionHaveTownHall = false;
+            private bool _townHallIsAlive = false;
 
             private readonly LimitCounter _warrioirCounter;
 
@@ -117,7 +127,7 @@ namespace InfinityGame.DataCaching
             {
                 get
                 {
-                    if (!_fractionHaveTownHall)
+                    if (!_townHallIsAlive)
                         return _warriors;
 
                     return Buildings;
@@ -146,12 +156,14 @@ namespace InfinityGame.DataCaching
                 _warriors = new HashSet<Warrior>();
 
                 _townHall = townHall;
-                _fractionHaveTownHall = true;
+                _townHallIsAlive = true;
 
                 _townHall.OnDestroy += () =>
                 {
-                    _fractionHaveTownHall = false;
-                    CheckForLose();
+                    _townHallIsAlive = false;
+
+                    if (IsNoBuildings())
+                        CheckForLose();
                 };
             }
 
@@ -159,7 +171,7 @@ namespace InfinityGame.DataCaching
 
             public void CacheBuilding(Building building)
             {
-                if (!_fractionHaveTownHall)
+                if (!_townHallIsAlive)
                     throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't cache buildings of fraction anymore");
 
                 _townHall.AddBuilding(building);
@@ -167,8 +179,16 @@ namespace InfinityGame.DataCaching
 
             public void UncacheBuilding(Building building)
             {
+                if (!_townHallIsAlive && IsNoBuildings())
+                    throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't uncache buildings of fraction anymore");
+
                 _townHall.RemoveBuilding(building);
+
+                if (IsNoBuildings())
+                    CheckForLose();
             }
+
+            private bool IsNoBuildings() => !Buildings.GetEnumerator().MoveNext();
 
             public void CacheWarrior(Warrior warrior)
             {
@@ -185,7 +205,7 @@ namespace InfinityGame.DataCaching
 
                 _warrioirCounter.Decrease();
 
-                if (!_fractionHaveTownHall)
+                if (!_townHallIsAlive)
                     CheckForLose();
             }
 
@@ -193,17 +213,17 @@ namespace InfinityGame.DataCaching
             {
                 _warrioirCounter.OnCounterLimitRelease += spawner.StartSpawning;
                 _warrioirCounter.OnCounterLimitOverflow += spawner.StopSpawning;
+            }
 
-                spawner.OnSpawnerDeactivate += () =>
-                {
-                    _warrioirCounter.OnCounterLimitRelease -= spawner.StartSpawning;
-                    _warrioirCounter.OnCounterLimitOverflow -= spawner.StopSpawning;
-                };
+            public void OutSpawnerFromWarriorRecord(WarrioirSpawner spawner)
+            {
+                _warrioirCounter.OnCounterLimitRelease -= spawner.StartSpawning;
+                _warrioirCounter.OnCounterLimitOverflow -= spawner.StopSpawning;
             }
 
             private void CheckForLose()
             {
-                if (!_fractionHaveTownHall && _warriors.Count == 0)
+                if (!_townHallIsAlive && _warriors.Count == 0)
                     OnFractionLose?.Invoke();
             }
 

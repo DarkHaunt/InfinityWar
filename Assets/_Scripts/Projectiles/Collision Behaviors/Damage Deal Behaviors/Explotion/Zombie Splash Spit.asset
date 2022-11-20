@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14f74fd61cb0a144083ab034ec41f5eb, type: 3}
   m_Name: Zombie Splash Spit
   m_EditorClassIdentifier: 
-  _damage: 10
-  _splashRadius: 3
+  _damage: 6
+  _splashRadius: 2.5

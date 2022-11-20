@@ -3,6 +3,8 @@ using InfinityGame.DataCaching;
 using InfinityGame.Fractions;
 using UnityEngine;
 
+
+
 namespace InfinityGame.Factories.BuildingFactory
 {
     using BuildingInitData = FractionInitData.BuildingInitData;
@@ -17,6 +19,22 @@ namespace InfinityGame.Factories.BuildingFactory
             var buildingGameObject = new GameObject(fractionBuildingData.Name);
             var building = buildingGameObject.AddComponent<BuildingType>();
 
+            Init(building, fraction, fractionBuildingData, position);
+
+            return building;
+        }
+
+        public BuildingType AddAndInitFractionBuildingComponentOn<BuildingType>(GameObject gameObject, FractionInitData fraction, BuildingInitData fractionBuildingData, Vector2 position) where BuildingType : Building
+        {
+            var building = gameObject.AddComponent<BuildingType>();
+
+            Init(building, fraction, fractionBuildingData, position);
+
+            return building;
+        }
+
+        private void Init<BuildingType>(BuildingType building, FractionInitData fraction, BuildingInitData fractionBuildingData, Vector2 position) where BuildingType : Building
+        {
             building.Initialize(fraction, fractionBuildingData);
             building.transform.position = position;
 
@@ -24,8 +42,6 @@ namespace InfinityGame.Factories.BuildingFactory
             building.OnDie += () => FractionCacher.UncacheBuilding(building);
 
             FractionCacher.CacheBuilding(building);
-
-            return building;
         }
     }
 }
