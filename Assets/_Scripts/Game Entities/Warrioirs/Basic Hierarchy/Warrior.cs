@@ -58,10 +58,10 @@ namespace InfinityGame.GameEntities
             _entityDetector.OnEntityEnter -= OnEntityDetected;
             _entityDetector.OnEntityExit -= OnEntityLose;
 
+            gameObject.SetActive(false);
+
             SetLocalTarget(null);
             _globalTarget = null;
-
-            gameObject.SetActive(false);
         }
 
         public virtual void PullOutPreparation()
@@ -69,13 +69,14 @@ namespace InfinityGame.GameEntities
             _isOnCoolDown = false;
 
             gameObject.SetActive(true);
-            StartCoroutine(SubscribeForDetector());
+            SubscribeForDetector();
         }
 
         public void Init(Warrior prefab, Vector2 position)
         {
             Init(prefab.Fraction, prefab.Health);
             transform.position = position;
+            StartCoroutine(TryToGetLocalTargetCoroutine());
 
             GetNewGlobalTarget();
         }
@@ -197,12 +198,15 @@ namespace InfinityGame.GameEntities
         /// Waits when detector will detect all frame entities around, to get local target properly
         /// </summary>
         /// <returns></returns>
-        private IEnumerator SubscribeForDetector()
+        private void SubscribeForDetector()
         {
-            yield return new WaitForFixedUpdate();
-
             _entityDetector.OnEntityEnter += OnEntityDetected;
             _entityDetector.OnEntityExit += OnEntityLose;
+        }
+
+        private IEnumerator TryToGetLocalTargetCoroutine()
+        {
+            yield return new WaitForFixedUpdate();
 
             TryToGetNewLocalTarget();
         }
@@ -225,7 +229,8 @@ namespace InfinityGame.GameEntities
         {
             _waitForSecondsAttackCooldown = new WaitForSeconds(_attackCoolDown);
 
-            StartCoroutine(SubscribeForDetector());
+            SubscribeForDetector();
+            StartCoroutine(TryToGetLocalTargetCoroutine());
         }
 
         protected virtual void Update() => OnStateUpdate();

@@ -62,8 +62,6 @@ namespace InfinityGame.Spawning
 
         public void DeactivateSpawner()
         {
-            //print("DEATIVATE SPAWNER - ");
-            //print("Deactivate - " + Fraction);
             FractionCacher.UntieUpSpawnerToFraction(this);
             StopSpawning();
         }

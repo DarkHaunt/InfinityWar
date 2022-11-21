@@ -20,7 +20,6 @@ namespace InfinityGame.GameEntities
 
             OnDie += () =>
             {
-                //print("Barracks stop spawning");
                 _warriorSpawner.DeactivateSpawner();
             };
         }

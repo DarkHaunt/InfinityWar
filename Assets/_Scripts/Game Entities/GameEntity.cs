@@ -22,6 +22,7 @@ namespace InfinityGame.GameEntities
 
         public string Fraction => _fraction;
         public float Health => _health;
+        public bool IsDead => _isDead;
 
 
 
@@ -57,6 +58,6 @@ namespace InfinityGame.GameEntities
 
         public bool IsBelongsToFraction(string fraction) => _fraction.Contains(fraction);
 
-        public override string ToString() => $"{name} {transform.position} {Fraction}";
+        public override string ToString() => $"{name} {transform.position} {Fraction} {GetHashCode()}";
     }
 }
