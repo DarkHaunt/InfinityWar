@@ -1,6 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 
 namespace InfinityGame.Arena
 {
@@ -10,19 +11,15 @@ namespace InfinityGame.Arena
         [SerializeField] private List<Transform> _barracksPointTransforms = new List<Transform>();
 
 
+
         public Vector3 TownHallSpawnPointPosition => _townHallPointTransform.position;
-        public List<Vector3> BarracksSpawnPointsTransforms
+        public IEnumerable<Vector3> BarracksSpawnPointsPositions
         {
             get
             {
-                var positions = new List<Vector3>(_barracksPointTransforms.Count);
-
-                foreach (var transform in _barracksPointTransforms)
-                    positions.Add(transform.position);
-
-                return positions;
+                foreach (var barrackTransform in _barracksPointTransforms)
+                    yield return barrackTransform.position;
             }
         }
-
     } 
 }

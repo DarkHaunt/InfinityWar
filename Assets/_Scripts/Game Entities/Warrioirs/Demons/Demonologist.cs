@@ -1,5 +1,4 @@
 using InfinityGame.Spawning;
-using InfinityGame.DataCaching;
 using UnityEngine;
 
 
@@ -20,8 +19,7 @@ namespace InfinityGame.GameEntities
         {
             base.PullOutPreparation();
 
-            _fractionSpawner.StartSpawning();
-            FractionCacher.TieUpSpawnerToFraction(_fractionSpawner);
+            _fractionSpawner.ActivateSpawner();
         }
 
 

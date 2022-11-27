@@ -26,7 +26,6 @@ internal class GameInitializer : MonoBehaviour
     /// </summary>
     /// <param name="fractionData"></param>
     /// <param name="spawnPlace"></param>
-    /// <returns>List of all barracks of fraction</returns>
     private void AssembleFraction(FractionInitData fractionData, SpawnPlace spawnPlace)
     {
         var townHallObject = new GameObject(fractionData.TownHallBuildingData.Name);
@@ -38,7 +37,7 @@ internal class GameInitializer : MonoBehaviour
         townHall.SetBarrack(townHallBarrack);
 
         // Spawn all sub barracks
-        foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsTransforms)
+        foreach (var barrackPosition in spawnPlace.BarracksSpawnPointsPositions)
             _buildingFactory.SpawnFractionBuilding<Barrack>(fractionData, fractionData.BarrackBuildingData, barrackPosition);
     }
 
@@ -72,11 +71,7 @@ internal class GameInitializer : MonoBehaviour
         }
     }
 
-    private void EndGame()
-    {
-        //print("END GAME");
-        OnGameEnd?.Invoke();
-    }
+    private void EndGame() => OnGameEnd?.Invoke();
 
 
 

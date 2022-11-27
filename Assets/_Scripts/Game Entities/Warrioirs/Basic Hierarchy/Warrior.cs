@@ -7,12 +7,16 @@ using UnityEngine;
 
 namespace InfinityGame.GameEntities
 {
+    [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(CircleCollider2D))]
-    [RequireComponent(typeof(SpriteRenderer))]
     public abstract class Warrior : GameEntity, IPoolable
     {
         private const float MinimalAttackDistance = 0.5f;
+        private const float LocalTargetUpdateTime = 0.5f;
+
+        private static readonly WaitForSeconds WaitForLocalTargetUpdate = new WaitForSeconds(LocalTargetUpdateTime);
+
 
         [Header("--- Attack Parameters ---")]
         [Range(0f, 10f)]
@@ -21,12 +25,13 @@ namespace InfinityGame.GameEntities
         [Range(0f, 10f)]
         [SerializeField] private float _speedMult;
 
+        [SerializeField] private float _agressionRadius;
+
         [Range(MinimalAttackDistance, 30f)]
         [SerializeField] private float _attackDistance;
 
         [Header("--- Other ---")]
         [SerializeField] private Rigidbody2D _rigidbody2D;
-        [SerializeField] private EntityDetector _entityDetector;
 
         [Header("--- Pooling ---")]
         [SerializeField] private string _poolTag;
@@ -36,8 +41,9 @@ namespace InfinityGame.GameEntities
 
         private WarriorState _currentState = WarriorState.FollowGlobalTarget;
 
-        private bool _isOnCoolDown = false;
-        private bool _isOnArgue = true;
+        // Flags
+        private bool _isOnAttackCoolDown = false;
+        private bool _isOnLocalTargetWaiting = false;
 
         // Baked variables
         private WaitForSeconds _waitForSecondsAttackCooldown;
@@ -55,30 +61,28 @@ namespace InfinityGame.GameEntities
         {
             _globalTarget.OnDie -= GetNewGlobalTarget;
 
-            _entityDetector.OnEntityEnter -= OnEntityDetected;
-            _entityDetector.OnEntityExit -= OnEntityLose;
+            if (_localTarget != null)
+                _localTarget.OnDie -= OnLocalTargetDeath;
 
             gameObject.SetActive(false);
-
-            SetLocalTarget(null);
-            _globalTarget = null;
+            ResetTargets();
         }
 
         public virtual void PullOutPreparation()
         {
-            _isOnCoolDown = false;
+            _isOnAttackCoolDown = false;
 
             gameObject.SetActive(true);
-            SubscribeForDetector();
+            _currentState = WarriorState.FollowGlobalTarget;
         }
 
         public void Init(Warrior prefab, Vector2 position)
         {
             Init(prefab.Fraction, prefab.Health);
             transform.position = position;
-            StartCoroutine(TryToGetLocalTargetCoroutine());
 
             GetNewGlobalTarget();
+            GetNewLocalTarget();
         }
 
         private void OnStateUpdate()
@@ -93,6 +97,7 @@ namespace InfinityGame.GameEntities
                     break;
                 case WarriorState.FollowGlobalTarget:
                     FollowGlobalTarget();
+                    CheckForLocalTarget();
                     break;
                 case WarriorState.Unactive:
                     break;
@@ -103,13 +108,13 @@ namespace InfinityGame.GameEntities
 
         private void TryToAttack()
         {
-            if (_isOnCoolDown)
+            if (_isOnAttackCoolDown)
                 return;
 
             if (!IsOnAttackDistance())
                 _currentState = WarriorState.Arguing;
 
-            StartCoroutine(CoolDownCoroutine());
+            StartCoroutine(AttackCoolDownCoroutine());
             Attack();
         }
 
@@ -117,8 +122,7 @@ namespace InfinityGame.GameEntities
 
         private void FollowLocalTarget()
         {
-            var walkDirection = (_localTarget.transform.position - transform.position).normalized;
-            _rigidbody2D.velocity = walkDirection * _speedMult;
+            FollowTarget(_localTarget);
 
             if (IsOnAttackDistance())
             {
@@ -127,17 +131,38 @@ namespace InfinityGame.GameEntities
             }
         }
 
-        private void FollowGlobalTarget()
+        private void FollowGlobalTarget() => FollowTarget(_globalTarget);
+
+        private void FollowTarget(GameEntity target)
         {
-            var walkDirection = (_globalTarget.transform.position - transform.position).normalized;
+            var walkDirection = (target.transform.position - transform.position).normalized;
 
             _rigidbody2D.velocity = walkDirection * _speedMult;
         }
 
-        private void TryToGetNewLocalTarget()
+        private void GetNewGlobalTarget()
         {
-            var enemiesAround = GetEnemiesAround();
-            var newLocalTarget = GameEntitiesDetector.GetClosestEntityToPosition(transform.position, enemiesAround);
+            var cachedEnemyEntities = FractionCacher.GetEnemyEntitiesOfFraction(Fraction);
+
+            _globalTarget = EntitiesDetector.TryToGetClosestEntityToPosition(transform.position, cachedEnemyEntities);
+
+            if (_globalTarget != null)
+                _globalTarget.OnDie += GetNewGlobalTarget;
+            else
+                BecomeUnactive();
+        }
+
+        private void CheckForLocalTarget()
+        {
+            if (_isOnLocalTargetWaiting)
+                return;
+
+            StartCoroutine(CheckForLocalTargetCoroutine());
+        }
+
+        private void GetNewLocalTarget()
+        {
+            var newLocalTarget = EntitiesDetector.TryToGetClosestEntityToPosition(transform.position, _agressionRadius, Fraction);
 
             SetLocalTarget(newLocalTarget);
         }
@@ -148,79 +173,57 @@ namespace InfinityGame.GameEntities
 
             if (_localTarget is null)
             {
-                _isOnArgue = false;
-                _currentState = WarriorState.FollowGlobalTarget;
+                _isOnLocalTargetWaiting = false; 
                 return;
             }
 
-            _isOnArgue = true;
+            _localTarget.OnDie += OnLocalTargetDeath;
             _currentState = WarriorState.Arguing;
         }
 
-        private void GetNewGlobalTarget()
+        private void OnLocalTargetDeath()
         {
-            var enemyEntities = FractionCacher.GetEnemyEntitiesOfFraction(Fraction);
-            _globalTarget = GameEntitiesDetector.GetClosestEntityToPosition(transform.position, enemyEntities);
+            GetNewLocalTarget();
 
-            if (_globalTarget != null)
-                _globalTarget.OnDie += GetNewGlobalTarget;
-            else
-                BecomeNeutral();
+            if (_localTarget is null)
+                _currentState = WarriorState.FollowGlobalTarget;
         }
 
         /// <summary>
-        /// Won't be able to argue / attack anything anymore
+        /// Won't be able to argue on / attack anything anymore
         /// </summary>
-        private void BecomeNeutral()
+        private void BecomeUnactive()
         {
-            _entityDetector.gameObject.SetActive(false);
+            ResetTargets();
             _currentState = WarriorState.Unactive;
             _rigidbody2D.velocity = Vector2.zero;
         }
 
-        private IEnumerable<GameEntity> GetEnemiesAround()
+        /// <summary>
+        /// Resets global and local warrior targets
+        /// </summary>
+        private void ResetTargets()
         {
-            foreach (var entity in _entityDetector.DetectedEntities)
-                if (!entity.IsBelongsToFraction(Fraction))
-                    yield return entity;
+            SetLocalTarget(null);
+            _globalTarget = null;
         }
 
-        private IEnumerator CoolDownCoroutine()
+        private IEnumerator CheckForLocalTargetCoroutine()
         {
-            _isOnCoolDown = true;
+            _isOnLocalTargetWaiting = true;
+
+            yield return WaitForLocalTargetUpdate;
+
+            GetNewLocalTarget();
+        }
+
+        private IEnumerator AttackCoolDownCoroutine()
+        {
+            _isOnAttackCoolDown = true;
 
             yield return _waitForSecondsAttackCooldown;
 
-            _isOnCoolDown = false;
-        }
-
-        /// <summary>
-        /// Waits when detector will detect all frame entities around, to get local target properly
-        /// </summary>
-        /// <returns></returns>
-        private void SubscribeForDetector()
-        {
-            _entityDetector.OnEntityEnter += OnEntityDetected;
-            _entityDetector.OnEntityExit += OnEntityLose;
-        }
-
-        private IEnumerator TryToGetLocalTargetCoroutine()
-        {
-            yield return new WaitForFixedUpdate();
-
-            TryToGetNewLocalTarget();
-        }
-
-        private void OnEntityDetected(GameEntity target)
-        {
-            if (!_isOnArgue && !target.IsBelongsToFraction(Fraction))
-                SetLocalTarget(target);
-        }
-
-        private void OnEntityLose(GameEntity target)
-        {
-            if (_localTarget == target)
-                TryToGetNewLocalTarget();
+            _isOnAttackCoolDown = false;
         }
 
 
@@ -228,9 +231,6 @@ namespace InfinityGame.GameEntities
         protected virtual void Awake()
         {
             _waitForSecondsAttackCooldown = new WaitForSeconds(_attackCoolDown);
-
-            SubscribeForDetector();
-            StartCoroutine(TryToGetLocalTargetCoroutine());
         }
 
         protected virtual void Update() => OnStateUpdate();

@@ -33,7 +33,7 @@ namespace InfinityGame.Spawning
 
 
 
-        public string Fraction => _fractionTag;
+        public string SpawnerFraction => _fractionTag;
 
 
 
@@ -56,6 +56,11 @@ namespace InfinityGame.Spawning
             _warriorsPickStrategy = spawnData.WarrioirsPickStrategy;
 
 
+            ActivateSpawner();
+        }
+
+        public void ActivateSpawner() // TODO: Не нравится
+        {
             FractionCacher.TieUpSpawnerToFraction(this);
             StartSpawning();
         }
@@ -83,7 +88,7 @@ namespace InfinityGame.Spawning
         private bool IsAllWarrioirsBelongsToSpawnerFraction(IEnumerable<Warrior> warriors)
         {
             foreach (var warrior in warriors)
-                if (!warrior.IsBelongsToFraction(Fraction))
+                if (!warrior.IsBelongsToFraction(SpawnerFraction))
                     return false;
 
             return true;

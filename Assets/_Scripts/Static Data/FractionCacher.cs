@@ -73,18 +73,18 @@ namespace InfinityGame.DataCaching
 
         public static void TieUpSpawnerToFraction(WarrioirSpawner spawner)
         {
-            if (!IsFractionCached(spawner.Fraction))
-                throw new UnityException($"Fraction {spawner.Fraction} doesn't exist in cache, so spawner {spawner} can't be cached");
+            if (!IsFractionCached(spawner.SpawnerFraction))
+                throw new UnityException($"Fraction {spawner.SpawnerFraction} doesn't exist in cache, so spawner {spawner} can't be cached");
 
-            _cachedFractions[spawner.Fraction].PutSpawnerOnWarriorRecord(spawner);
+            _cachedFractions[spawner.SpawnerFraction].PutSpawnerOnWarriorRecord(spawner);
         }
 
         public static void UntieUpSpawnerToFraction(WarrioirSpawner spawner)
         {
-            if (!IsFractionCached(spawner.Fraction))
-                throw new UnityException($"Fraction {spawner.Fraction} doesn't exist in cache, so spawner {spawner} can't be uncached");
+            if (!IsFractionCached(spawner.SpawnerFraction))
+                throw new UnityException($"Fraction {spawner.SpawnerFraction} doesn't exist in cache, so spawner {spawner} can't be uncached");
 
-            _cachedFractions[spawner.Fraction].OutSpawnerFromWarriorRecord(spawner);
+            _cachedFractions[spawner.SpawnerFraction].OutSpawnerFromWarriorRecord(spawner);
         }
 
         public static IEnumerable<GameEntity> GetEnemyEntitiesOfFraction(string fractionType)
@@ -209,6 +209,10 @@ namespace InfinityGame.DataCaching
                     CheckForLose();
             }
 
+            /// <summary>
+            /// Makes spawner consider warrior count before spawning
+            /// </summary>
+            /// <param name="spawner"></param>
             public void PutSpawnerOnWarriorRecord(WarrioirSpawner spawner)
             {
                 _warrioirCounter.OnCounterLimitRelease += spawner.StartSpawning;

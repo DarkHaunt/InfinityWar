@@ -18,7 +18,7 @@ namespace InfinityGame.GameEntities.Demons
 
         private void Explode()
         {
-            var enemies = GameEntitiesDetector.GetEntitiesInArea(transform.position, _explodeRadius, Fraction);
+            var enemies = EntitiesDetector.GetEntitiesInArea(transform.position, _explodeRadius, Fraction);
 
             foreach (var enemy in enemies)
                 enemy.GetDamage(_explodeDamage);

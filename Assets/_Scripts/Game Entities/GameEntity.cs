@@ -12,7 +12,6 @@ namespace InfinityGame.GameEntities
     {
         public event Action OnDie;
 
-
         [SerializeField] private string _fraction;
         [SerializeField] private float _health;
 

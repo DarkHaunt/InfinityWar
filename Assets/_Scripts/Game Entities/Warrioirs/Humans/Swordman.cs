@@ -11,7 +11,7 @@ namespace InfinityGame.GameEntities.Humans
         [SerializeField] private float _nonMainTargetDamagePercent;
 
         [Range(0f, 3f)]
-        [SerializeField] private float _atackRadius;
+        [SerializeField] private float _swordAtackRadius;
 
         private float _damageForSurroundedNonMainEntities;
 
@@ -19,7 +19,8 @@ namespace InfinityGame.GameEntities.Humans
 
         protected override void Attack()
         {
-            var detectedEnemies =  GameEntitiesDetector.GetEntitiesInArea(transform.position, _atackRadius, Fraction);
+            var detectedEnemies =  EntitiesDetector.GetEntitiesInArea(transform.position, _swordAtackRadius, Fraction);
+            //var detectedEnemies =  EntityDetector.GetEntitiesInArea(_swordAtackRadius, Fraction);
 
             DamageAllSurroundEnemies(detectedEnemies);
         }

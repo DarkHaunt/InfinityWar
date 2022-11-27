@@ -1,16 +1,21 @@
 using System.Collections.Generic;
-using System;
 using InfinityGame.GameEntities;
 using UnityEngine;
 
 
 
 /// <summary>
-/// Detect all fraction entities in area , ignoring selected fractions
+/// Detect entities in world, using physics and filtring entities by fraction
 /// </summary>
-public static class GameEntitiesDetector
+public static class EntitiesDetector
 {
-    public static GameEntity GetClosestEntityToPosition(Vector2 position, IEnumerable<GameEntity> entities)
+    /// <summary>
+    /// Finds closest entity from input colletions
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="entities"></param>
+    /// <returns>Closest entity</returns>
+    public static GameEntity TryToGetClosestEntityToPosition(Vector2 position, IEnumerable<GameEntity> entities)
     {
         GameEntity closestEntity = null;
         var minimalDiscoveredDistance = float.MaxValue;
@@ -29,7 +34,14 @@ public static class GameEntitiesDetector
         return closestEntity;
     }
 
-    public static GameEntity GetClosestEntity(Vector2 position, float areaRadius, Func<GameEntity, bool> ignoreFilterPredicate, params string[] ignoredFractions)
+    /// <summary>
+    /// Finds entities in radius with without input tags, and returns the closest one 
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="areaRadius"></param>
+    /// <param name="ignoredFractions"></param>
+    /// <returns>Closest entity</returns>
+    public static GameEntity TryToGetClosestEntityToPosition(Vector2 position, float areaRadius, params string[] ignoredFractions)
     {
         var entitiesAround = GetEntitiesInArea(position, areaRadius, ignoredFractions);
 
@@ -38,9 +50,6 @@ public static class GameEntitiesDetector
 
         foreach (var enemy in entitiesAround)
         {
-            if (ignoreFilterPredicate.Invoke(enemy))
-                continue;
-
             var distanceToCurrentTarget = Vector3.Distance(enemy.transform.position, position);
 
             if (distanceToCurrentTarget < minimalDiscoveredDistance)
@@ -53,19 +62,26 @@ public static class GameEntitiesDetector
         return closestEntity;
     }
 
+    /// <summary>
+    /// Gets all entities in radius, ignore selectled tags
+    /// </summary>
+    /// <param name="areaCenterPosition"></param>
+    /// <param name="areaRadius"></param>
+    /// <param name="ignoredFractions"></param>
+    /// <returns></returns>
     public static IEnumerable<GameEntity> GetEntitiesInArea(Vector2 areaCenterPosition, float areaRadius, params string[] ignoredFractions)
     {
         foreach (var detectedCollider in GetDetectedColliders(areaCenterPosition, areaRadius))
-            if (detectedCollider.TryGetComponent(out GameEntity gameEntity) && IsEntityBelongsToEnemyFraction(gameEntity, ignoredFractions))
+            if (detectedCollider.TryGetComponent(out GameEntity gameEntity) && !IsEntityBelongsToIgnoredFraction(gameEntity, ignoredFractions))
                 yield return gameEntity;
     }
 
     private static IEnumerable<Collider2D> GetDetectedColliders(Vector2 areaCenter, float radius) => Physics2D.OverlapCircleAll(areaCenter, radius);
 
-    private static bool IsEntityBelongsToEnemyFraction(GameEntity gameEntity, IEnumerable<string> allyTags)
+    private static bool IsEntityBelongsToIgnoredFraction(GameEntity gameEntity, IEnumerable<string> ignoredTags)
     {
-        foreach (var allyTag in allyTags)
-            if (!gameEntity.IsBelongsToFraction(allyTag))
+        foreach (var allyTag in ignoredTags)
+            if (gameEntity.IsBelongsToFraction(allyTag))
                 return true;
 
         return false;

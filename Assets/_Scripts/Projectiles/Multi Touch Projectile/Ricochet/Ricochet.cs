@@ -17,7 +17,7 @@ namespace InfinityGame.Projectiles
         [Tooltip("Radius of checking new target. If no targets around - destroy bullet")]
         [SerializeField] private float _ricochetRadius = 1f;
 
-        private readonly List<GameEntity> _hittedEnemies = new List<GameEntity>(); // Enemies, which were already hitted in current lyfe cycle of projectile
+        private readonly HashSet<GameEntity> _hittedEnemies = new HashSet<GameEntity>(); // Enemies, which were already hitted in current lyfe cycle of projectile
 
 
 
@@ -48,10 +48,20 @@ namespace InfinityGame.Projectiles
 
         private bool TryToGetClosestEnemyEntity(out GameEntity closestEnemy)
         {
-            closestEnemy = GameEntitiesDetector.GetClosestEntity(transform.position, _ricochetRadius, (GameEntity entity) => _hittedEnemies.Contains(entity), FractionTag);
+            var entitiesAround = EntitiesDetector.GetEntitiesInArea(transform.position, _ricochetRadius, FractionTag);
+            var nonHittedEntitiesAround = GetNonHittedEntitiesFrom(entitiesAround);
+
+            closestEnemy = EntitiesDetector.TryToGetClosestEntityToPosition(transform.position, nonHittedEntitiesAround);
 
             // If not found target
             return closestEnemy != null;
+        }
+
+        private IEnumerable<GameEntity> GetNonHittedEntitiesFrom(IEnumerable<GameEntity> entities)
+        {
+            foreach (var entity in entities)
+                if (!_hittedEnemies.Contains(entity))
+                    yield return entity;
         }
 
 
