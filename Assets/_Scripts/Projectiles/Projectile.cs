@@ -61,7 +61,8 @@ namespace InfinityGame.Projectiles
         protected virtual void OnCollisionWith(GameEntity target)
         {
             foreach (var behavior in _collisionBehaviors)
-                behavior.OnCollisionBehave(target, this);
+                if (!target.IsDead)
+                    behavior.OnCollisionBehave(target, this);
         }
 
         protected void EndExploitation()

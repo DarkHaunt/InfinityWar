@@ -189,7 +189,10 @@ namespace InfinityGame.GameEntities
 
         private void OnLocalTargetDeath()
         {
-            GetNewLocalTarget(); // BUG: Почему-то продолжает вызывать у выключенных обьектов
+            if (!gameObject.activeSelf)
+                return;
+
+            GetNewLocalTarget();
 
             if (!HasLocalTarget && _currentState != WarriorState.Unactive)
                 _currentState = WarriorState.FollowGlobalTarget;

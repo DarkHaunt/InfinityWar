@@ -27,10 +27,8 @@ namespace InfinityGame.GameEntities.Demons
 
 
 
-        protected override void Awake()
+        private void Start()
         {
-            base.Awake();
-
             OnDie += Explode;
         }
     }

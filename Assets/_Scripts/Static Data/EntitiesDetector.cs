@@ -72,7 +72,7 @@ public static class EntitiesDetector
     public static IEnumerable<GameEntity> GetEntitiesInArea(Vector2 areaCenterPosition, float areaRadius, params string[] ignoredFractions)
     {
         foreach (var detectedCollider in GetDetectedColliders(areaCenterPosition, areaRadius))
-            if (detectedCollider.TryGetComponent(out GameEntity gameEntity) && !IsEntityBelongsToIgnoredFraction(gameEntity, ignoredFractions))
+            if (detectedCollider.TryGetComponent(out GameEntity gameEntity) && !IsEntityBelongsToIgnoredFraction(gameEntity, ignoredFractions) && !gameEntity.IsDead)
                 yield return gameEntity;
     }
 
