@@ -96,7 +96,7 @@ namespace InfinityGame.Projectiles
 
         private IEnumerator LifeTimeCoroutine()
         {
-            while(_currentLifeTime < _maxLifeTime)
+            while (_currentLifeTime < _maxLifeTime)
             {
                 yield return _cachedWaitForFrame;
 

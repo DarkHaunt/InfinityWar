@@ -84,7 +84,7 @@
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Zombies\MeleeZombie.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Single Pick\RandomSinglePickStrategy.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Collision Behaviors\Damage Deal Behaviors\Kinetic Energy Losing\KineticEnergyLosing.cs" />
-    <Compile Include="Assets\_Scripts\Static Data\Game Entities Detector.cs" />
+    <Compile Include="Assets\_Scripts\Static Data\EntitiesDetector.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Collision Behaviors\Damage Deal Behaviors\Explotion\SplashDamage.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Projectile.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Collision Behaviors\Damage Deal Behaviors\DamageDealBehavior.cs" />

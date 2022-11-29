@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using InfinityGame.DataCaching;
 using UnityEngine;
 
@@ -7,6 +6,9 @@ using UnityEngine;
 
 namespace InfinityGame.GameEntities
 {
+    // Warrior works with two target system.
+    // Global target gets from cache and this target will be main for warrior. This means, that if there is no targets in agression radius, warrior will follow this target
+    // Local target - target, that was detected nearly the warrior. Attack directed only on this target only.
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(CircleCollider2D))]
@@ -18,32 +20,33 @@ namespace InfinityGame.GameEntities
         private static readonly WaitForSeconds WaitForLocalTargetUpdate = new WaitForSeconds(LocalTargetUpdateTime);
 
 
-        [Header("--- Attack Parameters ---")]
+        [Header("--- Warrior Parameters ---")]
         [Range(0f, 10f)]
         [SerializeField] private float _attackCoolDown;
 
-        [Range(0f, 10f)]
+        [Range(0f, 15f)]
         [SerializeField] private float _speedMult;
 
+        [Range(0f, 30f)]
         [SerializeField] private float _agressionRadius;
 
         [Range(MinimalAttackDistance, 30f)]
         [SerializeField] private float _attackDistance;
 
-        [Header("--- Other ---")]
+        [Header("--- Warrior Unity Components ---")]
         [SerializeField] private Rigidbody2D _rigidbody2D;
 
         [Header("--- Pooling ---")]
         [SerializeField] private string _poolTag;
 
-        [SerializeField] private GameEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
-        [SerializeField] private GameEntity _localTarget = null; // Target around, which was deceted by detector 
+        private GameEntity _globalTarget = null; // Target, which will be constantly followed by this warrior
+        private GameEntity _localTarget = null; // Target around, which was deceted by warrior  
 
         private WarriorState _currentState = WarriorState.FollowGlobalTarget;
 
         // Flags
         private bool _isOnAttackCoolDown = false;
-        private bool _isOnLocalTargetWaiting = false;
+        private bool _isGettingLocalTarget = false;
 
         // Baked variables
         private WaitForSeconds _waitForSecondsAttackCooldown;
@@ -52,6 +55,7 @@ namespace InfinityGame.GameEntities
 
         protected GameEntity LocalTarget => _localTarget;
         public string PoolTag => _poolTag;
+        private bool HasLocalTarget => _localTarget != null;
 
 
 
@@ -61,8 +65,7 @@ namespace InfinityGame.GameEntities
         {
             _globalTarget.OnDie -= GetNewGlobalTarget;
 
-            if (_localTarget != null)
-                _localTarget.OnDie -= OnLocalTargetDeath;
+            StopAllCoroutines();
 
             gameObject.SetActive(false);
             ResetTargets();
@@ -154,7 +157,7 @@ namespace InfinityGame.GameEntities
 
         private void CheckForLocalTarget()
         {
-            if (_isOnLocalTargetWaiting)
+            if (_isGettingLocalTarget)
                 return;
 
             StartCoroutine(CheckForLocalTargetCoroutine());
@@ -169,11 +172,14 @@ namespace InfinityGame.GameEntities
 
         private void SetLocalTarget(GameEntity newLocalTarget)
         {
+            if (HasLocalTarget)
+                _localTarget.OnDie -= OnLocalTargetDeath;
+
             _localTarget = newLocalTarget;
 
-            if (_localTarget is null)
+            if (!HasLocalTarget)
             {
-                _isOnLocalTargetWaiting = false; 
+                _isGettingLocalTarget = false;
                 return;
             }
 
@@ -183,9 +189,9 @@ namespace InfinityGame.GameEntities
 
         private void OnLocalTargetDeath()
         {
-            GetNewLocalTarget();
+            GetNewLocalTarget(); // BUG: Почему-то продолжает вызывать у выключенных обьектов
 
-            if (_localTarget is null)
+            if (!HasLocalTarget && _currentState != WarriorState.Unactive)
                 _currentState = WarriorState.FollowGlobalTarget;
         }
 
@@ -210,7 +216,7 @@ namespace InfinityGame.GameEntities
 
         private IEnumerator CheckForLocalTargetCoroutine()
         {
-            _isOnLocalTargetWaiting = true;
+            _isGettingLocalTarget = true;
 
             yield return WaitForLocalTargetUpdate;
 
@@ -225,6 +231,9 @@ namespace InfinityGame.GameEntities
 
             _isOnAttackCoolDown = false;
         }
+
+        public override string ToString() => $"{name} {Fraction} {GetHashCode()}";
+
 
 
 

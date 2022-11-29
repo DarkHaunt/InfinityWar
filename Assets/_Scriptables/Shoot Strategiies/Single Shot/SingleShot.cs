@@ -9,10 +9,10 @@ namespace InfinityGame.Strategies.ShootStrategies
     [CreateAssetMenu(fileName = "ShootStrategy", menuName = "Data/ShootStrategy/SingleShot", order = 52)]
     public class SingleShot : ShootStrategy
     {
-        public override void Shoot(Vector2 position, Vector2 direction, string fraction,Projectile projectilePrefab)
+        public override void Shoot(ShooterData shooterData,Projectile projectilePrefab)
         {
-            var projectile = ProjectileFactory.Instantiate(projectilePrefab, position ,fraction);
-            projectile.SetFlyDirection(direction);
+            var projectile = ProjectileFactory.Instantiate(projectilePrefab, shooterData.FirePosition, shooterData.ShooterFraction);
+            projectile.SetFlyDirection(shooterData.ShootDirection);
         }
     }
 }

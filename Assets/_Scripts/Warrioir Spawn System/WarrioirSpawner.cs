@@ -59,15 +59,15 @@ namespace InfinityGame.Spawning
             ActivateSpawner();
         }
 
-        public void ActivateSpawner() // TODO: Не нравится
+        public void ActivateSpawner()
         {
-            FractionCacher.TieUpSpawnerToFraction(this);
+            FractionCacher.PutSpawnerOnWarrioirRecord(this);
             StartSpawning();
         }
 
         public void DeactivateSpawner()
         {
-            FractionCacher.UntieUpSpawnerToFraction(this);
+            FractionCacher.OutputSpawnerFromWarrioirRecord(this);
             StopSpawning();
         }
 

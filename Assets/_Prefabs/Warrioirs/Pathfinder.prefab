@@ -138,7 +138,7 @@ MonoBehaviour:
   _health: 30
   _attackCoolDown: 3
   _speedMult: 2
-  _agressionRadius: 0
+  _agressionRadius: 18
   _attackDistance: 15
   _rigidbody2D: {fileID: 5639960878494141486}
   _poolTag: Pathfinder

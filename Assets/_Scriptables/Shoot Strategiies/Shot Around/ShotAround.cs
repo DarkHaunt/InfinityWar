@@ -14,15 +14,15 @@ namespace InfinityGame.Strategies.ShootStrategies
 
 
 
-        public override void Shoot(Vector2 position, Vector2 direction, string fraction, Projectile projectilePrefab)
+        public override void Shoot(ShooterData shooterData, Projectile projectilePrefab)
         {
             var angleBetweenBullets = (360 / _totalBulletsCount) * Mathf.Deg2Rad;
-            var currentAngleInRadians = TrigonometryCalculator.GetRotationAngleToPoint(direction);
+            var currentAngleInRadians = TrigonometryCalculator.GetRotationAngleToPoint(shooterData.ShootDirection);
 
 
             for (int i = 0; i < _totalBulletsCount; i++, currentAngleInRadians += angleBetweenBullets)
             {
-                var projectile = ProjectileFactory.Instantiate(projectilePrefab, position, fraction);
+                var projectile = ProjectileFactory.Instantiate(projectilePrefab, shooterData.FirePosition, shooterData.ShooterFraction);
 
                 var currentDirectionX = Mathf.Cos(currentAngleInRadians);
                 var currentDirectionY = Mathf.Sin(currentAngleInRadians);

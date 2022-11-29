@@ -151,7 +151,7 @@ MonoBehaviour:
   _health: 75
   _attackCoolDown: 3
   _speedMult: 2
-  _agressionRadius: 5
+  _agressionRadius: 7
   _attackDistance: 5
   _rigidbody2D: {fileID: 36225532451730509}
   _poolTag: Demonologist

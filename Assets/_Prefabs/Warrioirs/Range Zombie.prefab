@@ -138,7 +138,7 @@ MonoBehaviour:
   _health: 20
   _attackCoolDown: 2
   _speedMult: 3
-  _agressionRadius: 0
+  _agressionRadius: 8
   _attackDistance: 5
   _rigidbody2D: {fileID: 7703586299865400853}
   _poolTag: Range Zombie

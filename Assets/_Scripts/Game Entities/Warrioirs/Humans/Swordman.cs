@@ -7,6 +7,8 @@ namespace InfinityGame.GameEntities.Humans
 {
     public class Swordman : MeleeWarrior
     {
+        [Header("--- Swordman Parameters ---")]
+
         [Range(0f, 1f)]
         [SerializeField] private float _nonMainTargetDamagePercent;
 
@@ -20,7 +22,6 @@ namespace InfinityGame.GameEntities.Humans
         protected override void Attack()
         {
             var detectedEnemies =  EntitiesDetector.GetEntitiesInArea(transform.position, _swordAtackRadius, Fraction);
-            //var detectedEnemies =  EntityDetector.GetEntitiesInArea(_swordAtackRadius, Fraction);
 
             DamageAllSurroundEnemies(detectedEnemies);
         }

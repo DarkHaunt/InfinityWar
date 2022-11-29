@@ -138,7 +138,7 @@ MonoBehaviour:
   _health: 30
   _attackCoolDown: 2
   _speedMult: 2
-  _agressionRadius: 0
+  _agressionRadius: 10
   _attackDistance: 7
   _rigidbody2D: {fileID: 6950695716685486880}
   _poolTag: Archer

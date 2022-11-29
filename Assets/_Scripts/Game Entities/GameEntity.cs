@@ -12,9 +12,11 @@ namespace InfinityGame.GameEntities
     {
         public event Action OnDie;
 
+        [Header("--- Entity Parameters ---")]
         [SerializeField] private string _fraction;
         [SerializeField] private float _health;
 
+        // Flags
         private bool _isDead = false;
 
 

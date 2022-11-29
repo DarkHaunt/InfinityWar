@@ -138,7 +138,7 @@ MonoBehaviour:
   _health: 40
   _attackCoolDown: 0.8
   _speedMult: 3
-  _agressionRadius: 0
+  _agressionRadius: 8
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 9134285203207437134}
   _poolTag: Melee Zombie

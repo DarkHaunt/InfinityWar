@@ -71,7 +71,7 @@ namespace InfinityGame.DataCaching
             _cachedFractions[warrior.Fraction].UncacheWarrior(warrior);
         }
 
-        public static void TieUpSpawnerToFraction(WarrioirSpawner spawner)
+        public static void PutSpawnerOnWarrioirRecord(WarrioirSpawner spawner)
         {
             if (!IsFractionCached(spawner.SpawnerFraction))
                 throw new UnityException($"Fraction {spawner.SpawnerFraction} doesn't exist in cache, so spawner {spawner} can't be cached");
@@ -79,7 +79,7 @@ namespace InfinityGame.DataCaching
             _cachedFractions[spawner.SpawnerFraction].PutSpawnerOnWarriorRecord(spawner);
         }
 
-        public static void UntieUpSpawnerToFraction(WarrioirSpawner spawner)
+        public static void OutputSpawnerFromWarrioirRecord(WarrioirSpawner spawner)
         {
             if (!IsFractionCached(spawner.SpawnerFraction))
                 throw new UnityException($"Fraction {spawner.SpawnerFraction} doesn't exist in cache, so spawner {spawner} can't be uncached");
@@ -162,7 +162,7 @@ namespace InfinityGame.DataCaching
                 {
                     _townHallIsAlive = false;
 
-                    if (IsNoBuildings())
+                    if (IsNoBuildingsLeft())
                         CheckForLose();
                 };
             }
@@ -179,16 +179,16 @@ namespace InfinityGame.DataCaching
 
             public void UncacheBuilding(Building building)
             {
-                if (!_townHallIsAlive && IsNoBuildings())
+                if (!_townHallIsAlive && IsNoBuildingsLeft())
                     throw new UnityException($"Townhall fo fraction {Fraction} has been destroyed, so you can't uncache buildings of fraction anymore");
 
                 _townHall.RemoveBuilding(building);
 
-                if (IsNoBuildings())
+                if (IsNoBuildingsLeft())
                     CheckForLose();
             }
 
-            private bool IsNoBuildings() => !Buildings.GetEnumerator().MoveNext();
+            private bool IsNoBuildingsLeft() => !Buildings.GetEnumerator().MoveNext();
 
             public void CacheWarrior(Warrior warrior)
             {

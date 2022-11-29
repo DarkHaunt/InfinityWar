@@ -138,7 +138,7 @@ MonoBehaviour:
   _health: 10
   _attackCoolDown: 1.2
   _speedMult: 3.5
-  _agressionRadius: 3
+  _agressionRadius: 5
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 1767208972257514891}
   _poolTag: Demon

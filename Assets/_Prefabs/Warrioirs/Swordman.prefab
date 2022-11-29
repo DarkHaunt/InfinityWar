@@ -135,15 +135,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fraction: Humans
-  _health: 100
-  _attackCoolDown: 3
+  _health: 100000
+  _attackCoolDown: 2
   _speedMult: 2
-  _agressionRadius: 0
+  _agressionRadius: 5
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 1965941402268142818}
   _poolTag: Swordman
-  _globalTarget: {fileID: 0}
-  _localTarget: {fileID: 0}
-  _meleeDamage: 25
+  _meleeDamage: 1000
   _nonMainTargetDamagePercent: 0.5
   _swordAtackRadius: 2

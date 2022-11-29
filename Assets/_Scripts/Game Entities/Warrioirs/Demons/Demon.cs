@@ -6,6 +6,7 @@ namespace InfinityGame.GameEntities.Demons
 {
     public class Demon : MeleeWarrior
     {
+        [Header("--- Demon Parameters ---")]
         [SerializeField] private float _explodeDamage;
         [SerializeField] private float _explodeRadius;
 
