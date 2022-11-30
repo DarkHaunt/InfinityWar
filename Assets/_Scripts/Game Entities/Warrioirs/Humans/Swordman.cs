@@ -3,8 +3,11 @@ using UnityEngine;
 
 
 
-namespace InfinityGame.GameEntities.Humans
+namespace InfinityGame.GameEntities.MeleeWarriors
 {
+    /// <summary>
+    /// A Human fraction warrior, which can hit all enemies around him
+    /// </summary>
     public class Swordman : MeleeWarrior
     {
         [Header("--- Swordman Parameters ---")]

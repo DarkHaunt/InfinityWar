@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _poolTag: Arrow
-  _speedMult: 8
+  _speedMult: 10
   _rigidbody2D: {fileID: 4623219380320850043}
   _maxLifeTime: 3
   _collisionBehaviors:

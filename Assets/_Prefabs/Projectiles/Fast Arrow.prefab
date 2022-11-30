@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _poolTag: Fast Arrow
-  _speedMult: 16
+  _speedMult: 25
   _rigidbody2D: {fileID: 5757366810847229686}
-  _maxLifeTime: 3
+  _maxLifeTime: 2
   _collisionBehaviors:
   - {fileID: 11400000, guid: 70ea5c9d68b289c4685dcfe16b1f0297, type: 2}

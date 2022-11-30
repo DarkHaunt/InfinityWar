@@ -7,13 +7,16 @@ using UnityEngine;
 
 namespace InfinityGame.Projectiles
 {
+    /// <summary>
+    /// Projectile, which can collide with GameEntity many times
+    /// </summary>
     public class MultiTouchProjectile : Projectile
     {
         [Header("--- Multi Touch Projectile Settings ---")]
 
+        [Min(2)] // Because it's the minimal value, which makes sence to use this class 
         [SerializeField] private int _maxCollisionsCount = 1;
         [SerializeField] private List<ProjectileColliisionBehavior> _lastCollisionBehaviors;
-
 
         private LimitCounter _collisionCounter;
 

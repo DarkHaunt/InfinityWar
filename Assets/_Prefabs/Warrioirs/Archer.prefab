@@ -135,14 +135,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fraction: Humans
-  _health: 30
-  _attackCoolDown: 2
+  _health: 40
+  _attackCoolDownSeconds: 2
   _speedMult: 2
   _agressionRadius: 10
   _attackDistance: 7
   _rigidbody2D: {fileID: 6950695716685486880}
   _poolTag: Archer
-  _globalTarget: {fileID: 0}
-  _localTarget: {fileID: 0}
   _projectilePrefab: {fileID: 4623219380320850042, guid: 0ccc8594d17ffac479d6509d5f35c368, type: 3}
   _shootStrategy: {fileID: 11400000, guid: 4ef7cdfdedbe9b140a4e1dadac17a6e4, type: 2}

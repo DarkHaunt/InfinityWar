@@ -3,10 +3,15 @@ using InfinityGame.Spawning;
 
 
 
-namespace InfinityGame.Fractions
+namespace InfinityGame.FractionsData
 {
     using WarrioirSpawnSettings = WarrioirSpawner.SpawnerInitData;
 
+
+
+    /// <summary>
+    /// Data, that determines fraction parameters in the game
+    /// </summary>
     [CreateAssetMenu(fileName = "Fraction", menuName = "Data/New Fraction", order = 52)]
     public class FractionInitData : ScriptableObject
     {

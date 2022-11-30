@@ -57,10 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Melee\MeleeWarrior.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\Buildings\Barrack.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\Buildings\Basic Buildings\Barrack.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\First In List Pick\FistInListPickStrategy.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Buildings\Building.cs" />
-    <Compile Include="Assets\_Scriptables\Shoot Strategiies\ShootStrategy.cs" />
+    <Compile Include="Assets\_Scriptables\Shoot Strategies\ShootStrategy.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Single Touch Projectile\SingleTouchProjectile.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Multi Touch Projectile\MultiTouchProjectile.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooting\Shooter.cs" />
@@ -73,13 +73,13 @@
     <Compile Include="Assets\_Scripts\Factories\WarriorFactory.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Basic Hierarchy\Shooting\IShoot.cs" />
     <Compile Include="Assets\_Scripts\Projectiles\Collision Behaviors\Damage Deal Behaviors\Simple Hit\SimpleHit.cs" />
-    <Compile Include="Assets\_Scriptables\Shoot Strategiies\Shot Around\ShotAround.cs" />
-    <Compile Include="Assets\_Scriptables\Shoot Strategiies\Single Shot\SingleShot.cs" />
-    <Compile Include="Assets\_Scripts\Arena\GameInitializer.cs" />
+    <Compile Include="Assets\_Scriptables\Shoot Strategies\Shot Around\ShotAround.cs" />
+    <Compile Include="Assets\_Scriptables\Shoot Strategies\Single Shot\SingleShot.cs" />
+    <Compile Include="Assets\_Scripts\Initialization\GameInitializer.cs" />
     <Compile Include="Assets\_Scripts\Counter\LimitCounter.cs" />
-    <Compile Include="Assets\_Scripts\Game Entities\Buildings\TownHall.cs" />
+    <Compile Include="Assets\_Scripts\Game Entities\Buildings\Basic Buildings\TownHall.cs" />
     <Compile Include="Assets\_Scripts\Pool System\ObjectPooler.cs" />
-    <Compile Include="Assets\_Scripts\Object Rotator\ObjectRotator.cs" />
+    <Compile Include="Assets\_Scripts\Rotate System\ObjectRotator.cs" />
     <Compile Include="Assets\_Scripts\Static Data\FractionCacher.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Zombies\MeleeZombie.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Single Pick\RandomSinglePickStrategy.cs" />
@@ -95,12 +95,12 @@
     <Compile Include="Assets\_Scripts\Projectiles\Collision Behaviors\ProjectileColliisionBehavior.cs" />
     <Compile Include="Assets\_Scripts\Factories\ProjectileFactory.cs" />
     <Compile Include="Assets\_Scriptables\Warrioir Pick Strategies\Random Group Pick\RandomGroupPickStrategy.cs" />
-    <Compile Include="Assets\_Scripts\Projectiles\Multi Touch Projectile\Ricochet\Ricochet.cs" />
+    <Compile Include="Assets\_Scripts\Projectiles\Multi Touch Projectile\Ricochet\HomingRicochet.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Humans\Swordman.cs" />
     <Compile Include="Assets\_Scripts\Camera\CameraBorders.cs" />
     <Compile Include="Assets\_Scripts\Game Entities\Warrioirs\Demons\Demonologist.cs" />
     <Compile Include="Assets\_Scripts\Warrioir Spawn System\WarrioirSpawner.cs" />
-    <Compile Include="Assets\_Scripts\Arena\SpawnPlace.cs" />
+    <Compile Include="Assets\_Scripts\Initialization\SpawnPlace.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Lean\READ ME.txt" />

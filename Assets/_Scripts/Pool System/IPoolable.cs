@@ -1,8 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using System;
-using UnityEngine;
 
+
+
+/// <summary>
+/// Gives for heir ability to be pooled
+/// </summary>
 public interface IPoolable
 {
     /// <summary>
@@ -10,6 +11,14 @@ public interface IPoolable
     /// </summary>
     public string PoolTag { get; }
 
+
+    /// <summary>
+    /// Object preparations before it be pooled
+    /// </summary>
     void PullInPreparations();
+
+    /// <summary>
+    /// Object preparations, when it gets unpooled
+    /// </summary>
     void PullOutPreparation();
 }

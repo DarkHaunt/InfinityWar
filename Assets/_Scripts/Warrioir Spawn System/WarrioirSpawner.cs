@@ -6,7 +6,7 @@ using InfinityGame.Strategies.WarrioirPickStrategies;
 using InfinityGame.Factories.WarriorFactory;
 using InfinityGame.GameEntities;
 using InfinityGame.DataCaching;
-using InfinityGame.Fractions;
+using InfinityGame.FractionsData;
 
 
 
@@ -17,11 +17,11 @@ namespace InfinityGame.Spawning
     /// </summary>
     public class WarrioirSpawner : MonoBehaviour
     {
-        // A max scatter between spawn position and spawner position in units
-        private static Vector2 MaxSpawnPositionScatter = new Vector2(1f, 1f);
+        // A max scatter between warrior spawn position and spawner position in units
+        private static Vector2 MaxSpawnPositionScatter = new Vector2(2f, 2f);
 
         private float _spawnCoolDownSeconds;
-        private float _spawnDelaySeconds;
+        private float _spawnTimeDeviationSeconds; // A scatter of next spawn time (+- this value) 
 
         private IReadOnlyList<Warrior> _warriorsToSpawn;
         private WarrioirsPickStrategy _warriorsPickStrategy;
@@ -42,14 +42,14 @@ namespace InfinityGame.Spawning
         public void Initialize(string fractionTag, SpawnerInitData spawnData)
         {
             _spawnCoolDownSeconds = spawnData.SpawnCoolDownSeconds;
-            _spawnDelaySeconds = spawnData.TimeDeltaSeconds;
+            _spawnTimeDeviationSeconds = spawnData.SpawnTimeDeviationSeconds;
 
             _fractionTag = fractionTag;
 
             if (!IsAllWarrioirsBelongsToSpawnerFraction(spawnData.WarriosToSpawn))
                 throw new UnityException($"Not all warrioirs belongs to fraction {_fractionTag} in spawner {gameObject.name}");
 
-            if (_spawnDelaySeconds >= _spawnCoolDownSeconds)
+            if (_spawnTimeDeviationSeconds >= _spawnCoolDownSeconds)
                 throw new UnityException($"Spawn delay can't be equal or higher than cool down seconds!");
 
             _warriorsToSpawn = spawnData.WarriosToSpawn;
@@ -128,8 +128,8 @@ namespace InfinityGame.Spawning
 
         private float NewSpawnDelaySeconds()
         {
-            var randomPercentOfDeltaMiliseconds = StaticRandomizer.Randomizer.NextDouble();
-            var rawTime = (_spawnCoolDownSeconds + (StaticRandomizer.GetRandomSign() * _spawnDelaySeconds * randomPercentOfDeltaMiliseconds));
+            var randomPercentOfDeltaMiliseconds = StaticRandomizer.Randomizer.NextDouble(); // A percentage scaling of the spawn time deviation 
+            var rawTime = (_spawnCoolDownSeconds + (StaticRandomizer.GetRandomSign() * _spawnTimeDeviationSeconds * randomPercentOfDeltaMiliseconds));
 
             return (float)rawTime;
         }
@@ -147,7 +147,7 @@ namespace InfinityGame.Spawning
         public struct SpawnerInitData
         {
             [SerializeField] private float _spawnCoolDownSeconds;
-            [SerializeField] private float _timeDeltaSeconds;
+            [SerializeField] private float _spawnTimeDeviationSeconds;
 
             [SerializeField] private WarrioirsPickStrategy _warrioirsPickStrategy;
             [SerializeField] private List<Warrior> _warriosToSpawn;
@@ -155,22 +155,9 @@ namespace InfinityGame.Spawning
 
 
             public float SpawnCoolDownSeconds => _spawnCoolDownSeconds;
-
-            public float TimeDeltaSeconds => _timeDeltaSeconds;
-
+            public float SpawnTimeDeviationSeconds => _spawnTimeDeviationSeconds;
             public IReadOnlyList<Warrior> WarriosToSpawn => _warriosToSpawn;
-
             public WarrioirsPickStrategy WarrioirsPickStrategy => _warrioirsPickStrategy;
-
-
-
-            public SpawnerInitData(float spawnCoolDownSeconds, float timeDeltaSeconds, List<Warrior> warriorsToSpawn, WarrioirsPickStrategy warrioirsPickStrategy)
-            {
-                _spawnCoolDownSeconds = spawnCoolDownSeconds;
-                _timeDeltaSeconds = timeDeltaSeconds;
-                _warriosToSpawn = warriorsToSpawn;
-                _warrioirsPickStrategy = warrioirsPickStrategy;
-            }
         }
     }
 }

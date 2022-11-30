@@ -108,8 +108,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 726357881
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: eab8fff788910db4a8e10b45a745fdd4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -135,14 +135,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fraction: Elfs
-  _health: 30
-  _attackCoolDown: 3
+  _health: 25
+  _attackCoolDownSeconds: 7
   _speedMult: 2
-  _agressionRadius: 18
-  _attackDistance: 15
+  _agressionRadius: 25
+  _attackDistance: 20
   _rigidbody2D: {fileID: 5639960878494141486}
   _poolTag: Pathfinder
-  _globalTarget: {fileID: 0}
-  _localTarget: {fileID: 0}
   _projectilePrefab: {fileID: 5757366810847229688, guid: 3d3ccb7b5971e92439a3925b37085f79, type: 3}
   _shootStrategy: {fileID: 11400000, guid: 4ef7cdfdedbe9b140a4e1dadac17a6e4, type: 2}

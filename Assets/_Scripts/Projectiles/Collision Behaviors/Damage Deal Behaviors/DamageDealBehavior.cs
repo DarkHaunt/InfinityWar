@@ -5,7 +5,7 @@ using UnityEngine;
 namespace InfinityGame.Strategies.ProjectileCollisionBehaviors
 {
     /// <summary>
-    /// Type of damage 
+    /// Will deal damage on collision with something
     /// </summary>
     public abstract class DamageDealBehavior : ProjectileColliisionBehavior
     {

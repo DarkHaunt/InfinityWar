@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// Detect entities in world, using physics and filtring entities by fraction
+/// A tool, that detect entities in world, using physics and filtring entities by fraction<br/>
 /// </summary>
 public static class EntitiesDetector
 {
@@ -86,5 +86,4 @@ public static class EntitiesDetector
 
         return false;
     }
-
 }

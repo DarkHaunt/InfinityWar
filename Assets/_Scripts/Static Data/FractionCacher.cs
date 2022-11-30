@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using InfinityGame.GameEntities.Buildings;
 using InfinityGame.GameEntities;
 using InfinityGame.Spawning;
-using InfinityGame.Fractions;
+using InfinityGame.FractionsData;
 
 
 
@@ -108,7 +109,7 @@ namespace InfinityGame.DataCaching
 
 
         /// <summary>
-        /// Contains data abount fraction , which needed for game
+        /// Contains game-needed data of fraction
         /// </summary>
         public class FractionGameData
         {

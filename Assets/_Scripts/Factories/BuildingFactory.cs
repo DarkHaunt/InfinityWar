@@ -1,6 +1,6 @@
-using InfinityGame.GameEntities;
 using InfinityGame.DataCaching;
-using InfinityGame.Fractions;
+using InfinityGame.FractionsData;
+using InfinityGame.GameEntities.Buildings;
 using UnityEngine;
 
 

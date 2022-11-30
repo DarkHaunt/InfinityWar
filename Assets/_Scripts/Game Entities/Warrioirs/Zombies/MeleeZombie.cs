@@ -1,7 +1,7 @@
 
 
 
-namespace InfinityGame.GameEntities.Zombies
+namespace InfinityGame.GameEntities.MeleeWarriors
 {
     public class MeleeZombie : MeleeWarrior
     {

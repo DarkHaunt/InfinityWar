@@ -4,11 +4,14 @@ using UnityEngine;
 
 
 
-namespace InfinityGame.GameEntities
+namespace InfinityGame.GameEntities.Shooters
 {
     using ShooterData = ShootStrategy.ShooterData;
 
 
+    /// <summary>
+    /// A warrior, that attacks enemies on distance, using projectiles
+    /// </summary>
     public class Shooter : Warrior
     {
         [Header("--- Shooting Parameters ---")]

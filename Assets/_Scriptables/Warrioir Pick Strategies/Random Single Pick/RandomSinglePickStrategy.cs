@@ -3,8 +3,12 @@ using InfinityGame.GameEntities;
 using UnityEngine;
 
 
+
 namespace InfinityGame.Strategies.WarrioirPickStrategies
 {
+    /// <summary>
+    /// Picks random one warrior from collection
+    /// </summary>
     [CreateAssetMenu(fileName = "SpawnStrategy", menuName = "Data/WarrioirChoseStrategies/RandomSinglePick", order = 52)]
     public class RandomSinglePickStrategy : WarrioirsPickStrategy
     {

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e3f52968178e484b9f25ca4913e4535, type: 3}
   m_Name: Fast Arrow Kinetic Energy Losing
   m_EditorClassIdentifier: 
-  _damage: 30
-  _minimalDamagePercent: 0.1
-  _damageLoosingPercentPerUnit: 0.05
+  _damage: 100
+  _minimalDamagePercent: 0.3
+  _damageLoosingPercentPerUnit: 0.03

@@ -75,7 +75,7 @@ namespace InfinityGame.Projectiles
         {
             _rigidbody2D.velocity = direction * Speed;
 
-            ObjectRotator.RoteteYLocalAxisOnDirection(_rigidbody2D, direction);
+            ObjectRotator.RoteteObjectYAxisToTarget(_rigidbody2D, direction);
         }
 
         protected void RestartLifeTime()
@@ -130,7 +130,7 @@ namespace InfinityGame.Projectiles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (IsColliderHasEnemyEntity(collision, out GameEntity enemyEntity) && _isExploitating)
+            if (IsColliderHasEnemyEntity(collision, out GameEntity enemyEntity) && _isExploitating) // TODO: Переписать это в метод, который будет вызываться при коллизии
                 OnCollisionWith(enemyEntity);
         }
     }

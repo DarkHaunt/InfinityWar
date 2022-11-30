@@ -9,20 +9,24 @@ namespace InfinityGame.GameEntities
     // Warrior works with two target system.
     // Global target gets from cache and this target will be main for warrior. This means, that if there is no targets in agression radius, warrior will follow this target
     // Local target - target, that was detected nearly the warrior. Attack directed only on this target only.
+
+    /// <summary>
+    /// A millitant mobile game entity 
+    /// </summary>
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(CircleCollider2D))]
     public abstract class Warrior : GameEntity, IPoolable
     {
         private const float MinimalAttackDistance = 0.5f;
-        private const float LocalTargetUpdateTime = 0.5f;
+        private const float TimeForNextLocalTargetUpdateSeconds = 0.5f;
 
-        private static readonly WaitForSeconds WaitForLocalTargetUpdate = new WaitForSeconds(LocalTargetUpdateTime);
+        private static readonly WaitForSeconds WaitForLocalTargetUpdate = new WaitForSeconds(TimeForNextLocalTargetUpdateSeconds);
 
 
         [Header("--- Warrior Parameters ---")]
         [Range(0f, 10f)]
-        [SerializeField] private float _attackCoolDown;
+        [SerializeField] private float _attackCoolDownSeconds;
 
         [Range(0f, 15f)]
         [SerializeField] private float _speedMult;
@@ -242,7 +246,7 @@ namespace InfinityGame.GameEntities
 
         protected virtual void Awake()
         {
-            _waitForSecondsAttackCooldown = new WaitForSeconds(_attackCoolDown);
+            _waitForSecondsAttackCooldown = new WaitForSeconds(_attackCoolDownSeconds);
         }
 
         protected virtual void Update() => OnStateUpdate();

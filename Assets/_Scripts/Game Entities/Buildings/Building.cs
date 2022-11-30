@@ -1,12 +1,15 @@
-using InfinityGame.Fractions;
+using InfinityGame.FractionsData;
 using UnityEngine;
 
 
 
-namespace InfinityGame.GameEntities
+namespace InfinityGame.GameEntities.Buildings
 {
     using BuildingInitData = FractionInitData.BuildingInitData;
 
+    /// <summary>
+    /// An square-type entity, that can't move
+    /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]

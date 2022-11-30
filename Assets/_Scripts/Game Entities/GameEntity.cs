@@ -6,7 +6,7 @@ using UnityEngine;
 namespace InfinityGame.GameEntities
 {
     /// <summary>
-    /// Object, that belong to fraction and will ignore same fraction enteties
+    /// Object, that belong to fraction and can be damaged
     /// </summary>
     public class GameEntity : MonoBehaviour
     {

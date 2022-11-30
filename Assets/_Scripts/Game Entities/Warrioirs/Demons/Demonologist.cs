@@ -3,8 +3,11 @@ using UnityEngine;
 
 
 
-namespace InfinityGame.GameEntities
+namespace InfinityGame.GameEntities.Shooters
 {
+    /// <summary>
+    /// A Demon fraction shooter, that can spawn warriors by itself
+    /// </summary>
     [RequireComponent(typeof(WarrioirSpawner))]
     public class Demonologist : Shooter
     {

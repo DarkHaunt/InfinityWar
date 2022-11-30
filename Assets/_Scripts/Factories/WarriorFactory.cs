@@ -12,6 +12,7 @@ namespace InfinityGame.Factories.WarriorFactory
         private static readonly ObjectPooler<Warrior> _warrioirPool = new ObjectPooler<Warrior>();
 
 
+
         public static Warrior InstantiateWarrior(Warrior prefab, Vector2 position)
         {
             if (!_warrioirPool.TryGetFromPool(prefab.PoolTag, out Warrior warrior))

@@ -2,12 +2,17 @@ using UnityEngine;
 
 
 
-namespace InfinityGame.GameEntities.Demons
+namespace InfinityGame.GameEntities.MeleeWarriors
 {
+    /// <summary>
+    /// A Demon fraction warrior, that will explde after death
+    /// </summary>
     public class Demon : MeleeWarrior
     {
         [Header("--- Demon Parameters ---")]
         [SerializeField] private float _explodeDamage;
+
+        [Range(0f, 3f)]
         [SerializeField] private float _explodeRadius;
 
 

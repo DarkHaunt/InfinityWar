@@ -2,8 +2,11 @@ using UnityEngine;
 
 
 
-namespace InfinityGame.GameEntities
+namespace InfinityGame.GameEntities.MeleeWarriors
 {
+    /// <summary>
+    /// A warrior, that hit enemies in melee fight
+    /// </summary>
     public abstract class MeleeWarrior : Warrior
     {
         [Header("--- Melee Warrioir Parameters ---")]

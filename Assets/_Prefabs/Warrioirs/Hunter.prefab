@@ -108,8 +108,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 726357881
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 30b834ea8b2cbc74bba49c2834247209, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -135,14 +135,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fraction: Elfs
-  _health: 65
-  _attackCoolDown: 2
-  _speedMult: 4
+  _health: 60
+  _attackCoolDownSeconds: 2
+  _speedMult: 3
   _agressionRadius: 7
   _attackDistance: 3
   _rigidbody2D: {fileID: 1317810716584629002}
   _poolTag: Hunter
-  _globalTarget: {fileID: 0}
-  _localTarget: {fileID: 0}
   _projectilePrefab: {fileID: 8187448437545612534, guid: 4f755fc92bd0b0847bcf3c6a2c703403, type: 3}
   _shootStrategy: {fileID: 11400000, guid: 4ef7cdfdedbe9b140a4e1dadac17a6e4, type: 2}

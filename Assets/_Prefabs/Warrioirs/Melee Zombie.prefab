@@ -136,12 +136,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fraction: Zombies
   _health: 40
-  _attackCoolDown: 0.8
-  _speedMult: 3
+  _attackCoolDownSeconds: 1.8
+  _speedMult: 3.2
   _agressionRadius: 8
   _attackDistance: 0.5
   _rigidbody2D: {fileID: 9134285203207437134}
   _poolTag: Melee Zombie
-  _globalTarget: {fileID: 0}
-  _localTarget: {fileID: 0}
   _meleeDamage: 7
