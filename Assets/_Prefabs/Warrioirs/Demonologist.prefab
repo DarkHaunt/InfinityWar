@@ -150,7 +150,7 @@ MonoBehaviour:
   _fraction: Demons
   _health: 75
   _attackCoolDownSeconds: 3
-  _speedMult: 2
+  _speedMult: 2.5
   _agressionRadius: 7
   _attackDistance: 5
   _rigidbody2D: {fileID: 36225532451730509}
@@ -159,7 +159,7 @@ MonoBehaviour:
   _shootStrategy: {fileID: 11400000, guid: ba0a00dbefb0a5341b48d575ec87547c, type: 2}
   _spawnData:
     _spawnCoolDownSeconds: 3
-    _spawnTimeDeviationSeconds: 0
-    _warrioirsPickStrategy: {fileID: 11400000, guid: 780f7ac64eae1474cb4f46bb856216d5, type: 2}
+    _spawnTimeDeviationSeconds: 1.2
+    _warrioirsPickStrategy: {fileID: 11400000, guid: ae2162fee67d0c14a87206dbbfafcab4, type: 2}
     _warriosToSpawn:
     - {fileID: 4305212060841415620, guid: db83acac97cb41e4e80c4f09ba8dfd86, type: 3}

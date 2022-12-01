@@ -136,10 +136,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fraction: Zombies
   _health: 20
-  _attackCoolDownSeconds: 1.8
+  _attackCoolDownSeconds: 1.6
   _speedMult: 3
   _agressionRadius: 8
-  _attackDistance: 5
+  _attackDistance: 4
   _rigidbody2D: {fileID: 7703586299865400853}
   _poolTag: Range Zombie
   _projectilePrefab: {fileID: 3761057854174154672, guid: 37679435b14651f438f4bd1d83764a79, type: 3}

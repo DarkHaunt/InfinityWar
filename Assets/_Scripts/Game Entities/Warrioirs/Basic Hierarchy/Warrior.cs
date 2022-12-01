@@ -67,7 +67,8 @@ namespace InfinityGame.GameEntities
 
         public virtual void PullInPreparations()
         {
-            _globalTarget.OnDie -= GetNewGlobalTarget;
+            if (_currentState != WarriorState.Unactive)
+                _globalTarget.OnDie -= GetNewGlobalTarget;
 
             StopAllCoroutines();
 
@@ -149,14 +150,13 @@ namespace InfinityGame.GameEntities
 
         private void GetNewGlobalTarget()
         {
+            if (_currentState == WarriorState.Unactive)
+                return;
+
             var cachedEnemyEntities = FractionCacher.GetEnemyEntitiesOfFraction(Fraction);
 
             _globalTarget = EntitiesDetector.TryToGetClosestEntityToPosition(transform.position, cachedEnemyEntities);
-
-            if (_globalTarget != null)
-                _globalTarget.OnDie += GetNewGlobalTarget;
-            else
-                BecomeUnactive();
+            _globalTarget.OnDie += GetNewGlobalTarget;
         }
 
         private void CheckForLocalTarget()
@@ -247,6 +247,8 @@ namespace InfinityGame.GameEntities
         protected virtual void Awake()
         {
             _waitForSecondsAttackCooldown = new WaitForSeconds(_attackCoolDownSeconds);
+
+            GameInitializer.OnGameEnd += BecomeUnactive;
         }
 
         protected virtual void Update() => OnStateUpdate();

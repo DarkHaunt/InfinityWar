@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fraction: Humans
-  _health: 40
+  _health: 50
   _attackCoolDownSeconds: 2
   _speedMult: 2
   _agressionRadius: 10

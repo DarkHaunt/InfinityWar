@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fraction: Zombies
   _health: 40
-  _attackCoolDownSeconds: 1.8
+  _attackCoolDownSeconds: 1.5
   _speedMult: 3.2
   _agressionRadius: 8
   _attackDistance: 0.5

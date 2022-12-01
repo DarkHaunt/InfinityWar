@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fraction: Demons
-  _health: 10
+  _health: 15
   _attackCoolDownSeconds: 1.6
   _speedMult: 3.5
   _agressionRadius: 5

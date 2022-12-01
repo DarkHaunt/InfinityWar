@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fraction: Elfs
   _health: 60
-  _attackCoolDownSeconds: 2
+  _attackCoolDownSeconds: 1.7
   _speedMult: 3
   _agressionRadius: 7
   _attackDistance: 3

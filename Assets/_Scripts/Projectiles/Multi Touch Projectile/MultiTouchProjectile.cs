@@ -15,7 +15,7 @@ namespace InfinityGame.Projectiles
         [Header("--- Multi Touch Projectile Settings ---")]
 
         [Min(2)] // Because it's the minimal value, which makes sence to use this class 
-        [SerializeField] private int _maxCollisionsCount = 1;
+        [SerializeField] private int _maxCollisionsCount = 2;
         [SerializeField] private List<ProjectileColliisionBehavior> _lastCollisionBehaviors;
 
         private LimitCounter _collisionCounter;
